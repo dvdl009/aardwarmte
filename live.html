@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Warmte uit de Diepte Live</title>
+<meta name="theme-color" content="#00a54b">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: schermvullende telefoonapp; het scherm wisselt mee met wat de presentatoren kiezen (welkom, dia's, einde). Interactief zit in de dia's zelf: 3D-model en poll */
+:root{
+  --bg:#f7f3ea; --surface:#ffffff; --fg:#111111; --muted:#5c5a54; --line:#e3dccd; --tint:#efe8d8;
+  --brand:#00a54b; --accent:#008c45; --blue:#3c86a6;
+  --s1:#f1ead9; --s2:#e4d7ba; --s3:#d2bf98; --s4:#b9a276; --s5:#a9d9bd;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --hot:#d9480f; --cold:#1971c2; --scene:#eef1ec;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121211; --surface:#1c1b19; --fg:#f2efe8; --muted:#a8a398; --line:#33302a; --tint:#24221e;
+  --accent:#2fc36f; --blue:#6fb3d0; --s1:#2c2922; --s2:#3a352b; --s3:#4a4333; --s4:#5b523d; --s5:#1f5a3a; --hot:#ff7a45; --cold:#5aa9f0; --scene:#1a1e1c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121211; --surface:#1c1b19; --fg:#f2efe8; --muted:#a8a398; --line:#33302a; --tint:#24221e;
+  --accent:#2fc36f; --blue:#6fb3d0; --s1:#2c2922; --s2:#3a352b; --s3:#4a4333; --s4:#5b523d; --s5:#1f5a3a; --hot:#ff7a45; --cold:#5aa9f0; --scene:#1a1e1c; color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.5}
+h1,h2{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{min-height:100%;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:12px max(18px,env(safe-area-inset-right,0px)) 12px max(18px,env(safe-area-inset-left,0px));font-family:var(--display);font-weight:800;font-size:1rem}
+.core{display:inline-grid;grid-template-rows:repeat(4,1fr);width:10px;height:22px;border-radius:2px;overflow:hidden;border:1px solid currentColor}
+.core i:nth-child(1){background:#f1ead9}.core i:nth-child(2){background:#d2bf98}.core i:nth-child(3){background:#3c86a6}.core i:nth-child(4){background:#00a54b}
+.state{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--tint);color:var(--muted)}
+.state.live{background:#fff;color:#111}
+.state.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#e03131;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.screen{flex:1;display:flex;flex-direction:column;padding:8px max(18px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));max-width:820px;width:100%;margin:0 auto}
+
+/* welkom */
+.app.m-welkom{background:var(--brand);color:#fff}
+.welcome{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.welcome h1{font-size:clamp(2.2rem,10vw,3.6rem);font-weight:800;letter-spacing:-.02em}
+.welcome .sub{font-size:1.05rem;opacity:.92;max-width:34ch}
+.wait{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.14);border-radius:12px;padding:14px 16px;font-size:.95rem}
+.dots{display:inline-flex;gap:5px}
+.dots i{width:8px;height:8px;border-radius:50%;background:#fff;animation:bob 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes bob{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.strata{display:grid;grid-template-rows:14px 18px 22px 16px;margin:0 calc(-1 * max(18px,env(safe-area-inset-left,0px)));}
+.strata i:nth-child(1){background:#e4d7ba}.strata i:nth-child(2){background:#d2bf98}.strata i:nth-child(3){background:#b9a276}.strata i:nth-child(4){background:#3c86a6}
+.who{font-size:.85rem;opacity:.85}
+
+/* dia */
+.slide{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;padding-block:12px}
+.kicker{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.slide h2{font-size:clamp(1.7rem,7.5vw,3rem);font-weight:800;letter-spacing:-.01em}
+.slide p,.slide li{font-size:clamp(1.02rem,4.2vw,1.35rem)}
+.slide ul{margin:0;padding-left:1.15em;display:grid;gap:8px}
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px}
+.frame svg{display:block;width:100%;height:auto}
+.bignums{display:grid;gap:12px}
+.bignums div{border-top:3px solid var(--brand);padding-top:6px;color:var(--muted)}
+.bignums b{display:block;font-family:var(--display);font-size:clamp(2rem,10vw,3.2rem);font-weight:800;color:var(--accent);line-height:1}
+.app.cover{background:var(--brand);color:#fff}
+.app.cover .kicker{color:#fff;opacity:.85}
+.progress{display:flex;gap:4px;padding-top:8px}
+.progress i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.progress i.on{background:var(--brand)}
+.app.cover .progress i{background:rgba(255,255,255,.3)}.app.cover .progress i.on{background:#fff}
+.slide.enter{animation:in .35s ease}
+@keyframes in{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* dia-onderdelen */
+.slide .small{font-size:clamp(.85rem,3.4vw,1rem);opacity:.85}
+.fig{margin:0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;overflow:hidden}
+.fig img{display:block;width:100%;height:auto;max-height:46vh;object-fit:contain}
+.bignums.row{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.trio{display:grid;gap:10px}
+.trio div{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:10px;padding:10px 14px;color:var(--muted);font-size:clamp(.95rem,3.8vw,1.15rem)}
+.trio b{display:block;font-family:var(--display);font-size:clamp(1.15rem,5vw,1.5rem);color:var(--fg)}
+.trio.verdict .ok{border-left-color:var(--brand)}.trio.verdict .ok b::before{content:"✓ ";color:var(--accent)}
+.trio.verdict .warn{border-left-color:#e8a317}.trio.verdict .warn b::before{content:"! ";color:#c27c00}
+/* poll */
+.poll{display:grid;gap:10px}
+.vote{display:flex;align-items:center;min-height:60px;padding:0 18px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-weight:600;font-size:1.1rem;cursor:pointer;text-align:left}
+.vote:active{transform:scale(.98)}
+.res{display:grid;gap:10px}
+.res .r{display:grid;gap:4px}
+.res .r .t{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+.res .r .t span:last-child{font-family:var(--mono);color:var(--muted)}
+.res .pbar{height:16px;border-radius:8px;background:var(--tint);overflow:hidden}
+.res .pbar i{display:block;height:100%;background:var(--blue);border-radius:8px;transition:width .5s ease}
+.res .r.mine .t span:first-child::after{content:"  ← jouw stem";font-weight:400;color:var(--muted);font-size:.85em}
+.res .r.right .pbar i{background:var(--brand)}
+.res .r.right .t span:first-child::before{content:"✓ ";color:var(--accent)}
+.pollnote{font-size:.9rem;color:var(--muted)}
+.pollsum:empty{display:none}
+.pollsum{background:var(--tint);border-radius:10px;padding:10px 14px;font-size:clamp(.95rem,3.8vw,1.15rem)}
+/* beamer: live.html#beamer op de laptop */
+body.beamer .screen{max-width:1280px;padding-inline:48px}
+body.beamer .bar{padding-inline:48px;font-size:1.2rem}
+body.beamer .slide{gap:20px}
+body.beamer .slide h2{font-size:clamp(2.4rem,4.6vw,4rem)}
+body.beamer .slide p,body.beamer .slide li{font-size:clamp(1.2rem,2vw,1.7rem)}
+body.beamer .fig img{max-height:52vh}
+body.beamer .bignums b{font-size:clamp(2.4rem,4.4vw,4rem)}
+body.beamer .trio{grid-template-columns:repeat(3,1fr)}
+body.beamer .res .pbar{height:30px;border-radius:15px}
+body.beamer .res .r .t{font-size:1.5rem}
+.join{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:rgba(255,255,255,.14);border-radius:16px;padding:20px}
+.join img{width:min(30vh,260px);height:auto;background:#fff;border-radius:10px;padding:8px}
+.join b{display:block;font-family:var(--display);font-size:2rem}
+.join code{font-family:var(--mono);font-size:1.1rem;opacity:.9;word-break:break-all}
+/* spreektekst voor de presentator */
+.notes{border-left:4px solid var(--brand);background:var(--surface);border-radius:8px;padding:12px 14px;font-size:1rem;line-height:1.55}
+.notes .who{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;opacity:1}
+.btn.small{min-height:44px;font-size:.95rem}
+
+/* einde */
+.app.m-einde{background:var(--fg);color:var(--bg)}
+.end{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.end h1{font-size:clamp(2.2rem,10vw,3.4rem);font-weight:800}
+.end p{opacity:.85;max-width:36ch}
+.go{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:12px;background:var(--brand);color:#fff;text-decoration:none;font-weight:600;font-size:1.05rem}
+.count{font-family:var(--mono);font-size:.85rem;opacity:.7}
+.stay{background:transparent;border:0;color:inherit;opacity:.75;text-decoration:underline;cursor:pointer;padding:8px}
+
+/* presentator */
+.pres{display:grid;gap:14px;padding-block:8px}
+.pres .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mode{min-height:56px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-weight:600;cursor:pointer}
+.mode[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.ctrl{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:64px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:1.1rem;cursor:pointer}
+.btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.preview{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface);display:grid;gap:6px}
+.preview h2{font-size:1.25rem}
+.meter{font-family:var(--mono);font-size:.85rem;background:var(--tint);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;gap:10px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.thumbs button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;font-size:.8rem;cursor:pointer;max-width:150px;text-align:left}
+.thumbs button[aria-current="true"]{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 14%,var(--surface))}
+.pin{display:grid;gap:12px;max-width:320px;margin:40px auto 0;width:100%}
+.pin input{font:inherit;font-size:1.5rem;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);text-align:center;letter-spacing:.3em}
+.note{font-size:.85rem;color:var(--muted)}
+
+/* voorbeeldbalk (alleen zonder live-verbinding) */
+/* 3D-model */
+.m3{position:relative;height:clamp(300px,52vh,520px);background:var(--scene);border:1px solid var(--line);border-radius:8px;overflow:hidden;touch-action:none}
+.m3 canvas{display:block;width:100%;height:100%}
+.m3.static{height:auto;touch-action:auto;background:var(--surface)}
+.m3.static img{display:block;width:100%;height:auto}
+.m3-labels{position:absolute;inset:0;pointer-events:none}
+.m3 .lbl{font:500 11px/1.25 var(--body);color:var(--fg);background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);border-radius:4px;padding:2px 5px;white-space:nowrap;transform:translateY(-50%)}
+.m3 .lbl .m{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.m3 .lbl.hot{border-color:var(--hot);color:var(--hot)}.m3 .lbl.cold{border-color:var(--cold);color:var(--cold)}
+.m3 .lbl.depth{background:transparent;border:0;font-family:var(--mono);font-size:10px;color:var(--muted);padding:0}
+.m3 .lbl.layer{background:color-mix(in srgb,#ffffff 78%,transparent);border:0;font-size:10.5px;color:#2b2620}
+.m3-tools{position:absolute;left:8px;top:8px;display:flex;gap:5px;flex-wrap:wrap}
+.m3-tools button{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;min-height:30px}
+.m3-tools button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.m3-hint{position:absolute;right:8px;bottom:6px;font-size:.7rem;color:var(--muted)}
+.demo{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:var(--surface);border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+.demo button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:4px 10px;font-size:.78rem;cursor:pointer;color:var(--fg)}
+.demo button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+body.has-demo .screen{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="bar"><span class="core" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Warmte uit de Diepte<span class="state" id="stateTag">Verbinden</span></div>
+  <div class="screen" id="screen" aria-live="polite"></div>
+</div>
+<div class="demo" id="demo" hidden></div>
+
+<script src="slides.js"></script>
+<script>
+/* ================== INSTELLINGEN ================== */
+const CONFIG = {
+  firebaseUrl: "",               // zelfde database als in de README, bijv. "https://aardwarmte-4v-default-rtdb.europe-west1.firebasedatabase.app"
+  presenterPin: "0112",          // pincode voor live.html#presenter (1 december)
+  siteUrl: "./",                 // waar het publiek na afloop heen gaat (de gewone site)
+  figureFile: "img/figuur1-doublet.png", // afbeelding als het 3D-model niet kan laden
+  joinUrl: "dvdl009.github.io/aardwarmte/live.html", // staat op de beamer bij de QR-code
+  team: "Aimée Tolk, David van der Linden en Lauren Timmer · klas V4 Northgo"
+};
+
+/* De dia's staan in slides.js (hetzelfde bestand gebruikt index.html om terug te kijken) */
+const SLIDES=window.DIAS||[];
+const MODES=[["welkom","Welkom"],["dias","Dia's"],["einde","Einde"]];
+
+/* ================== CODE ================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const FB=CONFIG.firebaseUrl.replace(/\/+$/,"");
+const STALE=6*3600e3;
+let state={mode:"welkom",i:0,at:0},presenter=location.hash==="#presenter",beamer=location.hash==="#beamer",lastKey="",stayed=false,countT=null,polls={};
+document.body.classList.toggle("beamer",beamer);
+let cid;try{cid=localStorage.getItem("cid")||Math.random().toString(36).slice(2,12);localStorage.setItem("cid",cid)}catch(e){cid=Math.random().toString(36).slice(2,12)}
+
+function fbPut(path,val){return fetch(`${FB}/live/${path}.json`,{method:"PUT",body:JSON.stringify(val)})}
+function applyPut(root,path,data){if(path==="/")return data;const ks=path.split("/").filter(Boolean);root=root&&typeof root==="object"?{...root}:{};let o=root;ks.slice(0,-1).forEach(k=>{o[k]=o[k]&&typeof o[k]==="object"?{...o[k]}:{};o=o[k]});if(data===null)delete o[ks.at(-1)];else o[ks.at(-1)]=data;return root}
+function stream(path,cb){let v=null;const es=new EventSource(`${FB}/live/${path}.json`);
+  es.addEventListener("put",e=>{const m=JSON.parse(e.data);v=applyPut(v,m.path,m.data);cb(v)});
+  es.addEventListener("patch",e=>{const m=JSON.parse(e.data);Object.entries(m.data||{}).forEach(([k,x])=>{v=applyPut(v,(m.path==="/"?"":m.path)+"/"+k,x)});cb(v)});
+  es.onerror=()=>setTag("Verbinding herstellen…",false);es.onopen=()=>render();return es}
+
+function setTag(t,live){const el=$("#stateTag");el.textContent=t;el.classList.toggle("live",!!live)}
+function effMode(){if(!FB)return state.mode;if(!state.at)return "welkom";return Date.now()-state.at>STALE?"einde":state.mode}
+
+function isCover(s){return s&&(s.type==="cover"||s.type==="end")}
+function slideHtml(i){const s=SLIDES[i];let b=s.html||"";
+  if(s.type==="model")b+=model3dHtml();
+  if(s.type==="poll")b+=`<div id="pollbox" data-poll="${esc(s.poll)}">${pollInner(s)}</div>`;
+  if(beamer&&i===0)b+=`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`;
+  return `<div class="slide enter"><span class="kicker">${esc(s.kicker)}</span><h2>${esc(s.title)}</h2>${b}</div>
+  <div class="progress" aria-label="Dia ${i+1} van ${SLIDES.length}">${SLIDES.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>`}
+
+/* ================== POLL ================== */
+function myVote(id){try{const v=localStorage.getItem("vote_"+id);return v===null?null:+v}catch(e){return null}}
+function counts(s){const c=s.options.map(()=>0);Object.values((polls||{})[s.poll]||{}).forEach(v=>{if(c[v]!==undefined)c[v]++});return c}
+function resultsHtml(s,reveal){const c=counts(s),n=c.reduce((a,b)=>a+b,0),mine=myVote(s.poll);
+  return `<div class="res">${s.options.map((o,k)=>{const pct=n?Math.round(100*c[k]/n):0;
+    return `<div class="r${k===mine&&!beamer&&!presenter?" mine":""}${reveal&&k===s.answer?" right":""}"><div class="t"><span>${esc(o)}</span><span>${pct}% · ${c[k]}</span></div><div class="pbar"><i style="width:${pct}%"></i></div></div>`}).join("")}</div>
+  <p class="pollnote">${n} ${n===1?"stem":"stemmen"}</p>`}
+function pollInner(s){
+  if(beamer)return `<p class="pollnote">Stem op je telefoon. Nog niet meegedaan? Scan de QR-code op de poster.</p>`+resultsHtml(s,false);
+  if(myVote(s.poll)===null)return `<div class="poll">${s.options.map((o,k)=>`<button class="vote" data-vote="${k}">${esc(o)}</button>`).join("")}</div>`;
+  return resultsHtml(s,false)}
+function bindPoll(root){root.querySelectorAll("[data-vote]").forEach(b=>b.onclick=()=>{
+  const s=SLIDES[state.i||0];if(!s||s.type!=="poll")return;const k=+b.dataset.vote;
+  try{localStorage.setItem("vote_"+s.poll,String(k))}catch(e){}
+  polls={...polls,[s.poll]:{...((polls||{})[s.poll]||{}),[cid]:k}};
+  if(FB)fbPut(`poll/${s.poll}/${cid}`,k).catch(()=>setTag("Stem niet verstuurd, probeer opnieuw",false));
+  updatePoll()})}
+function updatePoll(){const box=document.getElementById("pollbox");
+  if(box){const s=SLIDES.find(x=>x.poll===box.dataset.poll);if(s){box.innerHTML=pollInner(s);bindPoll(box)}}
+  document.querySelectorAll("[data-pollsum]").forEach(el=>{const s=SLIDES.find(x=>x.type==="poll"&&x.poll===el.dataset.pollsum);if(!s)return;
+    const c=counts(s),n=c.reduce((a,b)=>a+b,0);if(!n){el.textContent="";return}
+    const pct=Math.round(100*c[s.answer]/n);el.innerHTML=`<b>${pct}%</b> van jullie gokte goed: <b>${esc(s.options[s.answer].toLowerCase())}</b>.`});
+  if(presenter&&unlocked)renderPres()}
+
+function renderAudience(){
+  const m=effMode(),i=Math.max(0,Math.min(SLIDES.length-1,state.i||0));const key=m+":"+i;
+  const app=$("#app");app.className="app m-"+m+(m==="dias"&&isCover(SLIDES[i])?" cover":"");
+  if(m!=="einde"){clearInterval(countT);countT=null;stayed=false}
+  if(key===lastKey)return;lastKey=key;
+  const sc=$("#screen");
+  if(m==="welkom"){setTag("Bijna",false);
+    sc.innerHTML=`<div class="welcome"><span class="kicker" style="color:#fff;opacity:.85">Posterpresentatie aardwarmte</span><h1>Welkom! We beginnen zo.</h1><p class="sub">Laat dit scherm open staan. Zodra we starten, zie je hier vanzelf onze presentatie.</p>${beamer?`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`:`<div class="wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Wachten op de presentatoren</span></div>`}<p class="who">${esc(CONFIG.team)}</p></div><div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`;
+  }else if(m==="dias"){setTag("Live",true);sc.innerHTML=slideHtml(i);initModels(sc);bindPoll(sc);updatePoll();
+  }else{setTag("Afgelopen",false);
+    sc.innerHTML=`<div class="end"><span class="kicker" style="color:var(--s5)">Bedankt voor het kijken</span><h1>Kijk gerust verder rond</h1><p>Op onze site vind je het hele onderzoek, de poster en alle bronnen.</p><a class="go" href="${esc(CONFIG.siteUrl)}">Naar ons onderzoek</a><span class="count" id="count"></span><button class="stay" id="stay">Hier blijven</button></div>`;
+    let n=8;const tick=()=>{const c=$("#count");if(!c)return;if(stayed){c.textContent="";return}c.textContent=`Je gaat over ${n} seconden automatisch verder.`;if(n--<=0){clearInterval(countT);if(FB&&!beamer)location.href=CONFIG.siteUrl}};
+    tick();countT=setInterval(tick,1000);$("#stay").onclick=()=>{stayed=true;tick();$("#stay").hidden=true};
+  }
+}
+
+/* ================== 3D-MODEL DOUBLET (hoofdstuk 2) ================== */
+const THREE_URL="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+const ORBIT_URL="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js";
+function loadScript(u){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=u;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+let threeP=null;function loadThree(){return threeP||(threeP=(window.THREE?Promise.resolve():loadScript(THREE_URL)).then(()=>loadScript(ORBIT_URL)))}
+function model3dHtml(){return `<figure class="m3wrap"><div class="m3" data-model3d>
+  <canvas aria-label="3D-model van een aardwarmtedoublet met productieput, injectieput, warmtewisselaar en warmtenet"></canvas><div class="m3-labels"></div>
+  <div class="m3-tools"><button class="m3-play" aria-pressed="true">Stroming</button><button class="m3-lbl" aria-pressed="true">Labels</button><button class="m3-reset">Reset</button></div>
+  <span class="m3-hint">Sleep om te draaien · knijp om te zoomen</span>
+  <img class="m3-fallback" src="${String(CONFIG.figureFile).replace(/"/g,"")}" alt="Doorsnede van een aardwarmtedoublet" hidden></div>
+  </figure>`}
+function initModels(root){root.querySelectorAll("[data-model3d]:not([data-ready])").forEach(stage=>{stage.dataset.ready="1";
+  loadThree().then(()=>{try{mountDoublet(stage)}catch(e){fallback3d(stage)}}).catch(()=>fallback3d(stage))})}
+function fallback3d(stage){stage.classList.add("static");stage.querySelectorAll("canvas,.m3-labels,.m3-tools,.m3-hint").forEach(x=>x.remove());stage.querySelector(".m3-fallback").hidden=false}
+function mountDoublet(stage){
+const canvas=stage.querySelector("canvas"),labelBox=stage.querySelector(".m3-labels");
+if(!window.THREE)throw new Error("no three");
+const gl=document.createElement("canvas").getContext("webgl");if(!gl)throw new Error("no webgl");
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();
+renderer.setClearColor(new THREE.Color(css("--scene")||"#eef1ec"),1);
+const camera=new THREE.PerspectiveCamera(35,1,0.1,500);
+const controls=THREE.OrbitControls?new THREE.OrbitControls(camera,canvas):null;
+if(controls){controls.enableDamping=true;controls.target.set(0,-11,0);controls.minDistance=20;controls.maxDistance=110;controls.maxPolarAngle=Math.PI*0.62}
+
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a7d68,0.62));scene.add(new THREE.AmbientLight(0xffffff,0.12));
+const sun=new THREE.DirectionalLight(0xffffff,0.6);sun.position.set(20,30,25);scene.add(sun);
+
+/* 1 eenheid = 100 m. Blok 3,2 km breed, 2,6 km diep. */
+const W=32,Dz=12,X0=-W/2;
+const LAYERS=[
+  {top:0,bot:-4,c:0xe6d9b8,name:"Zand, klei en veen"},
+  {top:-4,bot:-11,c:0xcdb98f,name:"Klei- en zandlagen"},
+  {top:-11,bot:-18.5,c:0xb9b3a3,name:"Kalksteen en mergel"},
+  {top:-18.5,bot:-21.5,c:0x8f8478,name:"Kleisteen: afsluitende laag"},
+  {top:-21.5,bot:-24.2,c:0xe0a458,name:"Zandsteen met warm zout water (reservoir)"},
+  {top:-24.2,bot:-26.5,c:0x9c8a70,name:"Dieper gesteente"}
+];
+const group=new THREE.Group();scene.add(group);
+LAYERS.forEach(L=>{
+  const h=L.top-L.bot;
+  const back=new THREE.Mesh(new THREE.BoxGeometry(W,h,Dz/2),new THREE.MeshLambertMaterial({color:L.c}));
+  back.position.set(0,(L.top+L.bot)/2,-Dz/4);group.add(back);
+  const front=new THREE.Mesh(new THREE.BoxGeometry(W,h,Dz/2),new THREE.MeshLambertMaterial({color:L.c,transparent:true,opacity:0.16,depthWrite:false}));
+  front.position.set(0,(L.top+L.bot)/2,Dz/4);group.add(front);
+  const edges=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W,h,Dz)),new THREE.LineBasicMaterial({color:0x6b5f50,transparent:true,opacity:0.35}));
+  edges.position.set(0,(L.top+L.bot)/2,0);group.add(edges);
+});
+// grasdek
+const grass=new THREE.Mesh(new THREE.BoxGeometry(W,0.25,Dz),new THREE.MeshLambertMaterial({color:0x7fb069}));grass.position.y=0.125;scene.add(grass);
+
+/* putten */
+const ZW=0.6; // putten net voor de snijvlakken
+const prodCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-0.8,0.3,ZW),new THREE.Vector3(-0.8,-8,ZW),new THREE.Vector3(-2.2,-13,ZW),new THREE.Vector3(-5.5,-19,ZW),new THREE.Vector3(-7.5,-22.8,ZW)]);
+const injCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(0.8,0.3,ZW),new THREE.Vector3(0.8,-8,ZW),new THREE.Vector3(2.2,-13,ZW),new THREE.Vector3(5.5,-19,ZW),new THREE.Vector3(7.5,-22.8,ZW)]);
+const HOT=new THREE.Color(css("--hot")||"#d9480f"),COLD=new THREE.Color(css("--cold")||"#1971c2");
+function tube(curve,color,r){const m=new THREE.Mesh(new THREE.TubeGeometry(curve,120,r,10,false),new THREE.MeshLambertMaterial({color}));scene.add(m);return m}
+const prodTube=tube(prodCurve,HOT,0.32),injTube=tube(injCurve,COLD,0.32);
+// pomp
+const pump=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,1.4,16),new THREE.MeshLambertMaterial({color:0x222222}));pump.position.copy(prodCurve.getPointAt(0.215));scene.add(pump);
+// reservoirstroom
+const resCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(7.5,-22.9,ZW),new THREE.Vector3(3,-23.3,ZW),new THREE.Vector3(-3,-23.3,ZW),new THREE.Vector3(-7.5,-22.9,ZW)]);
+
+/* oppervlak: centrale, woningen, kas */
+const plant=new THREE.Mesh(new THREE.BoxGeometry(3.4,2,2.6),new THREE.MeshLambertMaterial({color:0x2f3a36}));plant.position.set(0,1.25,-0.2);scene.add(plant);
+const hx=new THREE.Mesh(new THREE.BoxGeometry(1.2,1.3,1),new THREE.MeshLambertMaterial({color:0x00a54b}));hx.position.set(0,0.9,1.4);scene.add(hx);
+function house(x,z,s){const g=new THREE.Group();const b=new THREE.Mesh(new THREE.BoxGeometry(1.4*s,1.1*s,1.2*s),new THREE.MeshLambertMaterial({color:0xe3d3b0}));b.position.y=0.55*s+0.25;g.add(b);
+  const r=new THREE.Mesh(new THREE.ConeGeometry(1.05*s,0.8*s,4),new THREE.MeshLambertMaterial({color:0xa4462e}));r.rotation.y=Math.PI/4;r.position.y=1.1*s+0.25+0.4*s;g.add(r);g.position.set(x,0,z);scene.add(g)}
+[[7,2.2],[9,2.2],[11,2.2],[13,2.2],[7.6,-1.5],[9.6,-1.5],[11.6,-1.5],[13.6,-1.5]].forEach(([x,z])=>house(x,z,1));
+const shed=new THREE.Mesh(new THREE.BoxGeometry(4,1.8,3),new THREE.MeshLambertMaterial({color:0x6f7d72}));shed.position.set(-9.5,1.15,-1.6);scene.add(shed);
+const kas=new THREE.Mesh(new THREE.BoxGeometry(5,1.5,2.6),new THREE.MeshLambertMaterial({color:0x9fc7d6,transparent:true,opacity:0.6}));kas.position.set(-10,1,2.2);scene.add(kas);
+// warmtenet (net onder het maaiveld)
+const netY=-0.45;
+const supRight=new THREE.CatmullRomCurve3([new THREE.Vector3(0.4,0.6,1.4),new THREE.Vector3(1.5,netY,ZW+0.9),new THREE.Vector3(14.5,netY,ZW+0.9)]);
+const retRight=new THREE.CatmullRomCurve3([new THREE.Vector3(14.5,netY-0.55,ZW+0.9),new THREE.Vector3(1.5,netY-0.55,ZW+0.9),new THREE.Vector3(0.6,0.3,ZW)]);
+const supLeft=new THREE.CatmullRomCurve3([new THREE.Vector3(-0.4,0.6,1.4),new THREE.Vector3(-1.5,netY,ZW+0.9),new THREE.Vector3(-12.5,netY,ZW+0.9)]);
+const retLeft=new THREE.CatmullRomCurve3([new THREE.Vector3(-12.5,netY-0.55,ZW+0.9),new THREE.Vector3(-2.8,netY-0.55,ZW+0.9),new THREE.Vector3(-1.2,0.3,ZW)]);
+[supRight,supLeft].forEach(c=>tube(c,HOT,0.16));[retRight,retLeft].forEach(c=>tube(c,COLD,0.16));
+// verdeelstrengen naar de huizen
+[7,9,11,13].forEach(x=>{tube(new THREE.LineCurve3(new THREE.Vector3(x,netY,ZW+0.9),new THREE.Vector3(x,0.3,2.2)),HOT,0.08)});
+
+/* stroming: deeltjes langs de leidingen */
+const flows=[];
+function flow(curve,n,c1,c2,speed,size){
+  const geo=new THREE.SphereGeometry(size,10,8);
+  for(let i=0;i<n;i++){const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:c1.clone().lerp(new THREE.Color(0xffffff),c1===c2?0.45:0)}));scene.add(m);flows.push({m,curve,t:i/n,c1,c2,speed})}}
+flow(new THREE.CatmullRomCurve3(prodCurve.getPoints(60).reverse()),22,HOT,HOT,0.05,0.38);
+flow(injCurve,22,COLD,COLD,0.05,0.38);
+flow(resCurve,12,COLD,HOT,0.035,0.3);
+flow(supRight,10,HOT,HOT,0.09,0.13);flow(retRight,10,COLD,COLD,0.09,0.13);
+flow(supLeft,9,HOT,HOT,0.09,0.13);flow(retLeft,9,COLD,COLD,0.09,0.13);
+function placeFlows(dt){flows.forEach(f=>{f.t=(((f.t+dt*f.speed)%1)+1)%1;f.m.position.copy(f.curve.getPointAt(f.t));if(f.c1!==f.c2)f.m.material.color.copy(f.c1).lerp(f.c2,f.t)})}
+placeFlows(0);
+
+/* labels */
+const labels=[];
+function label(html,pos,cls="",dx=0){const el=document.createElement("div");el.className="lbl "+cls;el.innerHTML=html;el.style.position="absolute";labelBox.appendChild(el);labels.push({el,pos,dx,cls});return el}
+label('<b>Productieput</b><br><span class="m">± 75 °C omhoog</span>',prodCurve.getPointAt(0.55),"hot",-150);
+label('<b>Injectieput</b><br><span class="m">± 50 °C terug</span>',injCurve.getPointAt(0.55),"cold",14);
+label('<b>Pomp</b> <span class="m">± 500 m</span>',pump.position.clone(),"",-120);
+label('<b>Warmtewisselaar</b>',new THREE.Vector3(0,3.2,1),"",-55);
+label('<b>Warmtenet</b> <span class="m">± 70 °C</span>',new THREE.Vector3(4.5,netY,ZW+0.9),"hot",-30);
+label('<b>Woningen</b>',new THREE.Vector3(10.5,3.2,0.4),"",-30);
+label('<b>Bollenschuur en kas</b>',new THREE.Vector3(-10,3.3,0.4),"",-60);
+label('<b>Water warmt weer op</b><br><span class="m">± 1,5 km door de zandsteen</span>',new THREE.Vector3(0,-24.9,ZW),"",-80);
+LAYERS.forEach(L=>label(L.name,new THREE.Vector3(X0+1.2,(L.top+L.bot)/2,Dz/2),"layer",0));
+[[0,"0 m"],[-5,"500 m"],[-10,"1.000 m"],[-15,"1.500 m"],[-20,"2.000 m"],[-23,"2.300 m"]].forEach(([y,t])=>label(t,new THREE.Vector3(W/2+0.4,y,Dz/2),"depth",4));
+// dieptestreepjes
+const tickMat=new THREE.LineBasicMaterial({color:0x6b5f50});
+[0,-5,-10,-15,-20,-23].forEach(y=>{const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(W/2,y,Dz/2),new THREE.Vector3(W/2+0.35,y,Dz/2)]);scene.add(new THREE.Line(g,tickMat))});
+
+let showLabels=true;
+function placeLabels(){const r=stage.getBoundingClientRect();const v=new THREE.Vector3();
+  const narrow=r.width<560;labels.forEach(l=>{v.copy(l.pos).project(camera);const vis=showLabels&&!(narrow&&l.cls==="layer")&&v.z<1&&Math.abs(v.x)<1.05&&Math.abs(v.y)<1.05;l.el.style.display=vis?"":"none";
+    if(vis){const x=(v.x+1)/2*r.width+(narrow?l.dx*0.6:l.dx);l.el.style.left=Math.max(4,Math.min(r.width-l.el.offsetWidth-4,x))+"px";l.el.style.top=((1-v.y)/2*r.height)+"px"}})}
+
+/* camera */
+function view(kind){const nr=stage.getBoundingClientRect().width<560;if(kind==="front"){camera.position.set(0,-11,nr?60:58)}else if(nr){camera.position.set(11,-5,55)}else{camera.position.set(30,8,46)}if(controls){controls.target.set(0,-11,0);controls.update()}else camera.lookAt(0,-11,0)}
+view("oblique");
+
+function resize(){const r=stage.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.fov=r.width<560?52:35;camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(stage);resize();
+
+let playing=!reduce,last=performance.now(),visible=true;new IntersectionObserver(e=>{visible=e[0].isIntersecting}).observe(stage);
+function loop(now){const dt=Math.max(0,Math.min(0.05,(now-last)/1000));last=now;if(!visible){requestAnimationFrame(loop);return}if(playing)placeFlows(dt);if(controls)controls.update();renderer.render(scene,camera);placeLabels();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+const bPlay=stage.querySelector(".m3-play");bPlay.setAttribute("aria-pressed",String(playing));
+bPlay.onclick=()=>{playing=!playing;bPlay.setAttribute("aria-pressed",String(playing))};
+const bLbl=stage.querySelector(".m3-lbl");bLbl.onclick=()=>{showLabels=!showLabels;bLbl.setAttribute("aria-pressed",String(showLabels))};
+stage.querySelector(".m3-reset").onclick=()=>view("oblique");
+}
+
+
+/* presentator */
+let unlocked=false,viewers={},confirmReset=false;try{unlocked=sessionStorage.getItem("pres")==="1"}catch(e){}
+function publish(p){state={...state,...p,at:Date.now()};if(FB)fbPut("state",state).catch(()=>alertBar("Versturen mislukt, check je internet"));renderPres()}
+function alertBar(t){setTag(t,false)}
+function renderPres(){const sc=$("#screen");$("#app").className="app";setTag("Presentator",false);
+  if(!unlocked){sc.innerHTML=`<form class="pin" id="pinf"><span class="kicker">Presentator</span><h2>Pincode</h2><input id="pinIn" inputmode="numeric" autocomplete="off" aria-label="Pincode"><button class="btn primary">Openen</button><p class="note" id="pinErr" hidden>Onjuiste pincode.</p></form>`;
+    $("#pinf").onsubmit=e=>{e.preventDefault();if($("#pinIn").value===CONFIG.presenterPin){unlocked=true;try{sessionStorage.setItem("pres","1")}catch(x){}renderPres()}else $("#pinErr").hidden=false};return}
+  const i=state.i||0,s=SLIDES[i],now=Date.now(),n=Object.values(viewers||{}).filter(t=>now-t<120e3).length;
+  const pc=s.type==="poll"?counts(s):null;
+  sc.innerHTML=`<div class="pres">
+   <div class="meter"><span>${FB?"Verbonden":"Geen live-verbinding (vul firebaseUrl in)"}</span><span>${n} kijkers</span></div>
+   <span class="eyebrow">Wat ziet het publiek?</span>
+   <div class="modes">${MODES.map(([k,l])=>`<button class="mode" data-m="${k}" aria-pressed="${state.mode===k}">${l}</button>`).join("")}</div>
+   <span class="eyebrow">Dia ${i+1} van ${SLIDES.length}${state.mode!=="dias"?" · publiek ziet dit pas bij Dia's":""}</span>
+   <div class="preview"><span class="kicker">${esc(s.kicker)}</span><h2>${esc(s.title)}</h2></div>
+   ${s.note?`<div class="notes"><span class="who">Spreektekst · ${esc(s.who||"")}</span>${esc(s.note)}</div>`:""}
+   ${pc?`<div class="preview"><span class="eyebrow">Stemmen: ${pc.reduce((a,b)=>a+b,0)}</span>${resultsHtml(s,false)}<button class="btn small" id="resetPoll">Stemmen wissen (proefronde)</button></div>`:""}
+   <div class="ctrl"><button class="btn" id="prev" ${i===0?"disabled":""}>← Vorige</button><button class="btn primary" id="next" ${i===SLIDES.length-1?"disabled":""}>Volgende →</button></div>
+   <div class="thumbs">${SLIDES.map((x,k)=>`<button data-go="${k}" aria-current="${k===i}">${k+1}. ${esc(x.title)}</button>`).join("")}</div>
+   <p class="note">Open op de laptop aan de beamer <b>live.html#beamer</b>: die volgt mee met grote letters en laat bij de poll de uitslag zien.</p></div>`;
+  const rp=$("#resetPoll");if(rp)rp.onclick=()=>{if(!confirmReset){confirmReset=true;rp.textContent="Zeker weten? Tik nog een keer";return}
+    confirmReset=false;polls={...polls,[s.poll]:{}};if(FB)fetch(`${FB}/live/poll/${s.poll}.json`,{method:"DELETE"});renderPres()};
+  sc.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>publish({mode:b.dataset.m}));
+  sc.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>publish({i:+b.dataset.go,mode:"dias"}));
+  $("#prev").onclick=()=>publish({i:Math.max(0,i-1),mode:"dias"});$("#next").onclick=()=>publish({i:Math.min(SLIDES.length-1,i+1),mode:"dias"});
+}
+document.addEventListener("keydown",e=>{if(!presenter||!unlocked||e.target.closest("input"))return;const i=state.i||0;
+  if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();publish({i:Math.min(SLIDES.length-1,i+1),mode:"dias"})}
+  if(e.key==="ArrowLeft"){e.preventDefault();publish({i:Math.max(0,i-1),mode:"dias"})}});
+
+/* voorbeeldmodus zonder database: kies zelf een scherm */
+function renderDemo(){const d=$("#demo");d.hidden=false;document.body.classList.add("has-demo");
+  d.innerHTML=`<span>Voorbeeld:</span>${MODES.map(([k,l])=>`<button data-dm="${k}" aria-pressed="${state.mode===k&&!presenter}">${l}</button>`).join("")}<button data-dm="next">Dia →</button><button data-dm="beamer" aria-pressed="${beamer}">Beamer</button><button data-dm="pres" aria-pressed="${presenter}">Presentator</button>`;
+  d.querySelectorAll("[data-dm]").forEach(b=>b.onclick=()=>{const v=b.dataset.dm;
+    if(v==="pres"){presenter=true;unlocked=true;beamer=false}else if(v==="beamer"){presenter=false;beamer=!beamer}else{presenter=false;if(v==="next"){state.mode="dias";state.i=(state.i+1)%SLIDES.length}else state.mode=v}
+    document.body.classList.toggle("beamer",beamer);
+    lastKey="";render()})}
+
+function render(){presenter?renderPres():renderAudience();if(!FB)renderDemo()}
+addEventListener("hashchange",()=>{presenter=location.hash==="#presenter";beamer=location.hash==="#beamer";document.body.classList.toggle("beamer",beamer);lastKey="";render()});
+
+if(FB){
+  stream("state",v=>{state=v&&typeof v==="object"?{mode:"welkom",i:0,at:0,...v}:{mode:"welkom",i:0,at:0};render()});
+  if(presenter)stream("viewers",v=>{viewers=v||{};if(presenter)renderPres()});
+  stream("poll",v=>{polls=v||{};updatePoll()});
+  if(!presenter&&!beamer){const beat=()=>{if(effMode()!=="einde")fbPut(`viewers/${cid}`,Date.now()).catch(()=>{})};beat();setInterval(beat,45000)}
+}
+render();
+</script>
+</body>
+</html>
