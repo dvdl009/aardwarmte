@@ -722,9 +722,9 @@ else{dl.setAttribute("aria-disabled","true");dl.textContent="Download volgt binn
 
 /* ================== DIA'S OM TERUG TE KIJKEN ================== */
 const SLIDES=(window.DIAS||[]).map(d=>({cover:d.type==="cover"||d.type==="end",kicker:d.kicker,title:d.title,
-  html:d.type==="model"?()=>(d.html||"")+model3dHtml()
+  html:d.scene==="draai"?()=>(d.html||"")+model3dHtml()
      :d.type==="poll"?`<ul class="opts">${(d.options||[]).map((o,k)=>`<li class="${k===d.answer?"right":""}">${esc(o)}</li>`).join("")}</ul><p class="small">Tijdens de presentatie stemde het publiek hierover op de telefoon.</p>`
-     :(d.html||"")}));
+     :(d.img?`<figure class="fig"><img src="${esc(d.img)}" alt=""></figure>`:"")+(d.html||"")}));
 
 let selfIdx=0;
 function slideHtml(i){const sl=SLIDES[i];const body=typeof sl.html==="function"?sl.html():(sl.html||"");

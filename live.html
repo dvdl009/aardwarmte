@@ -76,6 +76,31 @@ button{font:inherit;color:inherit}
 .slide.enter{animation:in .35s ease}
 @keyframes in{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
+/* 3D-podium bovenin */
+.stage3d{position:relative;flex:none;height:min(50vh,470px);background:var(--scene);border-bottom:1px solid var(--line);touch-action:none;overflow:hidden}
+.stage3d canvas{display:block;width:100%;height:100%}
+.stage3d .fallback{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
+.s3-labels{position:absolute;inset:0;pointer-events:none}
+.s3l{position:absolute;left:0;top:0;font:500 11px/1.25 var(--body);color:#1d1b17;background:rgba(255,255,255,.9);border:1px solid #d9d1bf;border-radius:5px;padding:2px 6px;white-space:nowrap;transition:opacity .25s;opacity:0;text-align:center}
+.s3l .m{font-family:var(--mono);font-size:10px;color:#5c5a54}
+.s3l.hot{border-color:#d9480f;color:#b23a0a}.s3l.cold{border-color:#1971c2;color:#165fa6}
+.s3l.layer{background:rgba(255,255,255,.72);border:0;font-size:10.5px}
+.s3l.depth{background:transparent;border:0;font-family:var(--mono);font-size:10px;color:#5c5a54;padding:0}
+.s3l.alarm{border-color:#e03131;color:#c92a2a;font-size:12px}
+.s3l.num{font-size:15px;font-family:var(--display)}.s3l.num b{font-weight:800}.s3l.num.green{color:#00803a;border-color:#00a54b}
+.s3l.pill{font-size:13px;padding:5px 9px}.s3l.pill .big{font-family:var(--display);font-size:22px;font-weight:800;color:#8a8478}
+.s3l.pill .v{font-weight:600}.s3l.pill .v.ok{color:#00803a}.s3l.pill .v.warn{color:#9a5b00}
+.s3l.gem{background:transparent;border:0;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:#3f5a46;font-weight:600}
+.s3l.kern{font-size:10.5px;padding:1px 5px}.s3l.kern.near{font-weight:600;border-color:#00a54b}
+.s3l.dist{font-family:var(--mono);font-size:11px;border-color:#1971c2;color:#165fa6}
+.s3l.pollopt{font-size:12px}.s3l.pollopt b{font-family:var(--display);font-size:18px}
+.s3hint{position:absolute;right:10px;bottom:8px;font-size:.7rem;color:var(--muted);background:color-mix(in srgb,var(--scene) 80%,transparent);padding:2px 6px;border-radius:6px;pointer-events:none}
+.s3reset{position:absolute;left:10px;bottom:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;font-size:.75rem;padding:5px 11px;cursor:pointer}
+.app.has3d .slide{justify-content:flex-start;padding-top:16px;gap:10px}
+.app.has3d .slide h2{font-size:clamp(1.45rem,6.4vw,2.4rem)}
+.app.has3d .slide p,.app.has3d .slide li{font-size:clamp(.98rem,4vw,1.2rem)}
+.app.has3d .welcome{justify-content:flex-start;padding-top:18px;gap:12px}
+.app.has3d .welcome h1{font-size:clamp(1.9rem,8.5vw,3rem)}
 /* dia-onderdelen */
 .slide .small{font-size:clamp(.85rem,3.4vw,1rem);opacity:.85}
 .fig{margin:0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;overflow:hidden}
@@ -177,11 +202,13 @@ body.has-demo .screen{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)
 <body>
 <div class="app" id="app">
   <div class="bar"><span class="core" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Warmte uit de Diepte<span class="state" id="stateTag">Verbinden</span></div>
+  <div class="stage3d" id="stage3d" hidden></div>
   <div class="screen" id="screen" aria-live="polite"></div>
 </div>
 <div class="demo" id="demo" hidden></div>
 
 <script src="slides.js"></script>
+<script src="story3d.js"></script>
 <script>
 /* ================== INSTELLINGEN ================== */
 const CONFIG = {
@@ -218,9 +245,7 @@ function effMode(){if(!FB)return state.mode;if(!state.at)return "welkom";return 
 
 function isCover(s){return s&&(s.type==="cover"||s.type==="end")}
 function slideHtml(i){const s=SLIDES[i];let b=s.html||"";
-  if(s.type==="model")b+=model3dHtml();
   if(s.type==="poll")b+=`<div id="pollbox" data-poll="${esc(s.poll)}">${pollInner(s)}</div>`;
-  if(beamer&&i===0)b+=`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`;
   return `<div class="slide enter"><span class="kicker">${esc(s.kicker)}</span><h2>${esc(s.title)}</h2>${b}</div>
   <div class="progress" aria-label="Dia ${i+1} van ${SLIDES.length}">${SLIDES.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>`}
 
@@ -242,22 +267,39 @@ function bindPoll(root){root.querySelectorAll("[data-vote]").forEach(b=>b.onclic
   if(FB)fbPut(`poll/${s.poll}/${cid}`,k).catch(()=>setTag("Stem niet verstuurd, probeer opnieuw",false));
   updatePoll()})}
 function updatePoll(){const box=document.getElementById("pollbox");
+  const ps=SLIDES.find(x=>x.type==="poll");if(ps&&story)story.setPoll(counts(ps),ps.options);
   if(box){const s=SLIDES.find(x=>x.poll===box.dataset.poll);if(s){box.innerHTML=pollInner(s);bindPoll(box)}}
   document.querySelectorAll("[data-pollsum]").forEach(el=>{const s=SLIDES.find(x=>x.type==="poll"&&x.poll===el.dataset.pollsum);if(!s)return;
     const c=counts(s),n=c.reduce((a,b)=>a+b,0);if(!n){el.textContent="";return}
     const pct=Math.round(100*c[s.answer]/n);el.innerHTML=`<b>${pct}%</b> van jullie gokte goed: <b>${esc(s.options[s.answer].toLowerCase())}</b>.`});
   if(presenter&&unlocked)renderPres()}
 
+/* ================== 3D-PODIUM ================== */
+let story=null,storyP=null,story3dFailed=false;
+function webglOk(){try{const c=document.createElement("canvas");return !!(window.WebGLRenderingContext&&(c.getContext("webgl")||c.getContext("experimental-webgl")))}catch(e){return false}}
+function ensureStory(){if(story||story3dFailed)return Promise.resolve(story);
+  if(!storyP)storyP=(webglOk()?loadThree():Promise.reject()).then(()=>{const st=$("#stage3d");story=Story3D.create(st);
+      const r=document.createElement("button");r.className="s3reset";r.textContent="Terug naar beeld";r.onclick=()=>story.reset();st.appendChild(r);
+      const h=document.createElement("span");h.className="s3hint";h.textContent="Sleep om te draaien";st.appendChild(h);
+      const ps=SLIDES.find(x=>x.type==="poll");if(ps)story.setPoll(counts(ps),ps.options);return story})
+    .catch(()=>{story3dFailed=true;return null});
+  return storyP}
+function showStage(scene,img){const st=$("#stage3d");st.hidden=false;$("#app").classList.add("has3d");
+  ensureStory().then(s=>{if(s){s.go(scene);return}
+    let f=st.querySelector(".fallback");if(!img){st.hidden=true;$("#app").classList.remove("has3d");return}
+    if(!f){f=document.createElement("img");f.className="fallback";f.alt="";st.appendChild(f)}f.src=img})}
+function hideStage(){$("#stage3d").hidden=true;$("#app").classList.remove("has3d")}
+
 function renderAudience(){
   const m=effMode(),i=Math.max(0,Math.min(SLIDES.length-1,state.i||0));const key=m+":"+i;
-  const app=$("#app");app.className="app m-"+m+(m==="dias"&&isCover(SLIDES[i])?" cover":"");
+  const app=$("#app");app.className="app m-"+m+(m==="dias"&&isCover(SLIDES[i])?" cover":"")+($("#stage3d").hidden?"":" has3d");
   if(m!=="einde"){clearInterval(countT);countT=null;stayed=false}
   if(key===lastKey)return;lastKey=key;
   const sc=$("#screen");
-  if(m==="welkom"){setTag("Bijna",false);
-    sc.innerHTML=`<div class="welcome"><span class="kicker" style="color:#fff;opacity:.85">Posterpresentatie aardwarmte</span><h1>Welkom! We beginnen zo.</h1><p class="sub">Laat dit scherm open staan. Zodra we starten, zie je hier vanzelf onze presentatie.</p>${beamer?`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`:`<div class="wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Wachten op de presentatoren</span></div>`}<p class="who">${esc(CONFIG.team)}</p></div><div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`;
-  }else if(m==="dias"){setTag("Live",true);sc.innerHTML=slideHtml(i);initModels(sc);bindPoll(sc);updatePoll();
-  }else{setTag("Afgelopen",false);
+  if(m==="welkom"){setTag("Bijna",false);showStage("doublet","img/figuur1-doublet.png");
+    sc.innerHTML=`<div class="welcome"><span class="kicker" style="color:#fff;opacity:.85">Posterpresentatie aardwarmte</span><h1>Welkom! We beginnen zo.</h1><p class="sub">Laat dit scherm open staan. Zodra we starten, loopt het 3D-verhaal vanzelf mee met wat we vertellen.</p>${beamer?`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`:`<div class="wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Wachten op de presentatoren</span></div>`}<p class="who">${esc(CONFIG.team)}</p></div><div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`;
+  }else if(m==="dias"){setTag("Live",true);showStage(SLIDES[i].scene||"doublet",SLIDES[i].img);sc.innerHTML=slideHtml(i);bindPoll(sc);updatePoll();
+  }else{setTag("Afgelopen",false);hideStage();
     sc.innerHTML=`<div class="end"><span class="kicker" style="color:var(--s5)">Bedankt voor het kijken</span><h1>Kijk gerust verder rond</h1><p>Op onze site vind je het hele onderzoek, de poster en alle bronnen.</p><a class="go" href="${esc(CONFIG.siteUrl)}">Naar ons onderzoek</a><span class="count" id="count"></span><button class="stay" id="stay">Hier blijven</button></div>`;
     let n=8;const tick=()=>{const c=$("#count");if(!c)return;if(stayed){c.textContent="";return}c.textContent=`Je gaat over ${n} seconden automatisch verder.`;if(n--<=0){clearInterval(countT);if(FB&&!beamer)location.href=CONFIG.siteUrl}};
     tick();countT=setInterval(tick,1000);$("#stay").onclick=()=>{stayed=true;tick();$("#stay").hidden=true};
@@ -405,7 +447,7 @@ stage.querySelector(".m3-reset").onclick=()=>view("oblique");
 let unlocked=false,viewers={},confirmReset=false;try{unlocked=sessionStorage.getItem("pres")==="1"}catch(e){}
 function publish(p){state={...state,...p,at:Date.now()};if(FB)fbPut("state",state).catch(()=>alertBar("Versturen mislukt, check je internet"));renderPres()}
 function alertBar(t){setTag(t,false)}
-function renderPres(){const sc=$("#screen");$("#app").className="app";setTag("Presentator",false);
+function renderPres(){const sc=$("#screen");hideStage();$("#app").className="app";setTag("Presentator",false);
   if(!unlocked){sc.innerHTML=`<form class="pin" id="pinf"><span class="kicker">Presentator</span><h2>Pincode</h2><input id="pinIn" inputmode="numeric" autocomplete="off" aria-label="Pincode"><button class="btn primary">Openen</button><p class="note" id="pinErr" hidden>Onjuiste pincode.</p></form>`;
     $("#pinf").onsubmit=e=>{e.preventDefault();if($("#pinIn").value===CONFIG.presenterPin){unlocked=true;try{sessionStorage.setItem("pres","1")}catch(x){}renderPres()}else $("#pinErr").hidden=false};return}
   const i=state.i||0,s=SLIDES[i],now=Date.now(),n=Object.values(viewers||{}).filter(t=>now-t<120e3).length;
@@ -420,7 +462,7 @@ function renderPres(){const sc=$("#screen");$("#app").className="app";setTag("Pr
    ${pc?`<div class="preview"><span class="eyebrow">Stemmen: ${pc.reduce((a,b)=>a+b,0)}</span>${resultsHtml(s,false)}<button class="btn small" id="resetPoll">Stemmen wissen (proefronde)</button></div>`:""}
    <div class="ctrl"><button class="btn" id="prev" ${i===0?"disabled":""}>← Vorige</button><button class="btn primary" id="next" ${i===SLIDES.length-1?"disabled":""}>Volgende →</button></div>
    <div class="thumbs">${SLIDES.map((x,k)=>`<button data-go="${k}" aria-current="${k===i}">${k+1}. ${esc(x.title)}</button>`).join("")}</div>
-   <p class="note">Open op de laptop aan de beamer <b>live.html#beamer</b>: die volgt mee met grote letters en laat bij de poll de uitslag zien.</p></div>`;
+   <p class="note">Nieuw groepje bij de poster? Zet het scherm op <b>Welkom</b>, laat ze scannen en begin weer bij dia 1. Wis na een proefronde de stemmen bij de poll.</p></div>`;
   const rp=$("#resetPoll");if(rp)rp.onclick=()=>{if(!confirmReset){confirmReset=true;rp.textContent="Zeker weten? Tik nog een keer";return}
     confirmReset=false;polls={...polls,[s.poll]:{}};if(FB)fetch(`${FB}/live/poll/${s.poll}.json`,{method:"DELETE"});renderPres()};
   sc.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>publish({mode:b.dataset.m}));
@@ -433,7 +475,7 @@ document.addEventListener("keydown",e=>{if(!presenter||!unlocked||e.target.close
 
 /* voorbeeldmodus zonder database: kies zelf een scherm */
 function renderDemo(){const d=$("#demo");d.hidden=false;document.body.classList.add("has-demo");
-  d.innerHTML=`<span>Voorbeeld:</span>${MODES.map(([k,l])=>`<button data-dm="${k}" aria-pressed="${state.mode===k&&!presenter}">${l}</button>`).join("")}<button data-dm="next">Dia →</button><button data-dm="beamer" aria-pressed="${beamer}">Beamer</button><button data-dm="pres" aria-pressed="${presenter}">Presentator</button>`;
+  d.innerHTML=`<span>Voorbeeld:</span>${MODES.map(([k,l])=>`<button data-dm="${k}" aria-pressed="${state.mode===k&&!presenter}">${l}</button>`).join("")}<button data-dm="next">Dia →</button><button data-dm="pres" aria-pressed="${presenter}">Presentator</button>`;
   d.querySelectorAll("[data-dm]").forEach(b=>b.onclick=()=>{const v=b.dataset.dm;
     if(v==="pres"){presenter=true;unlocked=true;beamer=false}else if(v==="beamer"){presenter=false;beamer=!beamer}else{presenter=false;if(v==="next"){state.mode="dias";state.i=(state.i+1)%SLIDES.length}else state.mode=v}
     document.body.classList.toggle("beamer",beamer);

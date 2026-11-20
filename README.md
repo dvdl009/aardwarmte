@@ -13,6 +13,7 @@ Door Aimée Tolk, David van der Linden en Lauren Timmer.
 | `index.html` | De site: onderzoek per hoofdstuk, poster, bronnen en dia's terugkijken |
 | `live.html` | Live presentatie. Het publiek kijkt mee op de telefoon |
 | `slides.js` | De 12 dia's met spreektekst. Gebruikt door `live.html` én `index.html` |
+| `story3d.js` | Het 3D-verhaal op de telefoon (doublet, stroomnet, kaart, poll, kosten) |
 | `verslag.json` | Het verslag (verslag 2 uit de teamruimte) |
 | `verslag.pdf` | Het verslag als pdf (downloadknop op de site) |
 | `poster.png` | De poster |
@@ -20,15 +21,18 @@ Door Aimée Tolk, David van der Linden en Lauren Timmer.
 
 ## Tijdens de presentatie
 
+Het is een posterpresentatie: er is geen beamer. Bezoekers scannen de QR-code op de poster en zien op hun telefoon een 3D-verhaal dat meeloopt met wat jullie vertellen.
+
 | Wie | Open | Wat |
 |---|---|---|
 | Presentator (telefoon) | `live.html#presenter`, pincode `0112` | Volgende/vorige dia, spreektekst, stemmen bekijken of wissen |
-| Laptop aan de beamer | `live.html#beamer` | Grote dia's, QR-code op het welkomstscherm, live poll-uitslag |
-| Publiek | `live.html` (QR-code) | Volgt de dia's, draait het 3D-model, stemt bij de poll |
+| Bezoekers | `live.html` (QR-code) | 3D-scène bovenin die per dia verandert, korte tekst eronder, stemmen bij de poll |
 
-Volgorde: zet het scherm op **Welkom** terwijl iedereen scant, kies **Dia's** om te beginnen en sluit af met **Einde**. Dan gaan alle telefoons door naar de site.
+Per groepje: zet het scherm op **Welkom** terwijl ze scannen, kies **Dia's** om te beginnen en sluit af met **Einde** (de telefoons gaan dan door naar de site). Voor het volgende groepje weer **Welkom** en terug naar dia 1.
 
 Proefronde gedaan? Ga in de presentator naar de poll-dia en tik op **Stemmen wissen**.
+
+De 3D-scènes staan in `story3d.js`. Welke scène bij welke dia hoort, staat in `slides.js` bij `scene`. Telefoons zonder 3D zien de afbeelding uit `img`.
 
 ## Iets aanpassen
 
