@@ -28,9 +28,9 @@ Het is een posterpresentatie: er is geen beamer. Bezoekers scannen de QR-code op
 | Presentator (telefoon) | `live.html#presenter`, pincode `0112` | Volgende/vorige dia, spreektekst, stemmen bekijken of wissen |
 | Bezoekers | `live.html` (QR-code) | 3D-scène bovenin die per dia verandert, korte tekst eronder, stemmen bij de poll |
 
-Per groepje: zet het scherm op **Welkom** terwijl ze scannen, kies **Dia's** om te beginnen en sluit af met **Einde** (de telefoons gaan dan door naar de site). Voor het volgende groepje weer **Welkom** en terug naar dia 1.
+Per groepje: tik op **Welkom** terwijl ze scannen. Dat zet alles terug naar het begin: dia 1, alle stemmen gewist en de kijkers opnieuw geteld. Kies dan **Dia's** om te beginnen en sluit af met **Einde** (de telefoons gaan dan door naar de site).
 
-Proefronde gedaan? Ga in de presentator naar de poll-dia en tik op **Stemmen wissen**.
+Alleen de stemmen wissen kan ook: ga naar de poll-dia en tik op **Stemmen wissen**.
 
 De 3D-scènes staan in `story3d.js`. Welke scène bij welke dia hoort, staat in `slides.js` bij `scene`. Telefoons zonder 3D zien de afbeelding uit `img`.
 

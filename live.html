@@ -447,6 +447,10 @@ stage.querySelector(".m3-reset").onclick=()=>view("oblique");
 let unlocked=false,viewers={},confirmReset=false;try{unlocked=sessionStorage.getItem("pres")==="1"}catch(e){}
 function publish(p){state={...state,...p,at:Date.now()};if(FB)fbPut("state",state).catch(()=>alertBar("Versturen mislukt, check je internet"));renderPres()}
 function alertBar(t){setTag(t,false)}
+/* Welkom = alles opnieuw: dia 1, alle stemmen weg, kijkerslijst leeg, telefoons vergeten hun stem en 3D-beeld */
+function fullReset(){confirmReset=false;polls={};viewers={};
+  if(FB){fetch(`${FB}/live/poll.json`,{method:"DELETE"}).catch(()=>{});fetch(`${FB}/live/viewers.json`,{method:"DELETE"}).catch(()=>{})}
+  publish({mode:"welkom",i:0,round:Date.now()})}
 function renderPres(){const sc=$("#screen");hideStage();$("#app").className="app";setTag("Presentator",false);
   if(!unlocked){sc.innerHTML=`<form class="pin" id="pinf"><span class="kicker">Presentator</span><h2>Pincode</h2><input id="pinIn" inputmode="numeric" autocomplete="off" aria-label="Pincode"><button class="btn primary">Openen</button><p class="note" id="pinErr" hidden>Onjuiste pincode.</p></form>`;
     $("#pinf").onsubmit=e=>{e.preventDefault();if($("#pinIn").value===CONFIG.presenterPin){unlocked=true;try{sessionStorage.setItem("pres","1")}catch(x){}renderPres()}else $("#pinErr").hidden=false};return}
@@ -462,10 +466,10 @@ function renderPres(){const sc=$("#screen");hideStage();$("#app").className="app
    ${pc?`<div class="preview"><span class="eyebrow">Stemmen: ${pc.reduce((a,b)=>a+b,0)}</span>${resultsHtml(s,false)}<button class="btn small" id="resetPoll">Stemmen wissen (proefronde)</button></div>`:""}
    <div class="ctrl"><button class="btn" id="prev" ${i===0?"disabled":""}>← Vorige</button><button class="btn primary" id="next" ${i===SLIDES.length-1?"disabled":""}>Volgende →</button></div>
    <div class="thumbs">${SLIDES.map((x,k)=>`<button data-go="${k}" aria-current="${k===i}">${k+1}. ${esc(x.title)}</button>`).join("")}</div>
-   <p class="note">Nieuw groepje bij de poster? Zet het scherm op <b>Welkom</b>, laat ze scannen en begin weer bij dia 1. Wis na een proefronde de stemmen bij de poll.</p></div>`;
+   <p class="note">Nieuw groepje bij de poster? Tik op <b>Welkom</b>: alles gaat terug naar het begin (dia 1, stemmen gewist, kijkers opnieuw geteld). Laat ze scannen en tik dan op <b>Dia's</b>.</p></div>`;
   const rp=$("#resetPoll");if(rp)rp.onclick=()=>{if(!confirmReset){confirmReset=true;rp.textContent="Zeker weten? Tik nog een keer";return}
     confirmReset=false;polls={...polls,[s.poll]:{}};if(FB)fetch(`${FB}/live/poll/${s.poll}.json`,{method:"DELETE"});renderPres()};
-  sc.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>publish({mode:b.dataset.m}));
+  sc.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>b.dataset.m==="welkom"?fullReset():publish({mode:b.dataset.m}));
   sc.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>publish({i:+b.dataset.go,mode:"dias"}));
   $("#prev").onclick=()=>publish({i:Math.max(0,i-1),mode:"dias"});$("#next").onclick=()=>publish({i:Math.min(SLIDES.length-1,i+1),mode:"dias"});
 }
@@ -481,11 +485,16 @@ function renderDemo(){const d=$("#demo");d.hidden=false;document.body.classList.
     document.body.classList.toggle("beamer",beamer);
     lastKey="";render()})}
 
+/* nieuwe ronde (presentator tikte Welkom): eigen stem vergeten, 3D terug naar begin, scherm opnieuw opbouwen */
+function checkRound(){const r=String(state.round||"");let seen=null;try{seen=localStorage.getItem("round")}catch(e){}
+  if(seen===r)return;try{localStorage.setItem("round",r);Object.keys(localStorage).filter(k=>k.startsWith("vote_")).forEach(k=>localStorage.removeItem(k))}catch(e){}
+  if(seen!==null){lastKey="";clearInterval(countT);countT=null;stayed=false;if(story)story.reset();
+    if(!presenter&&!beamer)fbPut(`viewers/${cid}`,Date.now()).catch(()=>{})}}
 function render(){presenter?renderPres():renderAudience();if(!FB)renderDemo()}
 addEventListener("hashchange",()=>{presenter=location.hash==="#presenter";beamer=location.hash==="#beamer";document.body.classList.toggle("beamer",beamer);lastKey="";render()});
 
 if(FB){
-  stream("state",v=>{state=v&&typeof v==="object"?{mode:"welkom",i:0,at:0,...v}:{mode:"welkom",i:0,at:0};render()});
+  stream("state",v=>{state=v&&typeof v==="object"?{mode:"welkom",i:0,at:0,...v}:{mode:"welkom",i:0,at:0};checkRound();render()});
   if(presenter)stream("viewers",v=>{viewers=v||{};if(presenter)renderPres()});
   stream("poll",v=>{polls=v||{};updatePoll()});
   if(!presenter&&!beamer){const beat=()=>{if(effMode()!=="einde")fbPut(`viewers/${cid}`,Date.now()).catch(()=>{})};beat();setInterval(beat,45000)}
