@@ -13,6 +13,10 @@
    poll      – live stemmen als 3D-staven
    kosten    – stapels munten: warmtenet tegenover gas
    advies    – de drie zuilen met het oordeel
+   volg      – de doorsnede, de camera volgt een druppel warm water omhoog naar de huizen
+   lagen     – blok ondergrond: wat een goede laag nodig heeft (deksel, zandsteen, warmte, breuken)
+   leeweg    – hetzelfde blok met de gegevens van de oude put aan de Leeweg
+   none      – geen 3D (live.html verbergt dan het podium)
    ===================================================================== */
 (function(){
 "use strict";
@@ -40,7 +44,7 @@ constructor(el,opts={}){
   this.camera=new THREE.PerspectiveCamera(42,1,0.1,800);
   this.controls=new THREE.OrbitControls(this.camera,r.domElement);
   Object.assign(this.controls,{enableDamping:true,dampingFactor:.08,enablePan:false,rotateSpeed:.7,zoomSpeed:.8,autoRotateSpeed:.6});
-  this.controls.addEventListener("start",()=>{this.controls.autoRotate=false});
+  this.controls.addEventListener("start",()=>{this.controls.autoRotate=false;this.follow=null});
   this.build();
   this.resize();
   this.ro=new ResizeObserver(()=>this.resize());this.ro.observe(el);
@@ -63,7 +67,7 @@ world(name,offset){const g=new THREE.Group();g.position.set(offset,0,0);g.visibl
 
 /* ---------- alle werelden bouwen ---------- */
 build(){
-  this.buildDoublet();this.buildNet();this.buildPillars();this.buildPower();this.buildMap();this.buildPoll();this.buildCost();
+  this.buildDoublet();this.buildNet();this.buildPillars();this.buildPower();this.buildMap();this.buildPoll();this.buildCost();this.buildLayers();
 }
 
 buildDoublet(){
@@ -99,7 +103,16 @@ buildDoublet(){
   this.label(w,"<b>Woningen</b>",[11.5,3,8.2]);
   this.label(w,"<b>Bollenschuur en kas</b>",[-11,3,6]);
   this.label(w,"<span class=m>± 1,5 km</span>",[0,-24.6,0.6],"depth");
-  w.views={overview:{p:[16,4,40],t:[0,-10,0],auto:true},explain:{p:[-12,-6,30],t:[-1,-11,0]},free:{p:[20,8,36],t:[0,-8,0]}};
+  // pad voor 'volg het water': onderin de productieput omhoog, door de warmtewisselaar, naar de huizen
+  w.followCurve=new THREE.CatmullRomCurve3([[-7.5,-21.8,0.6],[-4.6,-16,0.6],[-2.4,-10,0.6],[-2,-6,0.6],[-2,0.4,0.6],[-0.8,1.4,3],[1.5,0.6,4.9],[5,0.45,6.8],[11,0.45,6.8],[15,0.45,6.8]].map(p=>new THREE.Vector3(...p)));
+  w.drop=new THREE.Mesh(new THREE.SphereGeometry(0.7,16,12),new THREE.MeshBasicMaterial({color:0xff6b2c}));w.drop.visible=false;g.add(w.drop);
+  this.label(w,"<b>Start: ± 2 km diep</b><br><span class=m>water van ± 83 °C</span>",[-7.5,-19.6,0.8],"hot",()=>this.state==="volg"&&this.follow&&this.follow.k<0.3);
+  this.label(w,"<b>Warmte naar het warmtenet</b>",[0,4.4,3.2],"",()=>this.state==="volg"&&this.follow&&this.follow.k>0.45&&this.follow.k<0.75);
+  this.label(w,"<b>± 70 °C de huizen in</b>",[12,3,6.8],"hot",()=>this.state==="volg"&&this.follow&&this.follow.k>0.75);
+  const f0=w.followCurve.getPointAt(0);
+  w.views={overview:{p:[16,4,40],t:[0,-10,0],auto:true},explain:{p:[-12,-6,30],t:[-1,-11,0]},free:{p:[20,8,36],t:[0,-8,0]},
+    follow:{p:[f0.x+9,f0.y+4,f0.z+20],t:f0.toArray()}};
+  w.set=state=>{w.drop.visible=state==="volg"};
 }
 
 buildNet(){
@@ -217,12 +230,42 @@ buildCost(){
   w.views={main:{p:[0,9,26],t:[0,5,0]}};
 }
 
+buildLayers(){
+  const w=this.world("layers",2100),g=w.g;
+  /* schematisch blok, 1 eenheid ≈ 200 m diepte */
+  const L=[[0,-5,0xe4d7ba,"Zand, klei en krijt"],[-5,-12.5,0x9d8f7a,"Kleisteen: de deksel"],[-12.5,-15,0x7fc3a3,"Zandsteen met water"],[-15,-17,0x8f7d5a,""]];
+  L.forEach(([a,b,c])=>this.box(g,22,a-b,8,c,0,(a+b)/2,0));
+  this.box(g,22,0.3,8,C.grass,0,0.15,0);
+  // water dat door de holtes van de zandsteen stroomt
+  for(let i=0;i<5;i++){const y=-12.9-i*0.45,z=-3+i*1.5;const cv=new THREE.CatmullRomCurve3([[-10.6,y,z],[-4,y+0.2,z+0.4],[3,y-0.15,z-0.3],[10.6,y,z]].map(p=>new THREE.Vector3(...p)));this.flow(g,cv,7,0x5aa9f0,C.hot,0.07,0.22,w.flows)}
+  // breuken
+  [[5.2,0.32],[8.4,0.28]].forEach(([x,r])=>{const m=this.box(g,0.25,15,8.2,C.amber,x,-8.5,0);m.rotation.z=r});
+  // thermometer
+  const seg=8;for(let i=0;i<seg;i++){const c=new THREE.Color(0x3b78e7).lerp(new THREE.Color(0xd9480f),i/(seg-1));
+    const m=new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.45,15/seg,12),new THREE.MeshLambertMaterial({color:c}));m.position.set(-12.4,-(i+0.5)*15/seg,4.2);g.add(m)}
+  const on=s=>()=>this.state===s;
+  this.label(w,"<span class=m>± 10 °C</span>",[-12.4,0.8,4.2],"depth");
+  this.label(w,"<b>Diep genoeg</b><br><span class=m>± 30 °C warmer per km</span>",[-11,-4,4.6],"",on("lagen"));
+  this.label(w,"<b>Deksel</b><br><span class=m>kleisteen houdt het water binnen</span>",[-1,-9.5,4.2],"",on("lagen"));
+  this.label(w,"<b>Zandsteen</b><br><span class=m>holtes waar het water door stroomt</span>",[-3,-14.2,4.2],"cold",on("lagen"));
+  this.label(w,"<b>Breuken</b><br><span class=m>water loopt er slecht langs</span>",[8,-1.6,4.2],"alarm",on("lagen"));
+  this.label(w,"<span class=m>± 100 °C</span>",[-12.4,-15.8,4.2],"depth",on("leeweg"));
+  this.label(w,"<b>± 2,9 km: zandsteen</b><br><span class=m>water van ± 90–100 °C</span>",[-3,-14.2,4.2],"hot",on("leeweg"));
+  this.label(w,"<b>Kleisteen erboven</b><br><span class=m>deksel is er ✓</span>",[-4,-8,4.2],"",on("leeweg"));
+  this.label(w,"<b>2 breuken</b><br><span class=m>op 1.055 en 1.633 m</span>",[8,-1.6,4.2],"alarm",on("leeweg"));
+  this.label(w,"<b>Oude NAM-put</b><br><span class=m>tot 2.940 m</span>",[1,2.6,0],"",on("leeweg"));
+  w.well=this.box(g,0.4,15,0.4,C.dark,1,-7.2,0);
+  w.set=s=>{w.well.visible=s==="leeweg"};
+  w.views={main:{p:[6,-4,31],t:[-1,-8,0]}};
+}
+
 /* ---------- naar een dia ---------- */
 go(scene,opts={}){
   const map={doublet:["doublet","overview"],uitleg:["doublet","explain"],draai:["doublet","free"],net:["net","main"],vraag:["pillars","main"],advies:["pillars","main"],
-    stroom:["power","main"],kaart:["map","kaart"],inzoom:["map","inzoom"],poll:["poll","main"],kosten:["cost","main"],einde:["doublet","overview"]};
+    stroom:["power","main"],volg:["doublet","follow"],lagen:["layers","main"],leeweg:["layers","main"],kaart:["map","kaart"],inzoom:["map","inzoom"],poll:["poll","main"],kosten:["cost","main"],einde:["doublet","overview"]};
   const [wn,vn]=map[scene]||map.doublet;const w=this.worlds[wn],v=w.views[vn];
   const prev=this.active;
+  this.follow=scene==="volg"?{k:0}:null;
   if(w.set)w.set(scene);
   this.state=scene;
   if(w!==prev&&w.enter)w.enter();
@@ -243,6 +286,11 @@ frame(dt){
   if(this.tween){const tw=this.tween;tw.k=Math.min(1,tw.k+dt/1.3);const e=easeInOut(tw.k);
     this.camera.position.lerpVectors(tw.p0,tw.p1,e);this.controls.target.lerpVectors(tw.t0,tw.t1,e);
     if(tw.k>=1){if(tw.prev)tw.prev.g.visible=false;this.tween=null}}
+  if(this.follow&&!this.tween){const w=this.worlds.doublet,f=this.follow;f.k=(f.k+dt/11)%1;
+    const p=w.followCurve.getPointAt(f.k).clone();w.drop.position.copy(p);p.add(w.g.position);
+    const asp=this.camera.aspect||1,s=asp<1.5?Math.min(2.2,Math.pow(1.5/asp,0.95)):1;
+    const cam=p.clone().add(new THREE.Vector3(9,4,20).multiplyScalar(s));
+    this.camera.position.lerp(cam,Math.min(1,dt*2.5));this.controls.target.lerp(p,Math.min(1,dt*3))}
   Object.values(this.worlds).forEach(w=>{if(!w.g.visible)return;
     w.flows.forEach(f=>f.arr.forEach(o=>{o.t=(((o.t+dt*f.speed)%1)+1)%1;o.m.position.copy(f.curve.getPointAt(o.t));if(!f.c1.equals(f.c2))o.m.material.color.copy(f.c1).lerp(f.c2,o.t)}));
     if(w.upd)w.upd(dt,t)});

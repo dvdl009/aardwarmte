@@ -12,8 +12,8 @@ Door Aimée Tolk, David van der Linden en Lauren Timmer.
 |---|---|
 | `index.html` | De site: onderzoek per hoofdstuk, poster, bronnen en dia's terugkijken |
 | `live.html` | Live presentatie. Het publiek kijkt mee op de telefoon |
-| `slides.js` | De 12 dia's met spreektekst. Gebruikt door `live.html` én `index.html` |
-| `story3d.js` | Het 3D-verhaal op de telefoon (doublet, stroomnet, kaart, poll, kosten) |
+| `slides.js` | De 18 korte dia's met spreektekst. Gebruikt door `live.html` én `index.html` |
+| `story3d.js` | Het 3D-verhaal op de telefoon (doublet, volg het water, ondergrond, stroomnet, kaart, poll, kosten) |
 | `verslag.json` | Het verslag (verslag 2 uit de teamruimte) |
 | `verslag.pdf` | Het verslag als pdf (downloadknop op de site) |
 | `poster.png` | De poster |

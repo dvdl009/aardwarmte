@@ -197,6 +197,26 @@ body.beamer .res .r .t{font-size:1.5rem}
 .demo button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
 body.has-demo .screen{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* opmaak voor korte dia's: tijdlijn, vergelijking, oordelen, stappen */
+.tl{list-style:none;margin:0;padding:0 0 0 16px;border-left:3px solid var(--line);display:grid;gap:12px}
+.tl li{position:relative}
+.tl li::before{content:"";position:absolute;left:-24px;top:.4em;width:12px;height:12px;border-radius:50%;background:var(--brand)}
+.tl li.bad::before{background:#e8a317}
+.tl b{display:block;font-family:var(--mono);font-size:.78em;font-weight:500;color:var(--muted)}
+.vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.vs div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);font-size:.95em;line-height:1.35}
+.vs div.good{border:2px solid var(--brand)}
+.vs b{display:block;font-family:var(--display);font-size:1.1em;margin-bottom:2px}
+.verdicts{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.verdicts li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-left:5px solid var(--brand);background:var(--surface);border-radius:8px;padding:8px 12px}
+.verdicts li.warn{border-left-color:#e8a317}
+.verdicts span{color:var(--muted);font-size:.92em}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{display:flex;gap:10px;align-items:baseline}
+.steps li::before{counter-increment:s;content:counter(s);flex:none;width:1.5em;height:1.5em;border-radius:50%;background:var(--brand);color:#fff;font-size:.8em;display:grid;place-items:center;font-weight:600}
+.bignums.row{grid-template-columns:repeat(2,minmax(0,1fr))}
+.app.cover .tl,.app.cover .vs div{color:var(--fg)}
 </style>
 </head>
 <body>
@@ -284,7 +304,7 @@ function ensureStory(){if(story||story3dFailed)return Promise.resolve(story);
       const ps=SLIDES.find(x=>x.type==="poll");if(ps)story.setPoll(counts(ps),ps.options);return story})
     .catch(()=>{story3dFailed=true;return null});
   return storyP}
-function showStage(scene,img){const st=$("#stage3d");st.hidden=false;$("#app").classList.add("has3d");
+function showStage(scene,img){if(scene==="none"){hideStage();return}const st=$("#stage3d");st.hidden=false;$("#app").classList.add("has3d");
   ensureStory().then(s=>{if(s){s.go(scene);return}
     let f=st.querySelector(".fallback");if(!img){st.hidden=true;$("#app").classList.remove("has3d");return}
     if(!f){f=document.createElement("img");f.className="fallback";f.alt="";st.appendChild(f)}f.src=img})}

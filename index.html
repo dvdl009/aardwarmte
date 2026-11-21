@@ -236,6 +236,26 @@ tr.sum td{font-weight:600;border-top:2px solid var(--fg)}
 .m3-hint{position:absolute;right:8px;bottom:6px;font-size:.7rem;color:var(--muted)}
 footer{color:var(--muted);font-size:.8rem;padding-block:28px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* opmaak voor korte dia's: tijdlijn, vergelijking, oordelen, stappen */
+.tl{list-style:none;margin:0;padding:0 0 0 16px;border-left:3px solid var(--line);display:grid;gap:12px}
+.tl li{position:relative}
+.tl li::before{content:"";position:absolute;left:-24px;top:.4em;width:12px;height:12px;border-radius:50%;background:var(--brand)}
+.tl li.bad::before{background:#e8a317}
+.tl b{display:block;font-family:var(--mono);font-size:.78em;font-weight:500;color:var(--muted)}
+.vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.vs div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);font-size:.95em;line-height:1.35}
+.vs div.good{border:2px solid var(--brand)}
+.vs b{display:block;font-family:var(--display);font-size:1.1em;margin-bottom:2px}
+.verdicts{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.verdicts li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;border-left:5px solid var(--brand);background:var(--surface);border-radius:8px;padding:8px 12px}
+.verdicts li.warn{border-left-color:#e8a317}
+.verdicts span{color:var(--muted);font-size:.92em}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{display:flex;gap:10px;align-items:baseline}
+.steps li::before{counter-increment:s;content:counter(s);flex:none;width:1.5em;height:1.5em;border-radius:50%;background:var(--brand);color:#fff;font-size:.8em;display:grid;place-items:center;font-weight:600}
+.bignums.row{grid-template-columns:repeat(2,minmax(0,1fr))}
+.app.cover .tl,.app.cover .vs div{color:var(--fg)}
 </style>
 </head>
 <body>
