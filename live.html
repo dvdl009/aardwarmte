@@ -162,6 +162,10 @@ body.beamer .res .r .t{font-size:1.5rem}
 .pres{display:grid;gap:14px;padding-block:8px}
 .pres .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.onoff{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface)}
+.onoff.on{border-color:var(--brand)}
+.onoff b{display:block;font-family:var(--display);font-size:1.1rem}
+.onoff span{font-size:.85rem;color:var(--muted)}
 .mode{min-height:56px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-weight:600;cursor:pointer}
 .mode[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
 .ctrl{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
@@ -244,7 +248,7 @@ const CONFIG = {
 
 /* De dia's staan in slides.js (hetzelfde bestand gebruikt index.html om terug te kijken) */
 const SLIDES=window.DIAS||[];
-const MODES=[["welkom","Welkom"],["dias","Dia's"],["einde","Einde"]];
+const MODES=[["welkom","Welkom"],["dias","Dia's"],["einde","Einde"]];/* "uit" = geen presentatie, via de aan/uit-knop */
 
 /* ================== CODE ================== */
 const $=s=>document.querySelector(s);
@@ -263,7 +267,7 @@ function stream(path,cb){let v=null;const es=new EventSource(`${FB}/live/${path}
   es.onerror=()=>setTag("Verbinding herstellen…",false);es.onopen=()=>render();return es}
 
 function setTag(t,live){const el=$("#stateTag");el.textContent=t;el.classList.toggle("live",!!live)}
-function effMode(){if(!FB)return state.mode;if(!state.at)return "welkom";return Date.now()-state.at>STALE?"einde":state.mode}
+function effMode(){if(!FB)return state.mode;if(!state.at||state.mode==="uit")return "uit";return Date.now()-state.at>STALE?"uit":state.mode}
 
 function isCover(s){return s&&(s.type==="cover"||s.type==="end")}
 function slideHtml(i){const s=SLIDES[i];let b=s.html||"";
@@ -321,6 +325,8 @@ function renderAudience(){
   if(m==="welkom"){setTag("Bijna",false);showStage("doublet","img/figuur1-doublet.png");
     sc.innerHTML=`<div class="welcome"><span class="kicker" style="color:#fff;opacity:.85">Posterpresentatie aardwarmte</span><h1>Welkom! We beginnen zo.</h1><p class="sub">Laat dit scherm open staan. Zodra we starten, loopt het 3D-verhaal vanzelf mee met wat we vertellen.</p>${beamer?`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`:`<div class="wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Wachten op de presentatoren</span></div><a class="go2" href="./">Of bekijk intussen ons onderzoek →</a>`}<p class="who">${esc(CONFIG.team)}</p></div><div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`;
   }else if(m==="dias"){setTag("Live",true);showStage(SLIDES[i].scene||"doublet",SLIDES[i].img);sc.innerHTML=slideHtml(i);bindPoll(sc);updatePoll();
+  }else if(m==="uit"||!seenLive){setTag("Uit",false);hideStage();clearInterval(countT);countT=null;
+    sc.innerHTML=`<div class="end"><span class="kicker" style="color:var(--s5)">Posterpresentatie aardwarmte</span><h1>Nu geen live presentatie</h1><p>Op onze site vind je het hele onderzoek, de poster en alle bronnen.</p><a class="go" href="${esc(CONFIG.siteUrl)}">Naar ons onderzoek</a><p class="count">Sta je bij de poster? Laat deze pagina open: hij start vanzelf zodra wij beginnen.</p></div>`;
   }else{setTag("Afgelopen",false);hideStage();
     sc.innerHTML=`<div class="end"><span class="kicker" style="color:var(--s5)">${seenLive?"Bedankt voor het kijken":"Posterpresentatie aardwarmte"}</span><h1>${seenLive?"Kijk gerust verder rond":"Nu geen live presentatie"}</h1><p>Op onze site vind je het hele onderzoek, de poster en alle bronnen.</p><a class="go" href="${esc(CONFIG.siteUrl)}">Naar ons onderzoek</a>${seenLive?`<span class="count" id="count"></span><button class="stay" id="stay">Hier blijven</button>`:`<p class="count">Sta je bij de poster? Laat deze pagina open: hij start vanzelf zodra wij beginnen.</p>`}</div>`;
     if(!seenLive)return;
@@ -467,7 +473,7 @@ stage.querySelector(".m3-reset").onclick=()=>view("oblique");
 
 
 /* presentator */
-let unlocked=false,viewers={},confirmReset=false;try{unlocked=sessionStorage.getItem("pres")==="1"}catch(e){}
+let unlocked=false,viewers={},confirmReset=false,confirmOff=false;try{unlocked=sessionStorage.getItem("pres")==="1"}catch(e){}
 function publish(p){state={...state,...p,at:Date.now()};if(FB)fbPut("state",state).catch(()=>alertBar("Versturen mislukt, check je internet"));renderPres()}
 function alertBar(t){setTag(t,false)}
 /* Welkom = alles opnieuw: dia 1, alle stemmen weg, kijkerslijst leeg, telefoons vergeten hun stem en 3D-beeld */
@@ -477,11 +483,12 @@ function fullReset(){confirmReset=false;polls={};viewers={};
 function renderPres(){const sc=$("#screen");hideStage();$("#app").className="app";setTag("Presentator",false);
   if(!unlocked){sc.innerHTML=`<form class="pin" id="pinf"><span class="kicker">Presentator</span><h2>Pincode</h2><input id="pinIn" inputmode="numeric" autocomplete="off" aria-label="Pincode"><button class="btn primary">Openen</button><p class="note" id="pinErr" hidden>Onjuiste pincode.</p></form>`;
     $("#pinf").onsubmit=e=>{e.preventDefault();if($("#pinIn").value===CONFIG.presenterPin){unlocked=true;try{sessionStorage.setItem("pres","1")}catch(x){}renderPres()}else $("#pinErr").hidden=false};return}
-  const i=state.i||0,s=SLIDES[i],now=Date.now(),n=Object.values(viewers||{}).filter(t=>now-t<120e3).length;
+  const isOn=effMode()!=="uit";const i=state.i||0,s=SLIDES[i],now=Date.now(),n=Object.values(viewers||{}).filter(t=>now-t<120e3).length;
   const pc=s.type==="poll"?counts(s):null;
   sc.innerHTML=`<div class="pres">
    <div class="meter"><span>${FB?"Verbonden":"Geen live-verbinding (vul firebaseUrl in)"}</span><span>${n} kijkers</span></div>
-   <span class="eyebrow">Wat ziet het publiek?</span>
+   <div class="onoff${isOn?" on":""}"><div><b>Live presentatie: ${isOn?"AAN":"UIT"}</b><span>${isOn?"Telefoons volgen jullie mee.":"Telefoons zien: nu geen live presentatie."}</span></div><button class="btn${isOn?"":" primary"}" id="onoffBtn">${isOn?"Zet uit":"Zet aan"}</button></div>
+   ${isOn?`<span class="eyebrow">Wat ziet het publiek?</span>
    <div class="modes">${MODES.map(([k,l])=>`<button class="mode" data-m="${k}" aria-pressed="${state.mode===k}">${l}</button>`).join("")}</div>
    <span class="eyebrow">Dia ${i+1} van ${SLIDES.length}${state.mode!=="dias"?" · publiek ziet dit pas bij Dia's":""}</span>
    <div class="preview"><span class="kicker">${esc(s.kicker)}</span><h2>${esc(s.title)}</h2></div>
@@ -489,14 +496,18 @@ function renderPres(){const sc=$("#screen");hideStage();$("#app").className="app
    ${pc?`<div class="preview"><span class="eyebrow">Stemmen: ${pc.reduce((a,b)=>a+b,0)}</span>${resultsHtml(s,false)}<button class="btn small" id="resetPoll">Stemmen wissen (proefronde)</button></div>`:""}
    <div class="ctrl"><button class="btn" id="prev" ${i===0?"disabled":""}>← Vorige</button><button class="btn primary" id="next" ${i===SLIDES.length-1?"disabled":""}>Volgende →</button></div>
    <div class="thumbs">${SLIDES.map((x,k)=>`<button data-go="${k}" aria-current="${k===i}">${k+1}. ${esc(x.title)}</button>`).join("")}</div>
-   <p class="note">Nieuw groepje bij de poster? Tik op <b>Welkom</b>: alles gaat terug naar het begin (dia 1, stemmen gewist, kijkers opnieuw geteld). Laat ze scannen en tik dan op <b>Dia's</b>.</p></div>`;
+   `:`<p class="note">Zet de presentatie aan als er een groepje bij de poster staat. Alles begint dan opnieuw bij <b>Welkom</b>, dia 1, zonder oude stemmen.</p>`}${isOn?`<p class="note">Nieuw groepje bij de poster? Tik op <b>Welkom</b>: alles gaat terug naar het begin (dia 1, stemmen gewist, kijkers opnieuw geteld). Laat ze scannen en tik dan op <b>Dia's</b>. Klaar voor vandaag? Tik op <b>Zet uit</b>.</p>`:""}</div>`;
   const rp=$("#resetPoll");if(rp)rp.onclick=()=>{if(!confirmReset){confirmReset=true;rp.textContent="Zeker weten? Tik nog een keer";return}
     confirmReset=false;polls={...polls,[s.poll]:{}};if(FB)fetch(`${FB}/live/poll/${s.poll}.json`,{method:"DELETE"});renderPres()};
   sc.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>b.dataset.m==="welkom"?fullReset():publish({mode:b.dataset.m}));
   sc.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>publish({i:+b.dataset.go,mode:"dias"}));
-  $("#prev").onclick=()=>publish({i:Math.max(0,i-1),mode:"dias"});$("#next").onclick=()=>publish({i:Math.min(SLIDES.length-1,i+1),mode:"dias"});
+  if($("#prev")){$("#prev").onclick=()=>publish({i:Math.max(0,i-1),mode:"dias"});$("#next").onclick=()=>publish({i:Math.min(SLIDES.length-1,i+1),mode:"dias"})}
+  const ob=$("#onoffBtn");ob.onclick=()=>{
+    if(!isOn){confirmOff=false;fullReset();return}
+    if(!confirmOff){confirmOff=true;ob.textContent="Zeker? Tik nog een keer";setTimeout(()=>{if(confirmOff){confirmOff=false;renderPres()}},4000);return}
+    confirmOff=false;publish({mode:"uit"})};
 }
-document.addEventListener("keydown",e=>{if(!presenter||!unlocked||e.target.closest("input"))return;const i=state.i||0;
+document.addEventListener("keydown",e=>{if(!presenter||!unlocked||e.target.closest("input")||effMode()==="uit")return;const i=state.i||0;
   if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();publish({i:Math.min(SLIDES.length-1,i+1),mode:"dias"})}
   if(e.key==="ArrowLeft"){e.preventDefault();publish({i:Math.max(0,i-1),mode:"dias"})}});
 
@@ -520,7 +531,7 @@ if(FB){
   stream("state",v=>{state=v&&typeof v==="object"?{mode:"welkom",i:0,at:0,...v}:{mode:"welkom",i:0,at:0};checkRound();render()});
   if(presenter)stream("viewers",v=>{viewers=v||{};if(presenter)renderPres()});
   stream("poll",v=>{polls=v||{};updatePoll()});
-  if(!presenter&&!beamer){const beat=()=>{if(effMode()!=="einde")fbPut(`viewers/${cid}`,Date.now()).catch(()=>{})};beat();setInterval(beat,45000)}
+  if(!presenter&&!beamer){const beat=()=>{if(effMode()!=="einde"&&effMode()!=="uit")fbPut(`viewers/${cid}`,Date.now()).catch(()=>{})};beat();setInterval(beat,45000)}
 }
 render();
 </script>

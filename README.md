@@ -28,6 +28,8 @@ Het is een posterpresentatie: er is geen beamer. Bezoekers scannen de QR-code op
 | Presentator (telefoon) | `live.html#presenter`, pincode `0112` | Volgende/vorige dia, spreektekst, stemmen bekijken of wissen |
 | Bezoekers | `live.html` (QR-code) | 3D-scène bovenin die per dia verandert, korte tekst eronder, stemmen bij de poll |
 
+Bovenaan de presentator staat de knop **Live presentatie: AAN/UIT**. Staat hij uit, dan zien bezoekers "Nu geen live presentatie" met een link naar de site. Zet hem aan als er een groepje bij de poster staat, en weer uit als jullie klaar zijn (tik twee keer).
+
 Per groepje: tik op **Welkom** terwijl ze scannen. Dat zet alles terug naar het begin: dia 1, alle stemmen gewist en de kijkers opnieuw geteld. Kies dan **Dia's** om te beginnen en sluit af met **Einde** (de telefoons gaan dan door naar de site).
 
 Alleen de stemmen wissen kan ook: ga naar de poll-dia en tik op **Stemmen wissen**.
