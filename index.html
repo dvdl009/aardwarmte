@@ -41,7 +41,10 @@ button{font:inherit;color:inherit}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.05rem;color:#fff;text-decoration:none}
 .core{display:inline-grid;grid-template-rows:repeat(4,1fr);width:10px;height:24px;border-radius:2px;overflow:hidden;border:1px solid rgba(255,255,255,.6)}
 .core i:nth-child(1){background:#f1ead9}.core i:nth-child(2){background:#d2bf98}.core i:nth-child(3){background:#3c86a6}.core i:nth-child(4){background:#fff}
-.topnav{display:none;margin-left:auto;gap:4px}
+.topnav{display:none;gap:4px}
+.tright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.livebtn{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#111;text-decoration:none;font-weight:600;font-size:.85rem;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.livebtn .dot{width:8px;height:8px;border-radius:50%;background:#e03131}
 .topnav a{color:#fff;text-decoration:none;padding:6px 12px;border-radius:999px;font-weight:500;opacity:.85}
 .topnav a[aria-current="page"]{background:#fff;color:#111;opacity:1}
 
@@ -262,9 +265,12 @@ footer{color:var(--muted);font-size:.8rem;padding-block:28px}
 <header class="topbar">
   <div class="wrap">
     <a class="logo" href="#start"><span class="core" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Warmte uit de Diepte</a>
+    <div class="tright">
     <nav class="topnav" aria-label="Pagina's">
       <a href="#start" data-p="start">Start</a><a href="#onderzoek" data-p="onderzoek">Onderzoek</a><a href="#poster" data-p="poster">Poster</a><a href="#bronnen" data-p="bronnen">Bronnen</a>
     </nav>
+    <a class="livebtn" href="live.html"><span class="dot" aria-hidden="true"></span>Live presentatie</a>
+    </div>
   </div>
 </header>
 <div class="draft" id="draft"><div class="wrap">Voorbeeldtekst: vervang dit door jullie eigen onderzoek voordat de QR-code op de poster komt.</div></div>
@@ -302,6 +308,7 @@ footer{color:var(--muted);font-size:.8rem;padding-block:28px}
       <div class="cta">
         <a class="btn primary" href="#onderzoek">Lees ons onderzoek</a>
         <a class="btn line" href="#dias" id="deckCta">Presentatie terugkijken</a>
+        <a class="btn line" href="live.html">Live meekijken</a>
         <a class="btn line" href="#poster">Bekijk de poster</a>
       </div>
 

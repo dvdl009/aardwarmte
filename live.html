@@ -36,6 +36,8 @@ button{font:inherit;color:inherit}
 .bar{display:flex;align-items:center;gap:10px;padding:12px max(18px,env(safe-area-inset-right,0px)) 12px max(18px,env(safe-area-inset-left,0px));font-family:var(--display);font-weight:800;font-size:1rem}
 .core{display:inline-grid;grid-template-rows:repeat(4,1fr);width:10px;height:22px;border-radius:2px;overflow:hidden;border:1px solid currentColor}
 .core i:nth-child(1){background:#f1ead9}.core i:nth-child(2){background:#d2bf98}.core i:nth-child(3){background:#3c86a6}.core i:nth-child(4){background:#00a54b}
+.tosite{flex:none;font:600 .75rem var(--body);color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:4px 10px;opacity:.85}
+.go2{display:inline-block;color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px;margin-top:4px}
 .state{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:600 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--tint);color:var(--muted)}
 .state.live{background:#fff;color:#111}
 .state.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#e03131;animation:pulse 1.4s infinite}
@@ -221,7 +223,7 @@ body.has-demo .screen{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px)
 </head>
 <body>
 <div class="app" id="app">
-  <div class="bar"><span class="core" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Warmte uit de Diepte<span class="state" id="stateTag">Verbinden</span></div>
+  <div class="bar"><span class="core" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Warmte uit de Diepte<span class="state" id="stateTag">Verbinden</span><a class="tosite" href="./">Site</a></div>
   <div class="stage3d" id="stage3d" hidden></div>
   <div class="screen" id="screen" aria-live="polite"></div>
 </div>
@@ -249,7 +251,7 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const FB=CONFIG.firebaseUrl.replace(/\/+$/,"");
 const STALE=6*3600e3;
-let state={mode:"welkom",i:0,at:0},presenter=location.hash==="#presenter",beamer=location.hash==="#beamer",lastKey="",stayed=false,countT=null,polls={};
+let seenLive=false,state={mode:"welkom",i:0,at:0},presenter=location.hash==="#presenter",beamer=location.hash==="#beamer",lastKey="",stayed=false,countT=null,polls={};
 document.body.classList.toggle("beamer",beamer);
 let cid;try{cid=localStorage.getItem("cid")||Math.random().toString(36).slice(2,12);localStorage.setItem("cid",cid)}catch(e){cid=Math.random().toString(36).slice(2,12)}
 
@@ -313,14 +315,15 @@ function hideStage(){$("#stage3d").hidden=true;$("#app").classList.remove("has3d
 function renderAudience(){
   const m=effMode(),i=Math.max(0,Math.min(SLIDES.length-1,state.i||0));const key=m+":"+i;
   const app=$("#app");app.className="app m-"+m+(m==="dias"&&isCover(SLIDES[i])?" cover":"")+($("#stage3d").hidden?"":" has3d");
-  if(m!=="einde"){clearInterval(countT);countT=null;stayed=false}
+  if(m!=="einde"){clearInterval(countT);countT=null;stayed=false;if(m==="dias")seenLive=true}
   if(key===lastKey)return;lastKey=key;
   const sc=$("#screen");
   if(m==="welkom"){setTag("Bijna",false);showStage("doublet","img/figuur1-doublet.png");
-    sc.innerHTML=`<div class="welcome"><span class="kicker" style="color:#fff;opacity:.85">Posterpresentatie aardwarmte</span><h1>Welkom! We beginnen zo.</h1><p class="sub">Laat dit scherm open staan. Zodra we starten, loopt het 3D-verhaal vanzelf mee met wat we vertellen.</p>${beamer?`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`:`<div class="wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Wachten op de presentatoren</span></div>`}<p class="who">${esc(CONFIG.team)}</p></div><div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`;
+    sc.innerHTML=`<div class="welcome"><span class="kicker" style="color:#fff;opacity:.85">Posterpresentatie aardwarmte</span><h1>Welkom! We beginnen zo.</h1><p class="sub">Laat dit scherm open staan. Zodra we starten, loopt het 3D-verhaal vanzelf mee met wat we vertellen.</p>${beamer?`<div class="join"><img src="img/qr-live.png" alt="QR-code naar de live presentatie"><div><b>Scan en doe mee</b><code>${esc(CONFIG.joinUrl)}</code></div></div>`:`<div class="wait"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Wachten op de presentatoren</span></div><a class="go2" href="./">Of bekijk intussen ons onderzoek →</a>`}<p class="who">${esc(CONFIG.team)}</p></div><div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`;
   }else if(m==="dias"){setTag("Live",true);showStage(SLIDES[i].scene||"doublet",SLIDES[i].img);sc.innerHTML=slideHtml(i);bindPoll(sc);updatePoll();
   }else{setTag("Afgelopen",false);hideStage();
-    sc.innerHTML=`<div class="end"><span class="kicker" style="color:var(--s5)">Bedankt voor het kijken</span><h1>Kijk gerust verder rond</h1><p>Op onze site vind je het hele onderzoek, de poster en alle bronnen.</p><a class="go" href="${esc(CONFIG.siteUrl)}">Naar ons onderzoek</a><span class="count" id="count"></span><button class="stay" id="stay">Hier blijven</button></div>`;
+    sc.innerHTML=`<div class="end"><span class="kicker" style="color:var(--s5)">${seenLive?"Bedankt voor het kijken":"Posterpresentatie aardwarmte"}</span><h1>${seenLive?"Kijk gerust verder rond":"Nu geen live presentatie"}</h1><p>Op onze site vind je het hele onderzoek, de poster en alle bronnen.</p><a class="go" href="${esc(CONFIG.siteUrl)}">Naar ons onderzoek</a>${seenLive?`<span class="count" id="count"></span><button class="stay" id="stay">Hier blijven</button>`:`<p class="count">Sta je bij de poster? Laat deze pagina open: hij start vanzelf zodra wij beginnen.</p>`}</div>`;
+    if(!seenLive)return;
     let n=8;const tick=()=>{const c=$("#count");if(!c)return;if(stayed){c.textContent="";return}c.textContent=`Je gaat over ${n} seconden automatisch verder.`;if(n--<=0){clearInterval(countT);if(FB&&!beamer)location.href=CONFIG.siteUrl}};
     tick();countT=setInterval(tick,1000);$("#stay").onclick=()=>{stayed=true;tick();$("#stay").hidden=true};
   }
