@@ -4,7 +4,7 @@
    index.html (dia's terugkijken). Pas je hier iets aan, dan verandert
    het op beide plekken.
 
-   18 korte dia's, elk één punt. Reken op ± 25 seconden per dia (± 7,5 min).
+   22 korte dia's, elk één punt. Reken op ± 25 seconden per dia (± 9 min).
 
    Per dia:
    - kicker  klein woord boven de titel
@@ -35,7 +35,7 @@ window.DIAS = [
   kicker: "Het probleem",
   title: "Het stroomnet zit vol",
   who: "Lauren",
-  note: "De gemeenten willen van het aardgas af. De makkelijkste oplossing lijkt een warmtepomp in elk huis, maar die draait op stroom. En het stroomnet zit hier al vol: in juni stonden bij Liander 7.300 huishoudens en kleine bedrijven op een wachtlijst, soms voor drie jaar.",
+  note: "Nu stoken bijna alle huizen hier op aardgas, met een cv-ketel, en hun stroom komt van het net van Liander. De gemeenten willen van het aardgas af. De makkelijkste oplossing lijkt een warmtepomp in elk huis, maar die draait op stroom. En het stroomnet zit hier al vol: in juni stonden bij Liander 7.300 huishoudens en kleine bedrijven op een wachtlijst, soms voor drie jaar.",
   html: `<div class="bignums"><div><b>7.300</b>huishoudens en kleine bedrijven op een wachtlijst bij Liander (juni 2026)</div></div>
 <p>In Sassenheim en Hillegom kan er nu al niets meer bij.</p>`
 },
@@ -121,8 +121,25 @@ window.DIAS = [
   kicker: "Ingezoomd",
   title: "De eerste bron: de Leeweg",
   who: "Aimée",
-  note: "Daarna zoomden we in op de eerste bron, aan de Leeweg. Noordwijk en Noordwijkerhout liggen het dichtst bij. Samen met 40 bollenbedrijven hebben ze 497.000 tot 631.000 gigajoule per jaar nodig. Daarvoor zijn twee bronnen nodig, precies wat de vergunning toestaat.",
-  html: `<ul><li>Oude NAM-put: er is al geboord.</li><li>16.200 woningen + 40 bollenbedrijven.</li><li>Nodig: 2 bronnen van 20 MW.</li></ul>`
+  note: "Daarna zoomden we in op de eerste bron. Aan de Leeweg ligt een oude mijnbouwlocatie van de NAM, langs de N206. De oude gasput is in 2025 weggehaald, dus er hoeft niets voor te wijken. Er is daar al geboord, dus we weten veel over de ondergrond, en de minister heeft al besloten over vier aardwarmteboringen op deze plek. De nieuwe boorplek ligt een stukje naar het noordoosten; het precieze adres is nog niet bekend. In de zomer nemen de bollenbedrijven de warmte af, omdat ze dan hun bollen drogen en bewaren. Zo draait de bron het hele jaar door.",
+  html: `<ul><li>Nu: oude NAM-terrein, put weggehaald in 2025.</li><li>Er is al geboord: veel bekend over de bodem.</li><li>Zomer: bollenbedrijven drogen en bewaren, dus de bron draait door.</li></ul>`
+},
+{
+  scene: "kaart",
+  kicker: "Ingezoomd",
+  title: "Waarom eerst twee kernen?",
+  who: "Aimée",
+  note: "De Leeweg ligt vrij centraal. Waarom dan alleen Noordwijk en Noordwijkerhout? Ten eerste vragen die twee samen al meer warmte dan één bron levert: 497.000 tot 631.000 gigajoule. Meer kernen erbij maakt het dus niet goedkoper, je komt warmte tekort. Ten tweede kun je per kern maar zo'n 700 woningen per jaar aansluiten, en de eerste bron moet snel 70 procent van zijn warmte verkopen. Dat lukt het snelst dichtbij. En de andere kernen doen wel mee: het plan is een hoofdleiding langs alle kernen, met vijf tot zes bronnen. Hillegom, Lisse en Teylingen krijgen dus een eigen bron.",
+  html: `<ol class="steps"><li>2 kernen vragen al meer dan 1 bron levert.</li><li>Max ± 700 aansluitingen per kern per jaar.</li><li>Andere kernen krijgen later een eigen bron op dezelfde hoofdleiding.</li></ol>`
+},
+{
+  scene: "volg",
+  kicker: "Ingezoomd",
+  title: "Twee bronnen: dubbel zo duur?",
+  who: "Aimée",
+  note: "Voor Noordwijk en Noordwijkerhout zijn twee bronnen nodig. Dat kost ook twee keer zoveel, maar je krijgt ook twee keer zoveel warmte, dus de prijs per gigajoule blijft hetzelfde. Alle vier de putten worden vanaf één terrein geboord, dus terrein, stroomaansluiting en hoofdleiding heb je maar één keer nodig. Onder de grond buigen de putten uit elkaar: onderin liggen ze ongeveer anderhalve kilometer uit elkaar. Het koude water dat terugkomt, doet er tientallen jaren over om bij de productieput te komen. En de tweede bron boor je pas als er genoeg afnemers zijn.",
+  html: `<div class="vs"><div><b>2× de kosten</b>± € 21 mln per bron</div><div class="good"><b>2× de warmte</b>Prijs per GJ blijft gelijk</div></div>
+<ul><li>4 putten vanaf één terrein.</li><li>Onderin ± 1,5 km uit elkaar.</li><li>Tweede bron pas bij genoeg afnemers.</li></ul>`
 },
 {
   type: "poll",
@@ -171,13 +188,30 @@ window.DIAS = [
 <p class="small">Begin met één bron bij de Leeweg, met de bollenbedrijven als vaste klant.</p>`
 },
 {
+  scene: "advies",
+  kicker: "Ons antwoord",
+  title: "Is dat niet te riskant?",
+  who: "David",
+  note: "Aardwarmte is een groot risico: de boring kan tegenvallen en het kost veel geld. Maar de andere opties zijn ook riskant. Alles elektrisch kost zeven keer zoveel stroom, en het net zit al vol. Een hybride warmtepomp gebruikt nog steeds gas. En niets doen betekent dat de CO2 blijft. De risico's van aardwarmte kun je kleiner maken: het Rijk betaalt via de RNES-garantie mee als een boring mislukt, je begint met één bron, en je doet eerst seismisch onderzoek naar de breuken.",
+  html: `<ul class="verdicts"><li class="warn"><b>Alles elektrisch</b><span>7× meer stroom, net zit vol</span></li><li class="warn"><b>Hybride warmtepomp</b><span>nog steeds gas</span></li><li class="warn"><b>Niets doen</b><span>CO2 blijft</span></li><li><b>Aardwarmte</b><span>risico te verkleinen ↓</span></li></ul>
+<p class="small">RNES-garantie bij een mislukte boring · eerst één bron · eerst seismisch onderzoek</p>`
+},
+{
+  scene: "lagen",
+  kicker: "Lange termijn",
+  title: "En als de bron op is?",
+  who: "David",
+  note: "Een bron gaat niet eeuwig mee. Na 30 tot 40 jaar koelt de laag rond de putten af. Dan kun je vanaf hetzelfde terrein een nieuw doublet boren, in een andere richting, naar een deel van de laag dat nog warm is. De oude plek warmt in ongeveer dezelfde tijd weer op. Het warmtenet zelf gaat 30 tot 50 jaar mee en kan ook warmte van een nieuwe bron gebruiken. De leidingen zijn dus niet weggegooid.",
+  html: `<ol class="steps"><li>Bron gaat ± 30–35 jaar mee.</li><li>Daarna: nieuw doublet vanaf hetzelfde terrein, andere richting.</li><li>Warmtenet gaat 30–50 jaar mee en kan een nieuwe bron gebruiken.</li></ol>`
+},
+{
   type: "end",
   scene: "doublet",
   kicker: "Bedankt!",
   title: "Lees verder op je telefoon",
   who: "allen",
   note: "Dank jullie wel! Je telefoon gaat zo naar onze site. Daar staan het hele verslag, de poster en alle bronnen. Zijn er nog vragen? (Kies daarna 'Einde' op de presentatortelefoon.)",
-  html: `<ul><li>Het hele verslag</li><li>De poster</li><li>Alle 50 bronnen</li></ul>
+  html: `<ul><li>Het hele verslag</li><li>De poster</li><li>Alle 52 bronnen</li></ul>
 <p class="small">dvdl009.github.io/aardwarmte</p>`
 }
 ];
