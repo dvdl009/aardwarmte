@@ -237,6 +237,8 @@ tr.sum td{font-weight:600;border-top:2px solid var(--fg)}
 .m3-tools button{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.75rem;cursor:pointer;min-height:30px}
 .m3-tools button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .m3-hint{position:absolute;right:8px;bottom:6px;font-size:.7rem;color:var(--muted)}
+.m3.locked{touch-action:pan-y}.m3.locked .m3-hint{display:none}
+.m3-act{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:var(--fg);color:var(--bg);border:0;border-radius:999px;padding:10px 18px;font:inherit;font-size:.85rem;font-weight:600;min-height:44px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.18)}
 footer{color:var(--muted);font-size:.8rem;padding-block:28px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
@@ -549,27 +551,34 @@ function loadScript(u){return new Promise((res,rej)=>{const s=document.createEle
 let threeP=null;function loadThree(){return threeP||(threeP=(window.THREE?Promise.resolve():loadScript(THREE_URL)).then(()=>loadScript(ORBIT_URL)))}
 function model3dHtml(){return `<figure class="m3wrap"><div class="m3" data-model3d>
   <canvas aria-label="3D-model van een aardwarmtedoublet met productieput, injectieput, warmtewisselaar en warmtenet"></canvas><div class="m3-labels"></div>
-  <div class="m3-tools"><button class="m3-play" aria-pressed="true">Stroming</button><button class="m3-lbl" aria-pressed="true">Labels</button><button class="m3-reset">Reset</button></div>
+  <div class="m3-tools"><button class="m3-play" aria-pressed="true">Stroming</button><button class="m3-lbl" aria-pressed="true">Labels</button><button class="m3-reset">Reset</button><button class="m3-done" hidden>Klaar</button></div>
+  <button class="m3-act" hidden>Tik om het model te draaien</button>
   <span class="m3-hint">Sleep om te draaien · knijp om te zoomen</span>
   <img class="m3-fallback" src="${String(CONFIG.figureFile).replace(/"/g,"")}" alt="Doorsnede van een aardwarmtedoublet" hidden></div>
   <figcaption><b>Interactief model</b> 3D-model van een aardwarmtedoublet, gebaseerd op de put van de TU Delft. Draai en zoom om alles te bekijken. Lagen vereenvoudigd en niet op ware dikte.</figcaption></figure>`}
 function initModels(root){root.querySelectorAll("[data-model3d]:not([data-ready])").forEach(stage=>{stage.dataset.ready="1";
   loadThree().then(()=>{try{mountDoublet(stage)}catch(e){fallback3d(stage)}}).catch(()=>fallback3d(stage))})}
-function fallback3d(stage){stage.classList.add("static");stage.querySelectorAll("canvas,.m3-labels,.m3-tools,.m3-hint").forEach(x=>x.remove());stage.querySelector(".m3-fallback").hidden=false}
+function fallback3d(stage){stage.classList.add("static");stage.querySelectorAll("canvas,.m3-labels,.m3-tools,.m3-hint,.m3-act").forEach(x=>x.remove());stage.querySelector(".m3-fallback").hidden=false}
 function mountDoublet(stage){
 const canvas=stage.querySelector("canvas"),labelBox=stage.querySelector(".m3-labels");
 if(!window.THREE)throw new Error("no three");
-const gl=document.createElement("canvas").getContext("webgl");if(!gl)throw new Error("no webgl");
+const tc=document.createElement("canvas"),gl=tc.getContext("webgl")||tc.getContext("experimental-webgl");if(!gl)throw new Error("no webgl");const lc=gl.getExtension("WEBGL_lose_context");if(lc)lc.loseContext();
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const touch=matchMedia("(pointer: coarse)").matches;
+const renderer=new THREE.WebGLRenderer({canvas,antialias:!touch,powerPreference:"low-power"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,touch?1.5:2));
+canvas.addEventListener("webglcontextlost",e=>{e.preventDefault();fallback3d(stage)});
 const scene=new THREE.Scene();
 renderer.setClearColor(new THREE.Color(css("--scene")||"#eef1ec"),1);
 const camera=new THREE.PerspectiveCamera(35,1,0.1,500);
 const controls=THREE.OrbitControls?new THREE.OrbitControls(camera,canvas):null;
-if(controls){controls.enableDamping=true;controls.target.set(0,-11,0);controls.minDistance=20;controls.maxDistance=110;controls.maxPolarAngle=Math.PI*0.62}
+if(controls){controls.enableDamping=true;controls.target.set(0,-11,0);controls.minDistance=20;controls.maxDistance=110;controls.maxPolarAngle=Math.PI*0.62;controls.rotateSpeed=touch?0.55:1;controls.enablePan=!touch}
+/* telefoon: eerst gewoon kunnen scrollen; pas na een tik draait het model mee */
+const bAct=stage.querySelector(".m3-act");
+function setActive(on){stage.classList.toggle("locked",!on);if(controls)controls.enabled=on;if(bAct){bAct.hidden=on;}const bd=stage.querySelector(".m3-done");if(bd)bd.hidden=!on||!touch}
+if(touch&&controls){setActive(false);bAct.onclick=()=>setActive(true);stage.querySelector(".m3-done").onclick=()=>setActive(false)}else if(bAct)bAct.hidden=true;
 
 scene.add(new THREE.HemisphereLight(0xffffff,0x8a7d68,0.62));scene.add(new THREE.AmbientLight(0xffffff,0.12));
 const sun=new THREE.DirectionalLight(0xffffff,0.6);sun.position.set(20,30,25);scene.add(sun);
@@ -660,7 +669,10 @@ const tickMat=new THREE.LineBasicMaterial({color:0x6b5f50});
 let showLabels=true;
 function placeLabels(){const r=stage.getBoundingClientRect();const v=new THREE.Vector3();
   const narrow=r.width<560;labels.forEach(l=>{v.copy(l.pos).project(camera);const vis=showLabels&&!(narrow&&l.cls==="layer")&&v.z<1&&Math.abs(v.x)<1.05&&Math.abs(v.y)<1.05;l.el.style.display=vis?"":"none";
-    if(vis){const x=(v.x+1)/2*r.width+(narrow?l.dx*0.6:l.dx);l.el.style.left=Math.max(4,Math.min(r.width-l.el.offsetWidth-4,x))+"px";l.el.style.top=((1-v.y)/2*r.height)+"px"}})}
+    if(vis){const x=(v.x+1)/2*r.width+(narrow?l.dx*0.6:l.dx);l.el.style.left=Math.max(4,Math.min(r.width-l.el.offsetWidth-4,x))+"px";l.el.style.top=((1-v.y)/2*r.height)+"px"}});
+  /* overlappende labels verbergen: eerst gekomen = belangrijker */
+  const shown=[];labels.forEach(l=>{if(l.el.style.display==="none")return;const a={x:l.el.offsetLeft,y:l.el.offsetTop,w:l.el.offsetWidth,h:l.el.offsetHeight};
+    if(shown.some(b=>a.x<b.x+b.w-2&&b.x<a.x+a.w-2&&a.y<b.y+b.h-2&&b.y<a.y+a.h-2))l.el.style.display="none";else shown.push(a)})}
 
 /* camera */
 function view(kind){const nr=stage.getBoundingClientRect().width<560;if(kind==="front"){camera.position.set(0,-11,nr?60:58)}else if(nr){camera.position.set(11,-5,55)}else{camera.position.set(30,8,46)}if(controls){controls.target.set(0,-11,0);controls.update()}else camera.lookAt(0,-11,0)}
@@ -683,13 +695,13 @@ function renderChapters(){
 $("#chapters").innerHTML=CHAPTERS.map((c,i)=>`
  <article class="chap" id="ch-${i}">
   <button class="head" aria-expanded="false" aria-controls="chb-${i}"><span class="num">${c.num}</span><span><h2>${esc(c.title)}</h2><span class="sum">${esc(c.sum)}</span></span><span class="chev" aria-hidden="true">▾</span></button>
-  <div class="body" id="chb-${i}" hidden>${c.html}<div class="srcrow"><button class="srcbtn" data-ch="${i}">Bronnen (${c.src.length})</button><button class="fold" type="button" data-fold="${i}">Inklappen ▴</button></div></div>
+  <div class="body" id="chb-${i}" hidden>${c.html}<div class="srcrow"><button class="srcbtn" data-ch="${i}">Bronnen (${c.src.length})</button><button class="fold" type="button" data-fold="${i}">Sluit hoofdstuk ${c.num} ▴</button></div></div>
  </article>`).join("");
 document.querySelectorAll(".chap>button.head").forEach(b=>b.addEventListener("click",()=>{
   const art=b.parentElement,open=b.getAttribute("aria-expanded")==="true";setChap(art,!open);
   if(open&&art.getBoundingClientRect().top<0)art.scrollIntoView({block:"start"});
 }));
-document.querySelectorAll("[data-fold]").forEach(b=>b.addEventListener("click",()=>{const art=$("#ch-"+b.dataset.fold);setChap(art,false);art.scrollIntoView({block:"start"});art.querySelector(".head").focus({preventScroll:true})}));
+document.querySelectorAll("[data-fold]").forEach(b=>b.addEventListener("click",()=>{const art=$("#ch-"+b.dataset.fold);setChap(art,false);const top=art.getBoundingClientRect().top;if(top<0)scrollBy({top:top-(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topH"))||0)-8,behavior:"smooth"});art.querySelector(".head").focus({preventScroll:true})}));
 $("#allToggle").onclick=()=>{const arts=[...document.querySelectorAll(".chap")],anyClosed=arts.some(a=>!a.classList.contains("open"));arts.forEach(a=>setChap(a,anyClosed))};
 syncAll();}
 function setChap(art,open){const b=art.querySelector(".head");b.setAttribute("aria-expanded",String(open));art.classList.toggle("open",open);art.querySelector(".body").hidden=!open;if(open)initModels(art);syncAll()}
