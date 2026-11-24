@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1400" width="1600" height="1400" font-family="Inter, sans-serif">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf3f6"/><stop offset="1" stop-color="#f7f4ec"/></linearGradient>
+    <linearGradient id="flowg" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#3c86a6"/><stop offset="1" stop-color="#d9480f"/></linearGradient>
+    <pattern id="sand" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#e9dfc8"/><circle cx="6" cy="8" r="1.6" fill="#cdbd98"/><circle cx="19" cy="18" r="1.4" fill="#cdbd98"/></pattern>
+    <pattern id="clay" width="60" height="18" patternUnits="userSpaceOnUse"><rect width="60" height="18" fill="#b3a387"/><path d="M0 9 H60" stroke="#a29274" stroke-width="2"/></pattern>
+    <pattern id="sst" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="22" height="22" fill="#a8d8c4"/><circle cx="5" cy="6" r="3" fill="#8cc6ae"/><circle cx="16" cy="15" r="3.4" fill="#8cc6ae"/><circle cx="15" cy="4" r="1.6" fill="#7fbaa2"/></pattern>
+    <marker id="ah" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/></marker>
+    <marker id="ahw" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/></marker>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity=".18"/></filter>
+  </defs>
+
+  <!-- lucht -->
+  <rect x="0" y="0" width="1600" height="330" fill="url(#sky)"/>
+
+  <!-- aardlagen -->
+  <rect x="0" y="330" width="1600" height="290" fill="url(#sand)"/>
+  <rect x="0" y="620" width="1600" height="430" fill="url(#clay)"/>
+  <rect x="0" y="1050" width="1600" height="150" fill="url(#sst)"/>
+  <rect x="0" y="1200" width="1600" height="200" fill="#8f7d5a"/>
+  <path d="M0 620 H1600 M0 1050 H1600 M0 1200 H1600" stroke="#6b5f50" stroke-width="2" opacity=".45"/>
+  <!-- maaiveld -->
+  <rect x="0" y="318" width="1600" height="16" fill="#8fbf7f"/>
+
+  <!-- laagnamen (links) -->
+  <g font-size="26" fill="#3d3a33" font-weight="600">
+    <text x="130" y="480">Zand en klei</text>
+    <text x="130" y="840">Kleisteen: dichte deksel</text>
+    <text x="130" y="1136" fill="#14523b">Zandsteen met warm water</text>
+  </g>
+  <!-- diepteschaal -->
+  <g font-size="22" fill="#3d3a33" font-weight="600">
+    <path d="M70 330 V1200" stroke="#3d3a33" stroke-width="3"/>
+    <path d="M62 330 H78 M62 765 H78 M62 1200 H78" stroke="#3d3a33" stroke-width="3"/>
+    <text x="84" y="356" font-size="20">0</text>
+    <text x="84" y="772" font-size="20">1 km</text>
+    <text x="84" y="1192" font-size="20">2 km</text>
+  </g>
+
+  <!-- water stroomt door de zandsteen van injectie naar productie (warmt op) -->
+  <g stroke="url(#flowg)" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9">
+    <path d="M1150 1092 C 980 1080, 760 1100, 610 1100"/>
+    <path d="M1170 1128 C 980 1140, 760 1120, 610 1128"/>
+    <path d="M1150 1164 C 980 1176, 760 1158, 610 1158"/>
+  </g>
+  <g fill="#d9480f"><path d="M608 1100 l20 -9 v18 z"/><path d="M608 1128 l20 -9 v18 z"/><path d="M608 1158 l20 -9 v18 z"/></g>
+
+  <!-- injectieput (blauw): verticaal, dan schuin naar ± 1,5 km verder -->
+  <path d="M780 334 V640 C 780 840, 1180 900, 1210 1125" fill="none" stroke="#2a2a2a" stroke-width="30" stroke-linecap="round"/>
+  <path d="M780 334 V640 C 780 840, 1180 900, 1210 1125" fill="none" stroke="#3c86a6" stroke-width="20" stroke-linecap="round"/>
+  <path d="M780 420 V560" stroke="#fff" stroke-width="5" marker-end="url(#ahw)"/>
+  <path d="M1040 900 L1150 990" stroke="#fff" stroke-width="5" marker-end="url(#ahw)"/>
+
+  <!-- productieput (oranje): recht omlaag -->
+  <path d="M560 334 V1125" fill="none" stroke="#2a2a2a" stroke-width="30" stroke-linecap="round"/>
+  <path d="M560 334 V1125" fill="none" stroke="#d9480f" stroke-width="20" stroke-linecap="round"/>
+  <path d="M560 1000 V860" stroke="#fff" stroke-width="5" marker-end="url(#ahw)"/>
+  <path d="M560 640 V500" stroke="#fff" stroke-width="5" marker-end="url(#ahw)"/>
+  <!-- pomp -->
+  <rect x="538" y="540" width="44" height="54" rx="6" fill="#2a2a2a"/>
+  <text x="596" y="574" font-size="21" fill="#3d3a33" font-weight="600">pomp</text>
+
+  <!-- afstand onderin -->
+  <g>
+    <path d="M560 1252 H1210" stroke="#ffffff" stroke-width="4" marker-start="url(#ah)" marker-end="url(#ah)"/>
+    <path d="M560 1235 V1270 M1210 1235 V1270" stroke="#ffffff" stroke-width="4"/>
+    <rect x="790" y="1272" width="190" height="52" rx="26" fill="#ffffff" filter="url(#sh)"/>
+    <text x="885" y="1307" font-size="28" font-weight="800" text-anchor="middle" fill="#1c1c1c">± 1,5 km</text>
+  </g>
+
+  <!-- warmtewisselaar -->
+  <rect x="595" y="214" width="150" height="110" rx="8" fill="#3a3f45"/>
+  <rect x="610" y="190" width="120" height="30" rx="6" fill="#4b5158"/>
+  <text x="670" y="182" font-size="22" font-weight="700" text-anchor="middle" fill="#1c1c1c">warmtewisselaar</text>
+  <path d="M560 334 V290 H600" stroke="#d9480f" stroke-width="14" fill="none"/>
+  <path d="M740 300 H780 V334" stroke="#3c86a6" stroke-width="14" fill="none"/>
+
+  <!-- warmtenet naar de huizen (rood heen, blauw terug) -->
+  <path d="M745 250 H900 C 930 250, 930 300, 960 300 H1540" stroke="#d9480f" stroke-width="13" fill="none"/>
+  <path d="M745 275 H880 C 910 275, 910 315, 940 315 H1540" stroke="#3c86a6" stroke-width="9" fill="none" opacity=".9"/>
+  <!-- huizen -->
+  <g>
+    <g transform="translate(1000,170)"><rect x="0" y="40" width="110" height="105" fill="#efe2c4" stroke="#7a5a3e" stroke-width="3"/><path d="M-10 44 L55 -10 L120 44 Z" fill="#a0503a"/><rect x="40" y="95" width="30" height="50" fill="#7a5a3e"/><rect x="14" y="62" width="22" height="22" fill="#cfe3ec"/><rect x="74" y="62" width="22" height="22" fill="#cfe3ec"/></g>
+    <g transform="translate(1150,150)"><rect x="0" y="45" width="120" height="120" fill="#e9d9b6" stroke="#7a5a3e" stroke-width="3"/><path d="M-10 49 L60 -12 L130 49 Z" fill="#8f4533"/><rect x="45" y="115" width="30" height="50" fill="#7a5a3e"/><rect x="16" y="70" width="24" height="24" fill="#cfe3ec"/><rect x="80" y="70" width="24" height="24" fill="#cfe3ec"/></g>
+    <g transform="translate(1310,175)"><rect x="0" y="40" width="105" height="100" fill="#efe2c4" stroke="#7a5a3e" stroke-width="3"/><path d="M-10 44 L52 -8 L115 44 Z" fill="#a0503a"/><rect x="38" y="92" width="28" height="48" fill="#7a5a3e"/><rect x="12" y="60" width="22" height="22" fill="#cfe3ec"/><rect x="70" y="60" width="22" height="22" fill="#cfe3ec"/></g>
+    <g transform="translate(1440,190)"><rect x="0" y="35" width="95" height="90" fill="#e9d9b6" stroke="#7a5a3e" stroke-width="3"/><path d="M-8 39 L47 -6 L103 39 Z" fill="#8f4533"/><rect x="34" y="80" width="26" height="45" fill="#7a5a3e"/></g>
+  </g>
+  <!-- warmtenet-labels -->
+  <text x="1290" y="358" font-size="22" font-weight="700" fill="#a3360b">heen ± 70 °C</text>
+  <text x="1290" y="386" font-size="22" font-weight="700" fill="#2b6884">terug</text>
+
+  <!-- temperatuurlabels bij de putten -->
+  <g font-size="24" font-weight="800">
+    <rect x="300" y="950" width="230" height="44" rx="22" fill="#ffffff" filter="url(#sh)"/>
+    <text x="415" y="981" text-anchor="middle" fill="#a3360b">± 83 °C omhoog</text>
+    <rect x="1225" y="700" width="230" height="44" rx="22" fill="#ffffff" filter="url(#sh)"/>
+    <text x="1340" y="731" text-anchor="middle" fill="#2b6884">± 45 °C terug</text>
+  </g>
+
+  <!-- stapnummers -->
+  <g font-weight="900" font-size="54" text-anchor="middle" fill="#ffffff">
+    <circle cx="470" cy="760" r="46" fill="#d9480f" stroke="#fff" stroke-width="6" filter="url(#sh)"/><text x="470" y="779">1</text>
+    <circle cx="950" cy="200" r="46" fill="#00733a" stroke="#fff" stroke-width="6" filter="url(#sh)"/><text x="950" y="219">2</text>
+    <circle cx="1010" cy="760" r="46" fill="#3c86a6" stroke="#fff" stroke-width="6" filter="url(#sh)"/><text x="1010" y="779">3</text>
+  </g>
+</svg>
