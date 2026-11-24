@@ -12,11 +12,12 @@ Door Aimée Tolk, David van der Linden en Lauren Timmer.
 |---|---|
 | `index.html` | De site: onderzoek per hoofdstuk, poster, bronnen en dia's terugkijken |
 | `live.html` | Live presentatie. Het publiek kijkt mee op de telefoon |
-| `slides.js` | De 22 korte dia's met spreektekst. Gebruikt door `live.html` én `index.html` |
-| `story3d.js` | Het 3D-verhaal op de telefoon (doublet, volg het water, ondergrond, stroomnet, kaart, poll, kosten) |
-| `verslag.json` | Het verslag (verslag 2 uit de teamruimte) |
+| `slides.js` | De 20 korte dia's met spreektekst, in dezelfde 7 stappen als de poster. Gebruikt door `live.html` én `index.html` |
+| `story3d.js` | Het 3D-verhaal op de telefoon (doublet, volg het water, ondergrond, stroomnet, zonnepanelen, kaart, regionaal net, warmte per maand, poll, kosten) |
+| `verslag.json` | Het verslag (verslag versie 2 uit de teamruimte) |
 | `verslag.pdf` | Het verslag als pdf (downloadknop op de site) |
-| `poster.png` | De poster |
+| `poster-A1-staand.pdf`, `poster-A1-liggend.pdf` | De twee A1-posters om te printen (met `.jpg`-voorbeelden voor de site) |
+| `poster.png` | Kleine versie van de staande poster |
 | `img/` | Figuren en de QR-code |
 
 ## Tijdens de presentatie

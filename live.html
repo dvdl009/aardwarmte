@@ -294,8 +294,9 @@ function bindPoll(root){root.querySelectorAll("[data-vote]").forEach(b=>b.onclic
   polls={...polls,[s.poll]:{...((polls||{})[s.poll]||{}),[cid]:k}};
   if(FB)fbPut(`poll/${s.poll}/${cid}`,k).catch(()=>setTag("Stem niet verstuurd, probeer opnieuw",false));
   updatePoll()})}
+function curPoll(){const c=SLIDES[(state&&state.i)||0];return c&&c.type==="poll"?c:SLIDES.find(x=>x.type==="poll")}
 function updatePoll(){const box=document.getElementById("pollbox");
-  const ps=SLIDES.find(x=>x.type==="poll");if(ps&&story)story.setPoll(counts(ps),ps.options);
+  const ps=curPoll();if(ps&&story)story.setPoll(counts(ps),ps.options);
   if(box){const s=SLIDES.find(x=>x.poll===box.dataset.poll);if(s){box.innerHTML=pollInner(s);bindPoll(box)}}
   document.querySelectorAll("[data-pollsum]").forEach(el=>{const s=SLIDES.find(x=>x.type==="poll"&&x.poll===el.dataset.pollsum);if(!s)return;
     const c=counts(s),n=c.reduce((a,b)=>a+b,0);if(!n){el.textContent="";return}
@@ -309,7 +310,7 @@ function ensureStory(){if(story||story3dFailed)return Promise.resolve(story);
   if(!storyP)storyP=(webglOk()?loadThree():Promise.reject()).then(()=>{const st=$("#stage3d");story=Story3D.create(st);
       const r=document.createElement("button");r.className="s3reset";r.textContent="Terug naar beeld";r.onclick=()=>story.reset();st.appendChild(r);
       const h=document.createElement("span");h.className="s3hint";h.textContent="Sleep om te draaien";st.appendChild(h);
-      const ps=SLIDES.find(x=>x.type==="poll");if(ps)story.setPoll(counts(ps),ps.options);return story})
+      const ps=curPoll();if(ps)story.setPoll(counts(ps),ps.options);return story})
     .catch(()=>{story3dFailed=true;return null});
   return storyP}
 function showStage(scene,img){if(scene==="none"){hideStage();return}const st=$("#stage3d");st.hidden=false;$("#app").classList.add("has3d");

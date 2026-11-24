@@ -4,7 +4,10 @@
    index.html (dia's terugkijken). Pas je hier iets aan, dan verandert
    het op beide plekken.
 
-   22 korte dia's, elk één punt. Reken op ± 25 seconden per dia (± 9 min).
+   20 korte dia's in 7 stappen, dezelfde 7 stappen als op de poster.
+   Het nummer in de kicker ("Stap 3") is het nummer op de poster, zodat
+   mensen zonder telefoon op de poster kunnen meelezen.
+   Reken op ± 30 seconden per dia (± 10 minuten).
 
    Per dia:
    - kicker  klein woord boven de titel
@@ -19,6 +22,7 @@
              Leeg = gewone dia.
    ===================================================================== */
 window.DIAS = [
+/* ---------- opening ---------- */
 {
   type: "cover",
   scene: "doublet",
@@ -26,126 +30,141 @@ window.DIAS = [
   kicker: "Northgo College · O&O · klas V4",
   title: "Kan de Bollenstreek verwarmen met aardwarmte?",
   who: "David",
-  note: "Welkom! Wij zijn Aimée, David en Lauren. Voor de gemeenten in de Bollenstreek zochten we uit of warmte uit de diepe ondergrond kan helpen om van het gas af te gaan. Bovenin je telefoon zie je steeds een 3D-beeld. Je mag het ronddraaien.",
+  note: "Welkom! Wij zijn Aimée, David en Lauren. Voor de gemeenten Hillegom, Lisse, Teylingen en Noordwijk zochten we uit of warmte uit de diepe ondergrond kan helpen om van het gas af te gaan. Ons verhaal heeft zeven stappen. Die staan ook op de poster: heb je geen telefoon, dan kun je daar meelezen. Op je telefoon zie je steeds een 3D-beeld dat je mag ronddraaien.",
   html: `<p>Aimée Tolk, David van der Linden en Lauren Timmer</p>
-<p class="small">Voor de gemeenten Hillegom, Lisse, Teylingen en Noordwijk</p>`
+<p class="small">Voor de gemeenten Hillegom, Lisse, Teylingen en Noordwijk · volg mee op de poster in 7 stappen</p>`
 },
+
+/* ---------- stap 1: het probleem ---------- */
 {
-  scene: "none",
-  kicker: "Het probleem",
-  title: "Het stroomnet zit vol",
+  scene: "net",
+  kicker: "Stap 1 · Het probleem",
+  title: "Van het gas af, maar het stroomnet zit vol",
   who: "Lauren",
-  note: "Nu stoken bijna alle huizen hier op aardgas, met een cv-ketel, en hun stroom komt van het net van Liander. De gemeenten willen van het aardgas af. De makkelijkste oplossing lijkt een warmtepomp in elk huis, maar die draait op stroom. En het stroomnet zit hier al vol: in juni stonden bij Liander 7.300 huishoudens en kleine bedrijven op een wachtlijst, soms voor drie jaar.",
+  note: "Bijna alle huizen hier stoken nu op aardgas, met een cv-ketel. De gemeenten willen daarvan af. De makkelijkste oplossing lijkt een warmtepomp in elk huis, maar die draait op stroom. En het stroomnet zit al vol: bij Liander stonden in juni 7.300 huishoudens en kleine bedrijven op een wachtlijst voor een stroomaansluiting. In Hillegom en Sassenheim is het nu al het ergst.",
   html: `<div class="bignums"><div><b>7.300</b>huishoudens en kleine bedrijven op een wachtlijst bij Liander (juni 2026)</div></div>
-<p>In Sassenheim en Hillegom kan er nu al niets meer bij.</p>`
+<p>Een warmtepomp in elk huis vraagt juist nog méér stroom.</p>`
 },
 {
-  scene: "none",
-  kicker: "Het probleem",
-  title: "Uitbreiden helpt maar even",
-  who: "Lauren",
-  note: "Liander gaat het station in Sassenheim tussen 2029 en 2031 verzwaren. Maar als alle woningen een warmtepomp nemen, zit het rond 2035 alweer vol. Alleen warmtepompen is dus geen oplossing.",
-  html: `<ol class="tl"><li><b>Nu</b>Sassenheim en Hillegom zitten vol</li><li><b>2029–2031</b>Liander verzwaart station Sassenheim</li><li class="bad"><b>± 2035</b>Weer vol als iedereen een warmtepomp neemt</li></ol>`
-},
-{
-  scene: "advies",
-  kicker: "Onze hoofdvraag",
+  scene: "vraag",
+  kicker: "Stap 1 · Onze hoofdvraag",
   title: "Is aardwarmte haalbaar voor de Bollenstreek?",
   who: "Lauren",
-  note: "Daarom onderzochten we: is aardwarmte haalbaar voor bestaande woonwijken en bollenbedrijven? We keken naar drie kanten. Ons antwoord zie je al: technisch kan het, maatschappelijk is het goed, maar het geld is het probleem. In de rest van de presentatie laten we zien waarom.",
-  html: `<ul class="verdicts"><li><b>Technisch</b><span>✓ haalbaar</span></li><li class="warn"><b>Economisch</b><span>! alleen met steun van het Rijk</span></li><li><b>Maatschappelijk</b><span>✓ wenselijk</span></li></ul>`
+  note: "Daarom was onze hoofdvraag: is aardwarmte haalbaar voor bestaande woonwijken en bollenbedrijven in de Bollenstreek, nu het stroomnet vol zit? We keken naar drie kanten: technisch, economisch en maatschappelijk. Aan het eind komen we terug bij deze drie zuilen.",
+  html: `<ul class="verdicts"><li><b>Technisch</b><span>kan het?</span></li><li><b>Economisch</b><span>is het te betalen?</span></li><li><b>Maatschappelijk</b><span>is het goed voor de regio?</span></li></ul>`
 },
+
+/* ---------- stap 2: zo werkt het ---------- */
 {
   scene: "volg",
   img: "img/figuur1-doublet.png",
-  kicker: "Zo werkt het",
+  kicker: "Stap 2 · Zo werkt aardwarmte",
   title: "Warm water van 2 kilometer diep",
   who: "Lauren",
-  note: "Volg de oranje druppel op je telefoon. Je boort twee putten, een doublet. Uit de ene pomp je water van ongeveer 83 graden omhoog. Bovengronds geeft het zijn warmte af aan een warmtenet naar huizen en kassen. Het afgekoelde water gaat via de andere put terug de grond in.",
-  html: `<ul><li>Productieput pompt water van ± 83 °C omhoog.</li><li>Warmtewisselaar geeft de warmte aan een warmtenet.</li><li>Afgekoeld water gaat terug de grond in.</li></ul>`
+  note: "Volg de oranje druppel op je telefoon. Je boort twee putten: samen heet dat een doublet. Uit de ene pomp je water van ongeveer 83 graden omhoog. Bovengronds geeft het zijn warmte af aan een warmtenet van 70 graden, naar huizen en bollenbedrijven. Het afgekoelde water, ongeveer 45 graden, gaat via de andere put terug de grond in en warmt daar weer op.",
+  html: `<ul><li>Water van ± 83 °C omhoog uit ± 2 km diep.</li><li>Warmtenet van 70 °C naar huizen en bollenbedrijven.</li><li>Afgekoeld water (± 45 °C) terug de grond in.</li></ul>`
 },
 {
   scene: "lagen",
-  kicker: "De ondergrond",
+  kicker: "Stap 2 · De ondergrond",
   title: "Wat moet er onder de grond zitten?",
-  who: "Aimée",
-  note: "Niet overal kan dit. Je hebt vier dingen nodig. Het moet diep genoeg zijn: per kilometer wordt het ongeveer 30 graden warmer. Je hebt zandsteen nodig met holtes waar water door kan stromen. Daarboven een dichte laag kleisteen, als een deksel. En liefst geen breuken, want daar stroomt het water slecht langs.",
+  who: "Lauren",
+  note: "Niet overal kan dit. Je hebt vier dingen nodig. Het moet diep genoeg zijn: per kilometer wordt het ongeveer 30 graden warmer. Je hebt zandsteen nodig met holtes waar water door kan stromen. Daarboven een dichte laag kleisteen, als een deksel. En liefst geen grote breuken. In de Bollenstreek is de ondergrond op 2 kilometer en dieper geschikt.",
   html: `<ul><li><b>Diep genoeg:</b> ± 30 °C warmer per km.</li><li><b>Zandsteen:</b> holtes waar water door stroomt.</li><li><b>Deksel:</b> kleisteen erboven.</li><li><b>Geen grote breuken.</b></li></ul>`
 },
-{
-  scene: "leeweg",
-  kicker: "De ondergrond",
-  title: "En onder de Leeweg?",
-  who: "Aimée",
-  note: "Bij de Leeweg in Noordwijk boorde de NAM in 1983 al een put tot bijna 3 kilometer. Daardoor weten we veel. Op 2,9 kilometer zit zandsteen met water van ongeveer 90 tot 100 graden, met kleisteen erboven. Wel zitten er twee breuken. Daarom moet er eerst seismisch onderzoek komen, zodat beide putten in hetzelfde blok uitkomen.",
-  html: `<ul><li>Zandsteen op ± 2,9 km, ± 90–100 °C ✓</li><li>Kleisteen erboven ✓</li><li>2 breuken: eerst seismisch onderzoek !</li></ul>`
-},
+
+/* ---------- stap 3: het stroomnet ---------- */
 {
   scene: "stroom",
   img: "img/figuur2-stroomvraag.png",
-  kicker: "Netcongestie",
+  kicker: "Stap 3 · Het stroomnet",
   title: "± 7× minder stroom",
   who: "Lauren",
-  note: "Wat scheelt het voor het stroomnet? Voor 16.200 woningen rekenden we het uit. Als iedereen een warmtepomp neemt, is dat op een koude dag ongeveer 34 megawatt extra. Met aardwarmte 4,3 tot 4,9 megawatt. Dat is ongeveer zeven keer minder.",
-  html: `<div class="bignums row"><div><b>34 MW</b>warmtepompen</div><div><b>4,9 MW</b>aardwarmte</div></div>
-<p class="small">Extra stroom op een koude dag, 16.200 woningen</p>`
-},
-{
-  scene: "uitleg",
-  kicker: "Netcongestie",
-  title: "Waarom zo veel minder?",
-  who: "Lauren",
-  note: "Hoe kan dat? Een warmtepomp maakt de warmte met stroom: als het vriest krijg je voor 1 deel stroom maar 2,5 delen warmte. Bij aardwarmte zit de warmte al in het water. Je hebt alleen stroom nodig voor de pompen.",
-  html: `<div class="vs"><div><b>Warmtepomp</b>Maakt warmte met stroom. Als het vriest: 1 deel stroom → 2,5 delen warmte.</div><div class="good"><b>Aardwarmte</b>De warmte zit al in het water. Stroom alleen voor de pomp.</div></div>`
-},
-{
-  scene: "kaart",
-  img: "img/figuur3-bollenstreek.png",
-  kicker: "Gebiedsonderzoek",
-  title: "Hoeveel warmte heeft de regio nodig?",
-  who: "Aimée",
-  note: "Eerst de hele Bollenstreek. Huizen, kassen en bedrijven gebruiken samen ongeveer 2,4 miljoen gigajoule warmte per jaar. Daarvoor wordt nu zo'n 80 miljoen kuub aardgas gestookt.",
-  html: `<div class="bignums row"><div><b>2,4 mln GJ</b>warmte per jaar</div><div><b>80 mln m³</b>aardgas, nu</div></div>`
-},
-{
-  scene: "kaart",
-  kicker: "Gebiedsonderzoek",
-  title: "Hoeveel bronnen zijn er nodig?",
-  who: "Aimée",
-  note: "Eén bron van 20 megawatt levert 360.000 tot 497.000 gigajoule per jaar. Deel je 2,4 miljoen daardoor, dan kom je op ongeveer 5 tot 7 bronnen. De haalbaarheidsstudie zegt 5 tot 6. Dat past, omdat niet iedereen aansluit.",
-  html: `<ol class="steps"><li>Eén bron: 360.000–497.000 GJ per jaar</li><li>2,4 mln GJ ÷ één bron ≈ 5 tot 7</li><li>De studie zegt 5 tot 6 ✓</li></ol>`
-},
-{
-  scene: "inzoom",
-  img: "img/figuur4-ingezoomd.png",
-  kicker: "Ingezoomd",
-  title: "De eerste bron: de Leeweg",
-  who: "Aimée",
-  note: "Daarna zoomden we in op de eerste bron. Aan de Leeweg ligt een oude mijnbouwlocatie van de NAM, langs de N206. De oude gasput is in 2025 weggehaald, dus er hoeft niets voor te wijken. Er is daar al geboord, dus we weten veel over de ondergrond, en de minister heeft al besloten over vier aardwarmteboringen op deze plek. De nieuwe boorplek ligt een stukje naar het noordoosten; het precieze adres is nog niet bekend. In de zomer nemen de bollenbedrijven de warmte af, omdat ze dan hun bollen drogen en bewaren. Zo draait de bron het hele jaar door.",
-  html: `<ul><li>Nu: oude NAM-terrein, put weggehaald in 2025.</li><li>Er is al geboord: veel bekend over de bodem.</li><li>Zomer: bollenbedrijven drogen en bewaren, dus de bron draait door.</li></ul>`
-},
-{
-  scene: "kaart",
-  kicker: "Ingezoomd",
-  title: "Waarom eerst twee kernen?",
-  who: "Aimée",
-  note: "De Leeweg ligt vrij centraal. Waarom dan alleen Noordwijk en Noordwijkerhout? Ten eerste vragen die twee samen al meer warmte dan één bron levert: 497.000 tot 631.000 gigajoule. Meer kernen erbij maakt het dus niet goedkoper, je komt warmte tekort. Ten tweede kun je per kern maar zo'n 700 woningen per jaar aansluiten, en de eerste bron moet snel 70 procent van zijn warmte verkopen. Dat lukt het snelst dichtbij. En de andere kernen doen wel mee: het plan is een hoofdleiding langs alle kernen, met vijf tot zes bronnen. Hillegom, Lisse en Teylingen krijgen dus een eigen bron.",
-  html: `<ol class="steps"><li>2 kernen vragen al meer dan 1 bron levert.</li><li>Max ± 700 aansluitingen per kern per jaar.</li><li>Andere kernen krijgen later een eigen bron op dezelfde hoofdleiding.</li></ol>`
-},
-{
-  scene: "volg",
-  kicker: "Ingezoomd",
-  title: "Twee bronnen: dubbel zo duur?",
-  who: "Aimée",
-  note: "Voor Noordwijk en Noordwijkerhout zijn twee bronnen nodig. Dat kost ook twee keer zoveel, maar je krijgt ook twee keer zoveel warmte, dus de prijs per gigajoule blijft hetzelfde. Alle vier de putten worden vanaf één terrein geboord, dus terrein, stroomaansluiting en hoofdleiding heb je maar één keer nodig. Onder de grond buigen de putten uit elkaar: onderin liggen ze ongeveer anderhalve kilometer uit elkaar. Het koude water dat terugkomt, doet er tientallen jaren over om bij de productieput te komen. En de tweede bron boor je pas als er genoeg afnemers zijn.",
-  html: `<div class="vs"><div><b>2× de kosten</b>± € 21 mln per bron</div><div class="good"><b>2× de warmte</b>Prijs per GJ blijft gelijk</div></div>
-<ul><li>4 putten vanaf één terrein.</li><li>Onderin ± 1,5 km uit elkaar.</li><li>Tweede bron pas bij genoeg afnemers.</li></ul>`
+  note: "Wat scheelt dat voor het stroomnet? We rekenden het uit voor de 16.200 woningen in Noordwijk en Noordwijkerhout die zouden aansluiten. Als die allemaal een warmtepomp nemen, is dat op een koude dag ongeveer 34 megawatt extra stroom. Met aardwarmte is het 4,3 tot 4,9 megawatt, ongeveer zeven keer minder. Dat komt doordat een warmtepomp de warmte met stroom maakt, terwijl bij aardwarmte de warmte al in het water zit. Je hebt alleen stroom nodig voor de pompen.",
+  html: `<div class="bignums row"><div><b>34 MW</b>warmtepompen</div><div><b>4,3–4,9 MW</b>aardwarmte</div></div>
+<p class="small">Extra stroom op een koude dag, ± 16.200 woningen in Noordwijk en Noordwijkerhout</p>`
 },
 {
   type: "poll",
   scene: "poll",
+  poll: "zon",
+  kicker: "Stap 3 · Doe mee",
+  title: "Zonnepanelen + thuisbatterij: genoeg voor een warmtepomp in de winter?",
+  who: "Lauren",
+  note: "Maar veel mensen hebben al zonnepanelen. Kun je je warmtepomp dan niet gewoon op je eigen zonnestroom laten draaien, met een thuisbatterij? Wat denken jullie: hoeveel van de stroom voor de warmtepomp leveren de panelen in de winter? Stem op je telefoon. (Wacht tot de meeste stemmen binnen zijn.)",
+  options: ["Bijna alles", "Ongeveer de helft", "Maar een vijfde"],
+  answer: 2,
+  html: ``
+},
+{
+  scene: "zon",
+  img: "img/figuur3-zon-warmtepomp.png",
+  kicker: "Stap 3 · Het antwoord",
+  title: "In de winter maar een vijfde",
+  who: "Lauren",
+  note: "We rekenden het per maand uit voor één huis in Noordwijk met tien zonnepanelen. Van november tot en met februari vraagt de warmtepomp ongeveer 1.500 kilowattuur, en leveren de panelen er maar 300: een vijfde. In de zomer is er juist een overschot. Een thuisbatterij slaat maar 4 tot 8 kilowattuur op, genoeg voor een dag, niet om zomerstroom tot de winter te bewaren. Zonnepanelen lossen het winterprobleem dus niet op.",
+  html: `<div class="pollsum" data-pollsum="zon"></div>
+<div class="bignums row"><div><b>1.510 kWh</b>warmtepomp in de winter</div><div><b>296 kWh</b>van 10 zonnepanelen</div></div>
+<p class="small">Een thuisbatterij (4–8 kWh) bewaart stroom voor een dag, niet van zomer tot winter.</p>`
+},
+
+/* ---------- stap 4: de hele regio ---------- */
+{
+  scene: "kaart",
+  img: "img/figuur4-bollenstreek.png",
+  kicker: "Stap 4 · De hele regio",
+  title: "Hoeveel bronnen zijn er nodig?",
+  who: "Aimée",
+  note: "Dan de hele Bollenstreek. De haalbaarheidsstudie rekent met vijf tot zes bronnen, maar telt ook grote bedrijven mee. Wij rekenden zelf, met het echte gasverbruik per woonplaats van het CBS en de bollenvelden in de regio. Eén bron van 20 megawatt levert ongeveer 497.000 gigajoule per jaar. Voor de woningen en de bollenbedrijven kom je dan op drie tot vier bronnen.",
+  html: `<div class="bignums row"><div><b>3–4</b>bronnen voor woningen en bollenbedrijven</div><div><b>5–6</b>in de studie, met grote bedrijven erbij</div></div>
+<p class="small">Eigen berekening met het gasverbruik per woonplaats</p>`
+},
+{
+  scene: "regionet",
+  img: "img/figuur5-regionaal-net.png",
+  kicker: "Stap 4 · De hele regio",
+  title: "Eén net, of een net per gemeente?",
+  who: "Aimée",
+  note: "Dan de vraag: krijgt elke gemeente een eigen net, of komt er één net door de hele regio? Bij een net per gemeente heb je vijf tot zes bronnen nodig, want je kunt geen halve bron boren: Hillegom en Lisse hebben er elk maar een halve nodig. Die bronnen draaien dan maar voor de helft. In één regionaal net vullen de bronnen elkaar aan: drie tot vier zijn genoeg en die worden voor zo'n 90 procent gebruikt. De leidingen zijn wel langer, maar per woning is één net toch 200 tot 600 euro goedkoper.",
+  html: `<div class="vs"><div><b>Per gemeente</b>5–6 bronnen<br>53–61% gebruikt<br>€ 2.860–3.310 per woning</div><div class="good"><b>Eén net</b>3–4 bronnen<br>± 90% gebruikt<br>€ 2.240–2.690 per woning</div></div>
+<p class="small">Bronnen en hoofdleiding, met bollenbedrijven. Leidingen hemelsbreed, dus een ondergrens.</p>`
+},
+
+/* ---------- stap 5: ingezoomd op de Leeweg ---------- */
+{
+  scene: "inzoom",
+  img: "img/figuur6-ingezoomd.png",
+  kicker: "Stap 5 · Ingezoomd",
+  title: "De eerste bron: de Leeweg",
+  who: "Aimée",
+  note: "De opdracht vroeg ook om in te zoomen op een kleiner gebied. Wij kozen de eerste bron van het regionale net: de Leeweg in Noordwijk, met Noordwijk en Noordwijkerhout als afnemers. Daar boorde de NAM in 1983 al een put tot bijna 3 kilometer, dus we weten veel over de ondergrond. Het terrein is vrij, want de oude gasput is in 2025 weggehaald, en de minister heeft al besloten over vier aardwarmteboringen op deze plek. Wel zitten er twee breuken in de ondergrond, dus eerst moet er seismisch onderzoek komen.",
+  html: `<ul><li>Al geboord in 1983: veel bekend over de bodem.</li><li>Terrein vrij en er liggen al plannen.</li><li>Twee breuken: eerst seismisch onderzoek.</li></ul>`
+},
+{
+  scene: "maand",
+  img: "img/figuur7-vraag-per-maand.png",
+  kicker: "Stap 5 · Ingezoomd",
+  title: "Is één bron genoeg?",
+  who: "Aimée",
+  note: "Op basis van het jaartotaal heb je voor Noordwijk en Noordwijkerhout twee bronnen nodig. Maar we keken ook per maand. In de winter is één bron te klein, dat deel komt uit hulpwarmte. In juli en augustus vragen de bollenbedrijven bijna vier keer zoveel warmte als alle woningen samen, voor het drogen en bewaren van bollen. Zo blijft de bron in de zomer draaien. Alleen in mei en juni is het rustig. Opgeteld levert één bron 71 tot 83 procent van alle warmte. Een tweede bron draait maar 1.200 tot 2.600 uur per jaar. Die is pas nuttig als er meer afnemers bijkomen, zoals Voorhout, dat het dichtst bij de Leeweg ligt.",
+  html: `<div class="bignums row"><div><b>71–83%</b>van de warmte uit één bron</div><div><b>jul–aug</b>bollenbedrijven vullen de zomer</div></div>
+<p class="small">Tweede bron pas als Voorhout en andere kernen aansluiten.</p>`
+},
+{
+  scene: "lagen",
+  kicker: "Stap 5 · Lange termijn",
+  title: "En als de bron op is?",
+  who: "Aimée",
+  note: "Het koude water dat terug de grond in gaat, koelt de laag langzaam af. Wij schatten dat die koude zone na 30 jaar een straal heeft van 500 tot 1.200 meter. Daarom wordt een bron meestal 30 tot 35 jaar gebruikt. Daarna kun je vanaf hetzelfde terrein een nieuw doublet boren, in een andere richting, naar een deel van de laag dat nog warm is. Het warmtenet zelf gaat 30 tot 50 jaar mee en kan dan gewoon warmte van de nieuwe bron gebruiken.",
+  html: `<ol class="steps"><li>Koude zone na 30 jaar: straal ± 500–1.200 m.</li><li>Bron gaat ± 30–35 jaar mee.</li><li>Daarna: nieuw doublet vanaf hetzelfde terrein, andere richting.</li></ol>`
+},
+
+/* ---------- stap 6: kosten ---------- */
+{
+  type: "poll",
+  scene: "poll",
   poll: "gas",
-  kicker: "Doe mee",
+  kicker: "Stap 6 · Doe mee",
   title: "Is een warmtenet goedkoper dan gas?",
   who: "David",
   note: "Dan de kosten. Wat denken jullie: betaal je met een warmtenet minder dan nu met gas? Stem op je telefoon. (Wacht tot de meeste stemmen binnen zijn.)",
@@ -155,54 +174,48 @@ window.DIAS = [
 },
 {
   scene: "kosten",
-  kicker: "Het antwoord",
+  kicker: "Stap 6 · Het antwoord",
   title: "Iets duurder dan gas",
   who: "David",
-  note: "Het antwoord: een warmtenet is iets duurder. Met de korting die de gemeenten willen geven betaal je ongeveer 1.950 euro per jaar. Met gas is dat nu ongeveer 1.832 euro.",
+  note: "Het antwoord: een warmtenet is iets duurder. Met de korting die de gemeenten willen geven, het onweigerbaar aanbod, betaal je ongeveer 1.950 euro per jaar. Met gas is dat nu ongeveer 1.832 euro. Dat is zo'n 120 euro per jaar meer, ongeveer 10 euro per maand. Zonder die korting is het bijna 390 euro meer. Wel betaal je met gas ook nog onderhoud en een nieuwe cv-ketel, en als de gasprijs stijgt, wordt gas duurder en het warmtenet straks niet meer.",
   html: `<div class="pollsum" data-pollsum="gas"></div>
-<div class="bignums row"><div><b>€ 1.950</b>warmtenet per jaar</div><div><b>€ 1.832</b>gas per jaar</div></div>`
+<div class="bignums row"><div><b>€ 1.950</b>warmtenet per jaar, met korting</div><div><b>€ 1.832</b>gas per jaar</div></div>
+<p class="small">± € 120 per jaar meer · zonder korting ± € 390 meer</p>`
 },
 {
-  scene: "kosten",
-  kicker: "Wat kost het jou?",
-  title: "± € 10 per maand meer",
+  scene: "regionet",
+  kicker: "Stap 6 · Wat kost het de regio?",
+  title: "€ 21 miljoen per bron",
   who: "David",
-  note: "Wat betekent dat voor een huishouden? Met korting is het ongeveer 118 euro per jaar meer, zo'n 10 euro per maand. Zonder die korting, met het maximumtarief van de ACM, betaal je 2.221 euro: bijna 390 euro meer dan gas. Die korting is dus belangrijk.",
-  html: `<div class="vs"><div class="good"><b>Met korting</b>€ 1.950: ± € 118 per jaar meer dan gas</div><div><b>Zonder korting</b>€ 2.221: ± € 389 per jaar meer</div></div>`
+  note: "Voor de gemeenten is het pas echt duur. Eén bron kost ongeveer 21 miljoen euro, en dan ligt er nog geen warmtenet. Voor één regionaal net kosten de bronnen en de hoofdleiding samen minstens 106 tot 127 miljoen euro. Met de huidige subsidies is het niet rendabel. Daarom vragen de gemeenten het Rijk om 300 tot 400 miljoen euro extra. De bollenbedrijven helpen wel: doordat de bron ook in de zomer draait, verkoop je met dezelfde investering 38 procent meer warmte.",
+  html: `<ul><li>Eén bron: ± € 21 miljoen, zonder warmtenet.</li><li>Regionaal net: bronnen + hoofdleiding ≥ € 106–127 miljoen.</li><li>Nu niet rendabel: gemeenten vragen het Rijk € 300–400 miljoen.</li></ul>`
+},
+
+/* ---------- stap 7: advies ---------- */
+{
+  scene: "advies",
+  kicker: "Stap 7 · Ons antwoord",
+  title: "Ja, als één regionaal net, en met steun van het Rijk",
+  who: "David",
+  note: "Terug naar de drie zuilen. Technisch kan het: de ondergrond is geschikt en drie tot vier bronnen zijn genoeg. Maatschappelijk is het goed: ongeveer 80 procent minder CO2 en veel minder druk op het stroomnet. Maar economisch lukt het alleen met steun van het Rijk.",
+  html: `<ul class="verdicts"><li><b>Technisch</b><span>✓ haalbaar</span></li><li class="warn"><b>Economisch</b><span>! alleen met steun van het Rijk</span></li><li><b>Maatschappelijk</b><span>✓ ± 80% minder CO2, minder druk op het net</span></li></ul>`
 },
 {
   scene: "inzoom",
-  kicker: "Wat kost het de gemeenten?",
-  title: "€ 21 miljoen per bron",
+  kicker: "Stap 7 · Ons advies",
+  title: "Begin klein, groei samen",
   who: "David",
-  note: "Voor de gemeenten is het pas echt duur. Eén bron kost ongeveer 21 miljoen euro. Voor de twee bronnen bij de Leeweg is dat 43 miljoen, en dan ligt er nog geen meter leiding. Met de huidige subsidies is het niet rendabel. Daarom vragen de gemeenten het Rijk om 300 tot 400 miljoen euro extra.",
-  html: `<ul><li>Leeweg, 2 bronnen: ± € 43 miljoen.</li><li>Nu niet rendabel.</li><li>Gemeenten vragen het Rijk € 300–400 miljoen.</li></ul>`
+  note: "Ons advies aan de gemeenten: begin met één bron aan de Leeweg, voor Noordwijk, Noordwijkerhout en de bollenbedrijven, en doe eerst seismisch onderzoek. Sluit daarna Voorhout aan en boor pas dan de tweede bron. Groei zo stap voor stap naar één regionaal net met drie tot vier bronnen, maar alleen als het Rijk meebetaalt. Maak de bollenbedrijven de eerste vaste klanten.",
+  html: `<ol class="steps"><li>Eén bron aan de Leeweg, eerst seismisch onderzoek.</li><li>Voorhout aansluiten, dan pas de tweede bron.</li><li>Groeien naar één regionaal net met 3–4 bronnen, alleen met steun van het Rijk.</li></ol>`
 },
 {
   scene: "advies",
-  kicker: "Ons antwoord",
-  title: "Ja, maar…",
-  who: "David",
-  note: "Dus: is aardwarmte haalbaar? Ja. Het kan technisch, en het scheelt het stroomnet enorm. Maar alleen als het Rijk meebetaalt. Ons advies: begin met één bron bij de Leeweg, maak bollenbedrijven vaste klanten omdat zij ook in de zomer warmte nodig hebben, en ga pas verder als het Rijk meebetaalt.",
-  html: `<div class="vs"><div class="good"><b>Ja</b>Het kan, en het helpt het stroomnet.</div><div><b>Maar</b>Alleen met geld van het Rijk.</div></div>
-<p class="small">Begin met één bron bij de Leeweg, met de bollenbedrijven als vaste klant.</p>`
-},
-{
-  scene: "advies",
-  kicker: "Ons antwoord",
+  kicker: "Stap 7 · Ons advies",
   title: "Is dat niet te riskant?",
   who: "David",
-  note: "Aardwarmte is een groot risico: de boring kan tegenvallen en het kost veel geld. Maar de andere opties zijn ook riskant. Alles elektrisch kost zeven keer zoveel stroom, en het net zit al vol. Een hybride warmtepomp gebruikt nog steeds gas. En niets doen betekent dat de CO2 blijft. De risico's van aardwarmte kun je kleiner maken: het Rijk betaalt via de RNES-garantie mee als een boring mislukt, je begint met één bron, en je doet eerst seismisch onderzoek naar de breuken.",
-  html: `<ul class="verdicts"><li class="warn"><b>Alles elektrisch</b><span>7× meer stroom, net zit vol</span></li><li class="warn"><b>Hybride warmtepomp</b><span>nog steeds gas</span></li><li class="warn"><b>Niets doen</b><span>CO2 blijft</span></li><li><b>Aardwarmte</b><span>risico te verkleinen ↓</span></li></ul>
-<p class="small">RNES-garantie bij een mislukte boring · eerst één bron · eerst seismisch onderzoek</p>`
-},
-{
-  scene: "lagen",
-  kicker: "Lange termijn",
-  title: "En als de bron op is?",
-  who: "David",
-  note: "Een bron gaat niet eeuwig mee. Na 30 tot 40 jaar koelt de laag rond de putten af. Dan kun je vanaf hetzelfde terrein een nieuw doublet boren, in een andere richting, naar een deel van de laag dat nog warm is. De oude plek warmt in ongeveer dezelfde tijd weer op. Het warmtenet zelf gaat 30 tot 50 jaar mee en kan ook warmte van een nieuwe bron gebruiken. De leidingen zijn dus niet weggegooid.",
-  html: `<ol class="steps"><li>Bron gaat ± 30–35 jaar mee.</li><li>Daarna: nieuw doublet vanaf hetzelfde terrein, andere richting.</li><li>Warmtenet gaat 30–50 jaar mee en kan een nieuwe bron gebruiken.</li></ol>`
+  note: "Aardwarmte is een groot risico: een boring kan tegenvallen en het kost veel geld. Maar de andere opties hebben ook risico's. Een warmtepomp in elk huis kost zeven keer zoveel stroom, en het net zit al vol. Zonnepanelen met een batterij lossen de winter niet op. Een hybride warmtepomp gebruikt nog steeds gas. En niets doen betekent dat de CO2 blijft. De risico's van aardwarmte kun je kleiner maken: begin met één bron, doe eerst seismisch onderzoek, en de RNES-garantie van het Rijk betaalt mee als een boring mislukt.",
+  html: `<ul class="verdicts"><li class="warn"><b>Warmtepomp in elk huis</b><span>7× meer stroom, net zit vol</span></li><li class="warn"><b>Zon + batterij</b><span>lost de winter niet op</span></li><li class="warn"><b>Hybride of niets doen</b><span>nog steeds gas en CO2</span></li><li><b>Aardwarmte</b><span>risico te verkleinen ↓</span></li></ul>
+<p class="small">Eerst één bron · eerst seismisch onderzoek · RNES-garantie bij een mislukte boring</p>`
 },
 {
   type: "end",
@@ -210,8 +223,8 @@ window.DIAS = [
   kicker: "Bedankt!",
   title: "Lees verder op je telefoon",
   who: "allen",
-  note: "Dank jullie wel! Je telefoon gaat zo naar onze site. Daar staan het hele verslag, de poster en alle bronnen. Zijn er nog vragen? (Kies daarna 'Einde' op de presentatortelefoon.)",
-  html: `<ul><li>Het hele verslag</li><li>De poster</li><li>Alle 52 bronnen</li></ul>
+  note: "Dank jullie wel! Je telefoon gaat zo naar onze site. Daar staan het verhaal in zeven stappen, het hele verslag, de posters en alle bronnen. Zijn er nog vragen? (Kies daarna 'Einde' op de presentatortelefoon.)",
+  html: `<ul><li>Het verhaal in 7 stappen</li><li>Het hele verslag en de posters</li><li>Alle bronnen</li></ul>
 <p class="small">dvdl009.github.io/aardwarmte</p>`
 }
 ];

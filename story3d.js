@@ -16,13 +16,16 @@
    volg      – de doorsnede, de camera volgt een druppel warm water omhoog naar de huizen
    lagen     – blok ondergrond: wat een goede laag nodig heeft (deksel, zandsteen, warmte, breuken)
    leeweg    – hetzelfde blok met de gegevens van de oude put aan de Leeweg
+   regionet  – kaart met één hoofdleiding langs alle kernen
+   zon       – staven: warmtepomp tegenover zonnepanelen, winter en zomer
+   maand     – warmtevraag per maand tegenover één bron
    none      – geen 3D (live.html verbergt dan het podium)
    ===================================================================== */
 (function(){
 "use strict";
 
 /* Kaartgegevens: CBS-gemeentegrenzen (vereenvoudigd), km ten opzichte van de Leeweg; x = oost, y = noord */
-const MAP={"gem":{"Hillegom":[[8.09,5.02],[7.25,4.24],[5.21,5.97],[6.68,8.48],[8.04,9.47],[9.96,8.91],[9.31,7.77],[8.71,6.16],[8.09,5.02]],"Lisse":[[6.03,-0.12],[5.9,-1.21],[3.95,0.34],[4.07,1.6],[3.19,2.47],[5.21,5.97],[7.25,4.24],[6.63,0.61],[6.03,-0.12]],"Noordwijk":[[1.97,1.36],[0.7,-0.0],[-0.24,-1.83],[-1.89,-2.76],[-2.08,-2.5],[-3.6,-1.77],[-4.24,-1.35],[-1.32,3.89],[1.95,10.64],[6.68,8.48],[3.19,2.47],[1.97,1.36]],"Teylingen":[[1.55,-5.11],[1.71,-4.1],[1.66,-3.48],[0.74,-3.09],[-0.31,-3.58],[-0.83,-2.81],[0.7,-0.0],[2.35,1.77],[3.19,2.47],[4.07,1.6],[3.95,0.34],[5.9,-1.21],[6.21,-1.59],[6.27,-3.62],[5.39,-3.78],[4.77,-5.88],[2.28,-5.38],[2.0,-5.41],[1.55,-5.11]]},"kern":{"Noordwijk":[-2.06,0.87],"Noordwijkerhout":[1.8,3.27],"De Zilk":[5.25,7.12],"Voorhout":[1.19,-1.17],"Sassenheim":[3.8,-0.87],"Lisse":[6.16,2.77],"Hillegom":[7.98,6.43]},"zoom":[[0.05,-1.0],[-0.39,-0.92],[-2.54,-0.01],[-2.84,0.25],[-3.02,0.59],[-2.29,1.91],[1.36,4.17],[1.83,4.27],[2.21,4.18],[2.52,3.96],[2.73,3.63],[2.8,3.25],[2.72,2.88],[1.99,1.54],[0.61,0.07],[0.05,-1.0]]};
+const MAP={"gem":{"Hillegom":[[8.09,5.02],[7.25,4.24],[5.21,5.97],[6.68,8.48],[8.04,9.47],[9.96,8.91],[9.31,7.77],[8.71,6.16],[8.09,5.02]],"Lisse":[[6.03,-0.12],[5.9,-1.21],[3.95,0.34],[4.07,1.6],[3.19,2.47],[5.21,5.97],[7.25,4.24],[6.63,0.61],[6.03,-0.12]],"Noordwijk":[[1.97,1.36],[0.7,-0.0],[-0.24,-1.83],[-1.89,-2.76],[-2.08,-2.5],[-3.6,-1.77],[-4.24,-1.35],[-1.32,3.89],[1.95,10.64],[6.68,8.48],[3.19,2.47],[1.97,1.36]],"Teylingen":[[1.55,-5.11],[1.71,-4.1],[1.66,-3.48],[0.74,-3.09],[-0.31,-3.58],[-0.83,-2.81],[0.7,-0.0],[2.35,1.77],[3.19,2.47],[4.07,1.6],[3.95,0.34],[5.9,-1.21],[6.21,-1.59],[6.27,-3.62],[5.39,-3.78],[4.77,-5.88],[2.28,-5.38],[2.0,-5.41],[1.55,-5.11]]},"kern":{"Noordwijk":[-2.06,0.87],"Noordwijkerhout":[1.8,3.27],"De Zilk":[5.25,7.12],"Voorhout":[1.19,-1.17],"Sassenheim":[3.8,-0.87],"Lisse":[6.16,2.77],"Hillegom":[7.98,6.43],"Warmond":[2.43,-3.91]},"zoom":[[0.05,-1.0],[-0.39,-0.92],[-2.54,-0.01],[-2.84,0.25],[-3.02,0.59],[-2.29,1.91],[1.36,4.17],[1.83,4.27],[2.21,4.18],[2.52,3.96],[2.73,3.63],[2.8,3.25],[2.72,2.88],[1.99,1.54],[0.61,0.07],[0.05,-1.0]]};
 
 const C={hot:0xd9480f,cold:0x1971c2,green:0x00a54b,dgreen:0x2e7d32,lgreen:0x66bb6a,blue:0x3b78e7,amber:0xe8a317,grey:0xb8b2a6,
   house:0xe3d3b0,roof:0x9a4b33,grass:0x9cc79a,white:0xf4f1ea,dark:0x2b2b2b,coin:0xd9a930,coin2:0x9a958a,sea:0x9ec9de,land:0xe9e2d0};
@@ -67,7 +70,7 @@ world(name,offset){const g=new THREE.Group();g.position.set(offset,0,0);g.visibl
 
 /* ---------- alle werelden bouwen ---------- */
 build(){
-  this.buildDoublet();this.buildNet();this.buildPillars();this.buildPower();this.buildMap();this.buildPoll();this.buildCost();this.buildLayers();
+  this.buildDoublet();this.buildNet();this.buildPillars();this.buildPower();this.buildMap();this.buildPoll();this.buildCost();this.buildLayers();this.buildSun();this.buildMonth();
 }
 
 buildDoublet(){
@@ -180,10 +183,10 @@ buildMap(){
     const m=new THREE.Mesh(geo,this.mat(cols[n]));m.rotation.x=-Math.PI/2;g.add(m);
     const ed=new THREE.LineSegments(new THREE.EdgesGeometry(geo,30),new THREE.LineBasicMaterial({color:0x5c7a62}));ed.rotation.x=-Math.PI/2;g.add(ed);
     const cx=pts.reduce((a,p)=>a+p[0],0)/pts.length,cy=pts.reduce((a,p)=>a+p[1],0)/pts.length;
-    this.label(w,n.toUpperCase(),[cx*S,1.2,-cy*S],"gem",()=>this.state==="kaart")});
+    this.label(w,n.toUpperCase(),[cx*S,1.2,-cy*S],"gem",()=>this.state==="kaart"||this.state==="regionet")});
   Object.entries(MAP.kern).forEach(([n,p])=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.35,0.6,16),this.mat(C.dark));m.position.copy(P(p,0.8));g.add(m);
     const near=n==="Noordwijk"||n==="Noordwijkerhout";
-    this.label(w,n,P(p,1.6).toArray(),near?"kern near":"kern",near?null:()=>this.state==="kaart")});
+    this.label(w,n,P(p,1.6).toArray(),near?"kern near":"kern",near?null:()=>this.state==="kaart"||this.state==="regionet")});
   // bron
   const pin=new THREE.Mesh(new THREE.ConeGeometry(0.6,2.2,16),this.mat(C.hot));pin.rotation.x=Math.PI;pin.position.set(0,2,0);g.add(pin);
   const ball=new THREE.Mesh(new THREE.SphereGeometry(0.75,16,12),this.mat(C.hot));ball.position.set(0,3.4,0);g.add(ball);
@@ -198,9 +201,14 @@ buildMap(){
   this.flow(z,p1,5,C.hot,0xff8a50,0.25,0.2,w.flows);this.flow(z,p2,7,C.hot,0xff8a50,0.18,0.2,w.flows);
   this.label(w,"± 2 km",P([-1.1,0.6],1.6).toArray(),"dist",()=>this.state==="inzoom");
   this.label(w,"± 4 km",P([1.1,1.9],1.6).toArray(),"dist",()=>this.state==="inzoom");
-  this.label(w,"<b>2 bronnen van 20 MW</b><br><span class=m>16.200 woningen + 40 bollenbedrijven</span>",P([0.9,-0.7],3.2).toArray(),"",()=>this.state==="inzoom");
-  w.views={kaart:{p:[6.6,40,22],t:[6.6,0,-4.5]},inzoom:{p:[2.6,12,9],t:[-0.2,0,-3.4]}};
-  w.set=state=>{z.visible=state==="inzoom"};
+  this.label(w,"<b>Eerste bron: 20 MW</b><br><span class=m>16.200 woningen + 40 bollenbedrijven</span>",P([0.9,-0.7],3.2).toArray(),"",()=>this.state==="inzoom");
+  // regionet: één hoofdleiding langs alle kernen (kortste net, hemelsbreed)
+  const rn=new THREE.Group();g.add(rn);const K=MAP.kern,L0=[0,0];
+  [[L0,K.Voorhout],[L0,K.Noordwijk],[K.Voorhout,K.Sassenheim],[K.Voorhout,K.Warmond],[L0,K.Noordwijkerhout],[K.Sassenheim,K.Lisse],[K.Lisse,K.Hillegom],[K.Hillegom,K["De Zilk"]]].forEach(([a,b],i)=>{
+    const A=P(a,0.85),B=P(b,0.85),M=A.clone().lerp(B,0.5);M.y=1.05;const cv=this.tube(rn,[A.toArray(),M.toArray(),B.toArray()],0xc92a2a,0.32);this.flow(rn,cv,4,0xffd8a8,0xffd8a8,0.22,0.3,w.flows)});
+  this.label(w,"<b>Eén net, 3–4 bronnen</b><br><span class=m>± 24 km hoofdleiding</span>",P([4.4,9.6],2).toArray(),"",()=>this.state==="regionet");
+  w.views={kaart:{p:[6.6,40,22],t:[6.6,0,-4.5]},net:{p:[7,30,14],t:[6.2,0,-4]},inzoom:{p:[2.6,12,9],t:[-0.2,0,-3.4]}};
+  w.set=state=>{z.visible=state==="inzoom";rn.visible=state==="regionet"};
 }
 
 buildPoll(){
@@ -228,6 +236,46 @@ buildCost(){
   w.upd=dt=>{w.drop+=dt;w.coins.forEach((m,i)=>{const k=i%20,start=k*0.06+(i>=20?0.3:0);const t=Math.max(0,Math.min(1,(w.drop-start)/0.35));m.position.y=m.userData.y+(1-easeInOut(t))*14;m.visible=t>0})};
   w.enter=()=>{w.drop=0};
   w.views={main:{p:[0,9,26],t:[0,5,0]}};
+}
+
+buildSun(){
+  const w=this.world("sun",2400),g=w.g;
+  this.box(g,28,0.4,12,0xddd5c3,0,-0.2,0);
+  const k=0.006;
+  const bars=[[-8.2,1510,C.blue],[-3.8,296,C.amber],[3.8,473,C.blue],[8.2,2763,C.amber]];
+  w.bars=bars.map(([x,v,c])=>({m:this.box(g,3.6,1,3.6,c,x,0.5,0),h:v*k}));
+  this.label(w,"<b>1.510 kWh</b><br><span class=m>warmtepomp</span>",[-8.2,1510*k+1.6,0],"num");
+  this.label(w,"<b>296 kWh</b><br><span class=m>zonnepanelen</span>",[-3.8,296*k+1.6,0],"num");
+  this.label(w,"<b>473 kWh</b><br><span class=m>warmtepomp</span>",[3.8,473*k+1.6,0],"num");
+  this.label(w,"<b>2.763 kWh</b><br><span class=m>zonnepanelen</span>",[8.2,2763*k+1.6,0],"num");
+  this.label(w,"<b>Winter</b> <span class=m>nov–feb</span>",[-6,-0.6,4],"");
+  this.label(w,"<b>Zomer</b> <span class=m>apr–sep</span>",[6,-0.6,4],"");
+  this.label(w,"<span class=m>één huis in Noordwijk, 10 zonnepanelen</span>",[0,-2.2,5],"depth");
+  w.grow=0;
+  w.upd=dt=>{w.grow=Math.min(1,w.grow+dt*0.6);const e=easeInOut(w.grow);w.bars.forEach(b=>{const h=Math.max(0.01,b.h*e);b.m.scale.y=h;b.m.position.y=h/2})};
+  w.enter=()=>{w.grow=0};
+  w.views={main:{p:[4,10,34],t:[0,7,0]}};
+}
+
+buildMonth(){
+  const w=this.world("month",2700),g=w.g;
+  this.box(g,30,0.4,8,0xddd5c3,0,-0.2,0);
+  const won=[73.3,59.6,59.6,36.7,13.7,4.6,4.6,4.6,9.2,22.9,55.0,73.3],bol=[5.1,5.1,5.1,2.6,0,0,17,17,10.2,10.2,2.6,5.1],cap=[53.6,48.4,53.6,51.8,53.6,51.8,53.6,53.6,51.8,53.6,51.8,53.6];
+  const k=0.16,M=["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+  w.bars=[];
+  won.forEach((v,i)=>{const x=-12.65+i*2.3;
+    w.bars.push({m:this.box(g,1.7,1,1.7,0x7b5cc4,x,0.5,0),h:v*k,base:0});
+    if(bol[i])w.bars.push({m:this.box(g,1.7,1,1.7,0xc0562f,x,0.5,0),h:bol[i]*k,base:v*k});
+    this.label(w,`<span class=m>${M[i]}</span>`,[x,-0.6,1.6],"depth")});
+  const pts=[];cap.forEach((c,i)=>{const x=-12.65+i*2.3;pts.push(new THREE.Vector3(x-1.15,c*k,1.2),new THREE.Vector3(x+1.15,c*k,1.2))});
+  const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color:0x222222,dashSize:0.5,gapSize:0.3}));ln.computeLineDistances();g.add(ln);
+  this.label(w,"<b>Eén bron: 20 MW</b>",[11,53.6*k+1.4,1.2],"num");
+  this.label(w,"<b>Woningen</b>",[-12.6,73.3*k+2.4,0],"");
+  this.label(w,"<b>Bollen</b><br><span class=m>vullen de zomer</span>",[2.3,22*k+2.2,0],"hot");
+  w.grow=0;
+  w.upd=dt=>{w.grow=Math.min(1,w.grow+dt*0.6);const e=easeInOut(w.grow);w.bars.forEach(b=>{const h=Math.max(0.01,b.h*e);b.m.scale.y=h;b.m.position.y=b.base*e+h/2})};
+  w.enter=()=>{w.grow=0};
+  w.views={main:{p:[2,9,30],t:[0,6,0]}};
 }
 
 buildLayers(){
@@ -262,7 +310,7 @@ buildLayers(){
 /* ---------- naar een dia ---------- */
 go(scene,opts={}){
   const map={doublet:["doublet","overview"],uitleg:["doublet","explain"],draai:["doublet","free"],net:["net","main"],vraag:["pillars","main"],advies:["pillars","main"],
-    stroom:["power","main"],volg:["doublet","follow"],lagen:["layers","main"],leeweg:["layers","main"],kaart:["map","kaart"],inzoom:["map","inzoom"],poll:["poll","main"],kosten:["cost","main"],einde:["doublet","overview"]};
+    stroom:["power","main"],volg:["doublet","follow"],lagen:["layers","main"],leeweg:["layers","main"],kaart:["map","kaart"],regionet:["map","net"],zon:["sun","main"],maand:["month","main"],inzoom:["map","inzoom"],poll:["poll","main"],kosten:["cost","main"],einde:["doublet","overview"]};
   const [wn,vn]=map[scene]||map.doublet;const w=this.worlds[wn],v=w.views[vn];
   const prev=this.active;
   this.follow=scene==="volg"?{k:0}:null;

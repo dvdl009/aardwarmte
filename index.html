@@ -83,6 +83,27 @@ main{padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 32px)}
 .steps b{display:block}
 .steps span{color:var(--muted);font-size:.92rem}
 section.blk{margin-top:32px}
+.hq{margin-top:22px;border-left:4px solid var(--brand);padding:4px 0 4px 14px}
+.hq p{font-size:1.02rem;font-style:italic}
+.story{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px;counter-reset:st}
+.story>li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.story .sh{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
+.story .sn{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+.story h3{font-size:1.2rem}
+.story p{color:var(--fg);font-size:.98rem;max-width:62ch}
+.story .key{display:flex;flex-wrap:wrap;gap:8px 18px}
+.story .key div{display:grid}
+.story .key b{font-family:var(--display);font-weight:800;font-size:1.6rem;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1}
+.story .key span{font-size:.78rem;color:var(--muted);max-width:22ch}
+.story figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.story figure img{display:block;width:100%;height:auto}
+.story figcaption{font-size:.78rem;color:var(--muted);padding:6px 10px;background:var(--surface);border-top:1px solid var(--line)}
+.story .figs{display:grid;gap:10px}
+@media (max-width:560px){.stats{grid-template-columns:1fr}.stat{grid-template-columns:7.2em minmax(0,1fr);align-items:center;gap:10px}.stat b{font-size:1.35rem;white-space:nowrap}.stat span{font-size:.82rem}
+.story .key{display:grid;grid-template-columns:1fr 1fr;gap:10px}.story .key b{font-size:1.35rem}}
+@media (min-width:640px){.story .figs.two{grid-template-columns:1fr 1fr}}
+.story .go{justify-self:start;font:500 .85rem var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:36px}
+.story .go:hover{border-color:var(--accent)}
 section.blk h2{font-size:1.4rem}
 .team{display:grid;gap:8px;margin-top:12px}
 .member{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
@@ -154,6 +175,10 @@ tr.sum td{font-weight:600;border-top:2px solid var(--fg)}
 /* poster */
 .posterbox{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px}
 .posterbox img{display:block;width:100%;height:auto;border-radius:4px}
+.posters{display:grid;gap:16px}
+.posterbox{margin:0}
+.posterbox figcaption{font-size:.85rem;color:var(--muted);padding:8px 2px 0}
+@media (min-width:900px){.posters{grid-template-columns:0.72fr 1fr;align-items:start}}
 .placeholder{aspect-ratio:1/1.414;max-width:100%;display:grid;place-items:center;text-align:center;color:var(--muted);padding:20px;background:repeating-linear-gradient(135deg,transparent 0 14px,var(--tint) 14px 28px);border-radius:6px;font-size:.9rem}
 
 /* bronnen */
@@ -300,28 +325,73 @@ footer{color:var(--muted);font-size:.8rem;padding-block:28px}
     <div class="wrap">
       <div class="answer">
         <span class="eyebrow">Ons antwoord in het kort</span>
-        <h2 id="shortAnswer">Ja, maar stap voor stap: technisch haalbaar en goed voor de regio, maar alleen betaalbaar met extra steun van het Rijk.</h2>
+        <h2 id="shortAnswer">Ja, als één regionaal warmtenet dat stap voor stap groeit. Technisch kan het en het ontlast het stroomnet, maar zonder extra steun van het Rijk is het nu niet betaalbaar.</h2>
       </div>
       <div class="stats">
-        <div class="stat"><b>2,4 mln</b><span>GJ warmte per jaar nodig in de Bollenstreek</span></div>
-        <div class="stat"><b>16.200</b><span>woningen in Noordwijk en Noordwijkerhout</span></div>
-        <div class="stat"><b>34 → 4,9</b><span>MW extra stroom: warmtepompen tegenover aardwarmte</span></div>
+        <div class="stat"><b>3–4</b><span>bronnen genoeg voor woningen en bollenbedrijven (de studie rekent met 5–6)</span></div>
+        <div class="stat"><b>34 → 4,9</b><span>MW extra stroom op een koude dag: warmtepompen tegenover aardwarmte</span></div>
+        <div class="stat"><b>€ 200–600</b><span>per woning goedkoper met één regionaal net</span></div>
       </div>
       <div class="cta">
         <a class="btn primary" href="#onderzoek">Lees ons onderzoek</a>
-        <a class="btn line" href="#dias" id="deckCta">Presentatie terugkijken</a>
         <a class="btn line" href="live.html">Live meekijken</a>
         <a class="btn line" href="#poster">Bekijk de poster</a>
+        <a class="btn line" href="#dias" id="deckCta">Presentatie terugkijken</a>
+      </div>
+
+      <div class="hq">
+        <span class="eyebrow">Onze hoofdvraag</span>
+        <p>In hoeverre is aardwarmte een technisch, economisch en maatschappelijk haalbare oplossing voor het verduurzamen van bestaande woonwijken en bollenbedrijven in de Bollenstreek, rekening houdend met de beperkingen van het elektriciteitsnet?</p>
       </div>
 
       <section class="blk">
-        <h2>Wat we hebben gedaan</h2>
-        <ol class="steps">
-          <li><span class="n">01</span><div><b>Uitgezocht hoe aardwarmte werkt</b><span>Met een bezoek aan de TU Delft, die zelf een aardwarmteput op de campus heeft.</span></div></li>
-          <li><span class="n">02</span><div><b>Naar netcongestie gekeken</b><span>Hoeveel stroom aardwarmte vraagt, vergeleken met een warmtepomp in elk huis.</span></div></li>
-          <li><span class="n">03</span><div><b>De hele Bollenstreek bekeken</b><span>Warmtevraag, ondergrond en hoeveel bronnen er nodig zijn.</span></div></li>
-          <li><span class="n">04</span><div><b>Ingezoomd op de Leeweg</b><span>Met Noordwijk en Noordwijkerhout als afnemers: bodem, warmtevraag en toepassingen.</span></div></li>
-          <li><span class="n">05</span><div><b>De kosten uitgerekend en advies gegeven</b><span>Voor de gemeenten Hillegom, Lisse, Teylingen en Noordwijk.</span></div></li>
+        <h2>Het verhaal in zeven stappen</h2>
+        <ol class="story">
+          <li>
+            <div class="sh"><span class="sn">01</span><h3>Het probleem: van het gas af, maar het stroomnet zit vol</h3></div>
+            <p>De gemeenten Hillegom, Lisse, Teylingen en Noordwijk willen woningen en bollenbedrijven van het aardgas af halen. Maar het stroomnet in de regio zit vol, en een warmtepomp in elk huis vraagt juist veel extra stroom. Kan warmte uit de diepte een uitweg zijn?</p>
+            <button class="go" type="button" data-open="1">Lees de inleiding →</button>
+          </li>
+          <li>
+            <div class="sh"><span class="sn">02</span><h3>Hoe werkt aardwarmte?</h3></div>
+            <p>Warm water van 2 tot 3 kilometer diep wordt opgepompt, geeft zijn warmte af aan een warmtenet van ongeveer 70 °C en gaat afgekoeld terug de grond in. Twee putten samen heten een doublet.</p>
+            <figure><img src="img/figuur1-doublet.png" alt="Doorsnede van een aardwarmtedoublet met productieput, injectieput en warmtenet" loading="lazy"><figcaption>Figuur 1. Een aardwarmtedoublet.</figcaption></figure>
+            <button class="go" type="button" data-open="2">Bekijk het 3D-model in hoofdstuk 2 →</button>
+          </li>
+          <li>
+            <div class="sh"><span class="sn">03</span><h3>Aardwarmte spaart het stroomnet</h3></div>
+            <div class="key"><div><b>34 MW</b><span>extra stroom met warmtepompen (Noordwijk en Noordwijkerhout, koude dag)</span></div><div><b>4,3–4,9 MW</b><span>met aardwarmte</span></div></div>
+            <p>Zonnepanelen met een thuisbatterij lossen dat niet op: in de winter leveren ze maar een vijfde van de stroom die een warmtepomp dan vraagt.</p>
+            <div class="figs two">
+              <figure><img src="img/figuur2-stroomvraag.png" alt="Staafdiagram: warmtepompen ongeveer 34 MW, aardwarmte 4,3 tot 4,9 MW" loading="lazy"><figcaption>Figuur 2. Extra stroomvraag op een koude dag.</figcaption></figure>
+              <figure><img src="img/figuur3-zon-warmtepomp.png" alt="Per maand: stroom van een warmtepomp tegenover zonnestroom; in de winter een groot tekort" loading="lazy"><figcaption>Figuur 3. Zonnestroom en warmtepomp per maand.</figcaption></figure>
+            </div>
+            <button class="go" type="button" data-open="4">Lees hoofdstuk 4 →</button>
+          </li>
+          <li>
+            <div class="sh"><span class="sn">04</span><h3>De hele Bollenstreek: één regionaal net</h3></div>
+            <div class="key"><div><b>3–4</b><span>bronnen voor woningen en bollenbedrijven</span></div><div><b>± 90%</b><span>van de bronnen wordt gebruikt (per gemeente 53–61%)</span></div><div><b>€ 200–600</b><span>per woning goedkoper dan een net per gemeente</span></div></div>
+            <p>Met het echte gasverbruik per woonplaats rekenden we twee manieren uit: elke gemeente een eigen net, of één net door de hele regio. In één net vullen de bronnen elkaar aan, dus zijn er één tot twee bronnen minder nodig.</p>
+            <figure><img src="img/figuur5-regionaal-net.png" alt="Kaart van de Bollenstreek met één hoofdleiding langs alle kernen vanaf de Leeweg" loading="lazy"><figcaption>Figuur 5. Eén hoofdleiding langs alle kernen.</figcaption></figure>
+            <button class="go" type="button" data-open="5.1">Lees hoofdstuk 5.1 →</button>
+          </li>
+          <li>
+            <div class="sh"><span class="sn">05</span><h3>Ingezoomd: de eerste bron aan de Leeweg</h3></div>
+            <p>Bij de Leeweg in Noordwijk is al geboord, de grond is vrij en er liggen al plannen. Per maand bekeken levert één bron 71 tot 83 procent van de warmte voor Noordwijk en Noordwijkerhout. In de zomer houden de bollenbedrijven de bron aan het draaien; in mei en juni draait hij weinig.</p>
+            <figure><img src="img/figuur7-vraag-per-maand.png" alt="Warmtevraag per maand van woningen en bollenbedrijven tegenover wat één bron kan leveren" loading="lazy"><figcaption>Figuur 7. Warmtevraag per maand tegenover één bron van 20 MW.</figcaption></figure>
+            <button class="go" type="button" data-open="5.2">Lees hoofdstuk 5.2 →</button>
+          </li>
+          <li>
+            <div class="sh"><span class="sn">06</span><h3>Wat kost het?</h3></div>
+            <div class="key"><div><b>€ 21 mln</b><span>voor één doublet, zonder warmtenet</span></div><div><b>± € 1.950</b><span>per jaar voor een bewoner, zo'n € 120 meer dan met gas</span></div></div>
+            <p>Bijna al het geld zit vooraf in het boren en de leidingen. Ook met de huidige subsidies is het project nu niet rendabel. Bollenbedrijven helpen, omdat de bron door hen meer uren per jaar draait.</p>
+            <button class="go" type="button" data-open="6">Lees hoofdstuk 6 →</button>
+          </li>
+          <li>
+            <div class="sh"><span class="sn">07</span><h3>Ons advies: begin klein, groei samen</h3></div>
+            <p>Begin met één bron aan de Leeweg voor Noordwijk, Noordwijkerhout en de bollenbedrijven. Sluit daarna Voorhout aan en boor pas dan de tweede bron. Groei stap voor stap naar één regionaal net met drie tot vier bronnen, en alleen als het Rijk meebetaalt en garanties geeft.</p>
+            <button class="go" type="button" data-open="9">Lees ons advies →</button>
+          </li>
         </ol>
       </section>
 
@@ -355,10 +425,13 @@ footer{color:var(--muted);font-size:.8rem;padding-block:28px}
     <div class="wrap">
       <div class="pagehead">
         <span class="eyebrow">Posterpresentatie · 1 december 2026</span>
-        <h1>Onze poster</h1>
-        <p style="color:var(--muted);font-size:.95rem">Tik op de poster om hem groot te openen en in te zoomen.</p>
+        <h1>Onze posters</h1>
+        <p style="color:var(--muted);font-size:.95rem">Twee versies op A1: staand en liggend. Tik op een poster om hem groot te openen en in te zoomen.</p>
       </div>
-      <div class="posterbox" id="posterbox"></div>
+      <div class="posters">
+        <figure class="posterbox"><a href="poster-staand.jpg" target="_blank" rel="noopener"><img src="poster-staand.jpg" alt="Staande poster: Kan de Bollenstreek verwarmen met aardwarmte?" loading="lazy"></a><figcaption>Staand (A1) · <a href="poster-A1-staand.pdf" target="_blank" rel="noopener">pdf om te printen</a></figcaption></figure>
+        <figure class="posterbox"><a href="poster-liggend.jpg" target="_blank" rel="noopener"><img src="poster-liggend.jpg" alt="Liggende poster: Kan de Bollenstreek verwarmen met aardwarmte?" loading="lazy"></a><figcaption>Liggend (A1) · <a href="poster-A1-liggend.pdf" target="_blank" rel="noopener">pdf om te printen</a></figcaption></figure>
+      </div>
     </div>
   </div>
 
@@ -759,7 +832,7 @@ function applyVerslag(data){
   renderChapters();renderCat();
   if(data.final)$("#draft").hidden=true;
 }
-fetch(CONFIG.verslagFile,{cache:"no-store"}).then(r=>r.ok?r.json():null).then(applyVerslag).catch(()=>{});
+fetch(CONFIG.verslagFile,{cache:"no-store"}).then(r=>r.ok?r.json():null).then(applyVerslag).catch(()=>{}).finally(()=>{window.__vl=true;if(location.hash==="#onderzoek")openPending()});
 
 /* download */
 const dl=$("#dl");
@@ -767,11 +840,7 @@ if(CONFIG.pdfFile){dl.href=CONFIG.pdfFile;dl.target="_blank";dl.rel="noopener"}
 else if(CONFIG.googleDocId){dl.href=`https://docs.google.com/document/d/${CONFIG.googleDocId}/export?format=pdf`;dl.target="_blank";dl.rel="noopener"}
 else{dl.setAttribute("aria-disabled","true");dl.textContent="Download volgt binnenkort";dl.addEventListener("click",e=>e.preventDefault())}
 
-/* poster */
-(function(){const box=$("#posterbox");const img=new Image();img.alt="Poster: Kan de Bollenstreek verwarmen met aardwarmte?";
-  img.onload=()=>{const a=document.createElement("a");a.href=CONFIG.posterFile;a.target="_blank";a.rel="noopener";a.appendChild(img);box.replaceChildren(a)};
-  img.onerror=()=>{box.innerHTML=`<div class="placeholder">De poster komt hier binnenkort.<br>Zet het bestand <b>${esc(CONFIG.posterFile)}</b> naast index.html.</div>`};
-  img.src=CONFIG.posterFile;})();
+
 
 /* ================== DIA'S OM TERUG TE KIJKEN ================== */
 const SLIDES=(window.DIAS||[]).map(d=>({cover:d.type==="cover"||d.type==="end",kicker:d.kicker,title:d.title,
@@ -791,10 +860,15 @@ document.addEventListener("touchend",e=>{if(tx===null)return;const dx=e.changedT
 
 /* navigatie */
 const views=["start","onderzoek","poster","bronnen","dias"];
+let pendingChap=null;
+document.addEventListener("click",e=>{const b=e.target.closest("[data-open]");if(!b)return;pendingChap=b.dataset.open;if(location.hash==="#onderzoek")openPending();else location.hash="onderzoek"});
+function openPending(){if(pendingChap==null)return;const i=CHAPTERS.findIndex(c=>String(c.num)===pendingChap);pendingChap=null;if(i<0)return;
+  const art=$("#ch-"+i);if(!art)return;setChap(art,true);requestAnimationFrame(()=>art.scrollIntoView({block:"start"}));art.querySelector(".head").focus({preventScroll:true})}
 function route(){const h=location.hash.slice(1);const v=views.includes(h)?h:"start";
   views.forEach(x=>$("#v-"+x).hidden=x!==v);
   document.querySelectorAll("[data-p]").forEach(a=>a.dataset.p===v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
   window.scrollTo(0,0);
+  if(v==="onderzoek"&&window.__vl)openPending();
   if(v==="dias")renderDeck();}
 addEventListener("hashchange",route);route();
 </script>
