@@ -29,18 +29,18 @@ window.DIAS = [
   kicker: "Northgo College · O&O · klas V4",
   title: "Warmte uit de diepte",
   who: "David",
-  note: "Welkom! Wij zijn Aimée, David en Lauren. Voor de gemeenten Hillegom, Lisse, Teylingen en Noordwijk onderzochten we of aardwarmte een oplossing is voor bestaande woonwijken en bollenbedrijven in de Bollenstreek. Op je telefoon zie je steeds een 3D-beeld dat je mag ronddraaien. Heb je geen telefoon? Dan kun je op de poster meelezen.",
+  note: "Welkom! Wij zijn David, Aimée en Lauren. Voor de gemeenten Hillegom, Lisse, Teylingen en Noordwijk onderzochten we of aardwarmte een oplossing is voor bestaande woonwijken en bollenbedrijven in de Bollenstreek. Op je telefoon zie je steeds een 3D-beeld dat je mag ronddraaien. Heb je geen telefoon? Dan kun je ook gewoon op de poster meekijken.",
   html: `<p>Aardwarmte voor bestaande woonwijken en bollenbedrijven in de Bollenstreek</p>
 <p class="small">Aimée Tolk, David van der Linden en Lauren Timmer · opdrachtgever Lynn Baggen</p>`
 },
 
 /* ---------- het probleem ---------- */
 {
-  scene: "net",
+  scene: "weegschaal",
   kicker: "Het probleem",
   title: "Van het gas af, maar het stroomnet zit vol",
   who: "Lauren",
-  note: "De vier gemeenten willen hun woningen en bollenbedrijven van het aardgas af halen en minder CO2 uitstoten. Maar het elektriciteitsnet in de regio zit vol. Tegelijk is er een groot woningtekort, dus er moeten juist meer huizen bij. En die moeten ook allemaal verwarmd worden. Een warmtepomp in elk huis kost veel stroom, en die is er niet.",
+  note: "De gemeenten willen dat woningen en bollenbedrijven stoppen met aardgas, zodat er minder CO2 wordt uitgestoten. De meest gebruikte vervanger is de warmtepomp, maar die werkt op stroom. En het stroomnet in de Bollenstreek is nu al te vol. Daarom zochten wij naar een manier om te verwarmen zonder het net verder te belasten.",
   html: `<ul><li>Woningen en bollenbedrijven moeten van het gas af.</li><li>Het stroomnet in de regio zit vol.</li><li>Er moeten juist meer woningen bij.</li></ul>`
 },
 {
@@ -48,7 +48,7 @@ window.DIAS = [
   kicker: "Onze hoofdvraag",
   title: "Is aardwarmte haalbaar voor de Bollenstreek?",
   who: "Lauren",
-  note: "Daarom was onze hoofdvraag: in hoeverre is aardwarmte een technisch, economisch en maatschappelijk haalbare oplossing voor bestaande woonwijken en bollenbedrijven in de Bollenstreek, rekening houdend met het volle stroomnet? Aan het eind komen we terug bij deze drie zuilen.",
+  note: "Onze hoofdvraag was: in hoeverre is aardwarmte een technisch, economisch en maatschappelijk haalbare oplossing voor bestaande woonwijken en bollenbedrijven in de Bollenstreek, rekening houdend met het volle stroomnet? Aan het eind komen we terug bij deze drie zuilen.",
   html: `<ul class="verdicts"><li><b>Technisch</b><span>kan het?</span></li><li><b>Economisch</b><span>is het te betalen?</span></li><li><b>Maatschappelijk</b><span>is het goed voor de regio?</span></li></ul>`
 },
 
@@ -58,7 +58,7 @@ window.DIAS = [
   kicker: "Wat is aardwarmte?",
   title: "Hoe dieper, hoe warmer",
   who: "Lauren",
-  note: "Eerst kort: wat is aardwarmte? Het is warmte van dieper dan 500 meter. Hoe dieper, hoe warmer: in Nederland ongeveer 30 graden per kilometer. Op 2 tot 3 kilometer is het water dus 70 tot 90 graden. Dat water zit niet in een meer, maar in de kleine holtes van zandsteen. Daarboven moet een dichte laag kleisteen liggen, als een deksel.",
+  note: "Eerst kort: wat is aardwarmte? Aardwarmte is warmte van dieper dan 500 meter. Hoe dieper, hoe warmer: in Nederland ongeveer 30 graden per kilometer. Op 2 tot 3 kilometer is het water dus 70 tot 90 graden. Dat water zit niet in een meer, maar in de kleine holtes van poreus gesteente, zoals zandsteen. Daarboven moet een dichte afsluitende laag zoals kleisteen liggen, als een deksel.",
   html: `<ul><li>± 30 °C warmer per kilometer.</li><li>Op 2 tot 3 km: water van 70 tot 90 °C.</li><li>Het water zit in de holtes van zandsteen, onder een deksel van kleisteen.</li></ul>`
 },
 {
@@ -67,28 +67,27 @@ window.DIAS = [
   kicker: "Wat is aardwarmte?",
   title: "Zo werkt een doublet",
   who: "Lauren",
-  note: "Volg de oranje druppel op je telefoon. Je boort twee putten: samen heet dat een doublet. Uit de productieput pomp je warm water omhoog. In een warmtewisselaar geeft het zijn warmte af aan het warmtenet, dat de warmte naar huizen en bedrijven brengt. Het afgekoelde water gaat via de injectieput terug de grond in. Onderin liggen de putten ongeveer 1,5 kilometer uit elkaar. Bij de TU Delft, waar we op bezoek waren, werkt dit al.",
+  note: "Om die warmte te gebruiken, boor je twee putten. Samen heet dat een doublet. Eerst wordt het warme water via de productieput omhoog gepompt. Daarna staat bovengronds een warmtewisselaar. Daarin geeft het bronwater zijn warmte af aan het water van het warmtenet, en dat brengt de warmte via geïsoleerde leidingen naar huizen en bedrijven. Het bronwater en het water van het warmtenet raken elkaar dus niet. Het afgekoelde bronwater gaat via de injectieput terug naar dezelfde laag, waar het langzaam weer opwarmt. Onderin liggen de putten ongeveer 1,5 kilometer uit elkaar, zodat het koude water de plek waar je warm water oppompt niet afkoelt.",
   html: `<ol class="steps"><li>Warm water omhoog uit de productieput.</li><li>Warmtewisselaar: de warmte gaat naar het warmtenet.</li><li>Afgekoeld water terug via de injectieput, ± 1,5 km verderop.</li></ol>`
 },
 {
-  scene: "kaart",
-  img: "img/figuur4-bollenstreek.png",
+  scene: "none",
   kicker: "Onze aanpak",
   title: "Eerst de hele regio, dan ingezoomd",
-  who: "Aimée",
+  who: "David",
   note: "We begonnen met een bezoek aan de TU Delft, waar we uitleg kregen over aardwarmte en zagen hoe zij het op de campus gebruiken. Daarna deden we online onderzoek en konden we vragen stellen op het forum van de TU Delft. Het gebiedsonderzoek deden we in twee stappen: eerst de hele Bollenstreek, en daarna, zoals de opdracht vroeg, ingezoomd op een kleiner gebied.",
-  html: `<ol class="steps"><li>Bezoek aan de TU Delft.</li><li>De hele Bollenstreek.</li><li>Ingezoomd: de eerste bron aan de Leeweg.</li></ol>`
+  html: `<figure class="fig"><img src="img/tudelft.jpg" alt="Aardwarmte-installatie van de TU Delft op de campus"></figure>
+<ol class="steps"><li>Bezoek aan de TU Delft.</li><li>De hele Bollenstreek.</li><li>Ingezoomd: de eerste bron aan de Leeweg.</li></ol>`
 },
 
 /* ---------- de hele Bollenstreek ---------- */
 {
-  scene: "kaart",
-  img: "img/figuur4-bollenstreek.png",
+  scene: "bronnen",
   kicker: "De hele Bollenstreek",
   title: "3 tot 4 bronnen in plaats van 5 tot 6",
   who: "Aimée",
-  note: "De regio gebruikt ongeveer 2,4 miljoen gigajoule warmte per jaar. De haalbaarheidsstudie rekent daarvoor met vijf tot zes aardwarmtebronnen, maar telt ook grote bedrijven mee. Wij rekenden zelf met het echte gasverbruik per woonplaats. Voor de woningen en de bollenbedrijven komen wij op drie tot vier bronnen.",
-  html: `<div class="bignums row"><div><b>3–4</b>bronnen voor woningen en bollenbedrijven</div><div><b>5–6</b>in de studie, met grote bedrijven erbij</div></div>`
+  note: "De hele regio gebruikt ongeveer 2,4 miljoen gigajoule warmte per jaar. De haalbaarheidsstudie rekent daarvoor met vijf tot zes aardwarmtebronnen. Dat getal is voor alles samen: woningen, bollenbedrijven, maar ook grote verbruikers zoals fabrieken, zwembaden en hotels. Ons onderzoek gaat over woningen en bollenbedrijven. Daarvoor hebben we zelf gerekend met het echte gasverbruik per woonplaats. Dan kom je op drie tot vier bronnen. De rest is nodig voor de grote bedrijven.",
+  html: `<div class="bignums row"><div><b>3–4</b>bronnen voor woningen en bollenbedrijven</div><div><b>5–6</b>in de studie: alles samen, ook grote bedrijven</div></div>`
 },
 {
   scene: "regionet",
@@ -96,11 +95,11 @@ window.DIAS = [
   kicker: "De hele Bollenstreek",
   title: "Eén warmtenet voor de hele regio",
   who: "Aimée",
-  note: "Dan bedachten we zelf een vergelijking: krijgt elke gemeente een eigen net, of komt er één net door de hele regio? Hillegom en Lisse hebben elk maar een halve bron nodig, maar je kunt geen halve bron boren. In één regionaal net vullen de bronnen elkaar aan. Daardoor zijn er één tot twee bronnen minder nodig, en is het ongeveer 200 tot 600 euro per woning goedkoper, ook al worden de leidingen langer.",
+  note: "Dan bedachten we zelf een vergelijking: krijgt elke gemeente een eigen net, of komt er één net door de hele regio? Krijgt elke gemeente een eigen net, dan heb je óók 5 tot 6 bronnen nodig, maar om een andere reden: Hillegom en Lisse hebben elk maar een halve bron nodig, maar je kunt geen halve bron boren. In één regionaal net vullen de bronnen elkaar aan. Daardoor zijn er één tot twee bronnen minder nodig, en is het ongeveer 200 tot 600 euro per woning goedkoper, ook al worden de leidingen langer.",
   html: `<div class="vs"><div><b>Net per gemeente</b>5–6 bronnen<br>€ 2.860–3.310 per woning</div><div class="good"><b>Eén regionaal net</b>3–4 bronnen<br>€ 2.240–2.690 per woning</div></div>`
 },
 {
-  scene: "net",
+  scene: "nieuwbouw",
   kicker: "De hele Bollenstreek",
   title: "En dan komt er nog nieuwbouw bij",
   who: "Aimée",
