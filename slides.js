@@ -176,7 +176,7 @@ window.DIAS = [
   poll: "zon",
   kicker: "Maatschappelijk · doe mee",
   title: "Zonnepanelen en warmtepomp in de winter",
-  who: "Lauren",
+  who: "David",
   note: "Veel mensen hebben al zonnepanelen. Dus dachten wij: kan je warmtepomp niet gewoon op je eigen zonnestroom draaien, met een thuisbatterij erbij? We zijn benieuwd wat jullie denken. Hoeveel van de stroom die een warmtepomp in de winter vraagt, leveren zonnepanelen volgens jullie? Stem op je telefoon. Daarna laten we het antwoord zien.",
   options: ["Bijna alles", "Ongeveer de helft", "Maar een vijfde"],
   answer: 2,
@@ -207,7 +207,7 @@ window.DIAS = [
   scene: "doublet",
   kicker: "Bedankt!",
   title: "Lees verder op je telefoon",
-  who: "allen",
+  who: "David",
   note: "Dank jullie wel! Je telefoon gaat zo naar onze site. Daar staan het hele verslag, de poster en alle bronnen. Zijn er nog vragen? (Kies daarna 'Einde' op de presentatortelefoon.)",
   html: `<ul><li>Het hele verslag, bladzijde voor bladzijde</li><li>De posters</li><li>Alle bronnen</li></ul>
 <p class="small">dvdl009.github.io/aardwarmte</p>`
