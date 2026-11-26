@@ -12,10 +12,11 @@ Door Aimée Tolk, David van der Linden en Lauren Timmer.
 |---|---|
 | `index.html` | De site: onderzoek per hoofdstuk, poster, bronnen en dia's terugkijken |
 | `live.html` | Live presentatie. Het publiek kijkt mee op de telefoon |
-| `slides.js` | De 20 korte dia's met spreektekst, in dezelfde 7 stappen als de poster. Gebruikt door `live.html` én `index.html` |
+| `slides.js` | De 19 korte dia's met spreektekst, in de volgorde van de samenvatting. Gebruikt door `live.html` én `index.html` |
 | `story3d.js` | Het 3D-verhaal op de telefoon (doublet, volg het water, ondergrond, stroomnet, zonnepanelen, kaart, regionaal net, warmte per maand, poll, kosten) |
-| `verslag.json` | Het verslag (verslag versie 2 uit de teamruimte) |
-| `verslag.pdf` | Het verslag als pdf (downloadknop op de site) |
+| `verslag/` | Het definitieve verslag als A4-bladzijden (`pNN.jpg` groot, `pNN-s.jpg` klein) |
+| `verslag-paginas.json` | Welke bladzijden bij welk hoofdstuk horen, de bronnen per hoofdstuk en de bronnenlijst |
+| `verslag.pdf` | Het definitieve verslag als pdf (uit Google Docs) |
 | `poster-A1-staand.pdf`, `poster-A1-liggend.pdf` | De twee A1-posters om te printen (met `.jpg`-voorbeelden voor de site) |
 | `poster.png` | Kleine versie van de staande poster |
 | `img/` | Figuren en de QR-code |
@@ -41,7 +42,7 @@ De 3D-scènes staan in `story3d.js`. Welke scène bij welke dia hoort, staat in 
 
 - **Dia's:** in `slides.js` (titel, tekst, spreektekst, wie presenteert).
 - **Firebase, pincode, namen:** bovenin `live.html` bij `CONFIG`.
-- **Verslag:** exporteer in de teamruimte bij *Verslag 2* met **Exporteer voor de site** en vervang `verslag.json`.
+- **Verslag:** vervang `verslag.pdf`, maak de bladzijden opnieuw (`pdftoppm -r 150`) en werk `verslag-paginas.json` bij (begin- en eindpagina per hoofdstuk en de bronnen).
 
 De live-verbinding loopt via een Firebase Realtime Database met deze regels:
 
