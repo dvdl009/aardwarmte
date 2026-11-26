@@ -202,7 +202,7 @@ tr.sum td{font-weight:600;border-top:2px solid var(--fg)}
 .posters{display:grid;gap:16px}
 .posterbox{margin:0}
 .posterbox figcaption{font-size:.85rem;color:var(--muted);padding:8px 2px 0}
-@media (min-width:900px){.posters{grid-template-columns:0.72fr 1fr;align-items:start}}
+@media (min-width:900px){.posters{grid-template-columns:minmax(0,760px);justify-content:center}}
 .placeholder{aspect-ratio:1/1.414;max-width:100%;display:grid;place-items:center;text-align:center;color:var(--muted);padding:20px;background:repeating-linear-gradient(135deg,transparent 0 14px,var(--tint) 14px 28px);border-radius:6px;font-size:.9rem}
 
 /* bronnen */
@@ -448,12 +448,11 @@ footer{color:var(--muted);font-size:.8rem;padding-block:28px}
     <div class="wrap">
       <div class="pagehead">
         <span class="eyebrow">Posterpresentatie · 1 december 2026</span>
-        <h1>Onze posters</h1>
-        <p style="color:var(--muted);font-size:.95rem">Twee versies op A1: staand en liggend. Tik op een poster om hem groot te openen en in te zoomen.</p>
+        <h1>Onze poster</h1>
+        <p style="color:var(--muted);font-size:.95rem">Onze poster op A1. Tik erop om hem groot te openen en in te zoomen.</p>
       </div>
       <div class="posters">
-        <figure class="posterbox"><a href="poster-staand.jpg" target="_blank" rel="noopener"><img src="poster-staand.jpg" alt="Staande poster: Kan de Bollenstreek verwarmen met aardwarmte?" loading="lazy"></a><figcaption>Staand (A1) · <a href="poster-A1-staand.pdf" target="_blank" rel="noopener">pdf om te printen</a></figcaption></figure>
-        <figure class="posterbox"><a href="poster-liggend.jpg" target="_blank" rel="noopener"><img src="poster-liggend.jpg" alt="Liggende poster: Kan de Bollenstreek verwarmen met aardwarmte?" loading="lazy"></a><figcaption>Liggend (A1) · <a href="poster-A1-liggend.pdf" target="_blank" rel="noopener">pdf om te printen</a></figcaption></figure>
+        <figure class="posterbox"><a href="poster-a1-def.jpg" target="_blank" rel="noopener"><img src="poster-a1-def.jpg" alt="Staande poster: Kan de Bollenstreek verwarmen met aardwarmte?" loading="lazy"></a><figcaption>Staand (A1) · <a href="poster-a1-def.pdf" target="_blank" rel="noopener">pdf om te printen</a></figcaption></figure>
       </div>
     </div>
   </div>
@@ -499,7 +498,7 @@ const CONFIG = {
   showDraftBanner: false,            // zet op true zolang de tekst nog niet definitief is
   pdfFile: "verslag.pdf",            // het verslag als pdf (naast index.html)
   googleDocId: "",                   // of: stuk tussen /d/ en /edit in de Google Doc-link
-  posterFile: "poster.png",          // zet poster.png naast index.html
+  posterFile: "poster-a1-def.png",          // zet poster.png naast index.html
   figureFile: "img/figuur1-doublet.png", // afbeelding als het 3D-model niet kan laden
   team: [
     {name:"Lauren Timmer", role:"Aardwarmte en inleiding"},

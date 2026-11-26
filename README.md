@@ -18,7 +18,7 @@ Door Aimée Tolk, David van der Linden en Lauren Timmer.
 | `verslag-paginas.json` | Welke bladzijden bij welk hoofdstuk horen, de bronnen per hoofdstuk en de bronnenlijst |
 | `verslag.pdf` | Het definitieve verslag als pdf (uit Google Docs) |
 | `poster-A1-staand.pdf`, `poster-A1-liggend.pdf` | De twee A1-posters om te printen (met `.jpg`-voorbeelden voor de site) |
-| `poster.png` | Kleine versie van de staande poster |
+| `poster-a1-def.png` | Kleine versie van de poster |
 | `img/` | Figuren en de QR-code |
 
 ## Tijdens de presentatie
