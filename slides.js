@@ -82,6 +82,15 @@ window.DIAS = [
 
 /* ---------- de hele Bollenstreek ---------- */
 {
+  scene: "nieuwbouw",
+  kicker: "De hele Bollenstreek",
+  title: "Er komt veel nieuwbouw bij",
+  who: "Aimée",
+  note: "In de hele Bollenstreek wordt ook veel gebouwd. Tot en met 2035 zijn in de vier gemeenten ongeveer 6.600 nieuwe woningen gepland, veel daarvan vlak bij de Leeweg en in Voorhout. Nieuwe woningen krijgen geen gasaansluiting meer. Zonder warmtenet krijgen ze dus allemaal een warmtepomp, en dat drukt nog harder op het volle stroomnet. Een nieuw huis is wel beter geïsoleerd: het vraagt ongeveer 22 gigajoule per jaar, tegen 26 tot 34 voor een bestaand huis. Alle nieuwbouw samen vraagt ongeveer een vijfde van een bron extra.",
+  html: `<div class="bignums row"><div><b>± 6.600</b>nieuwe woningen tot en met 2035</div><div><b>± 1/5</b>bron extra nodig</div></div>
+<p>Zonder gasaansluiting: zonder warmtenet allemaal een warmtepomp.</p>`
+},
+{
   scene: "bronnen",
   kicker: "De hele Bollenstreek",
   title: "4 tot 5 bronnen in plaats van 5 tot 6",
@@ -97,15 +106,6 @@ window.DIAS = [
   who: "Aimée",
   note: "Dan bedachten we zelf een vergelijking: krijgt elke gemeente een eigen net, of komt er één net door de hele regio? Bij een net per gemeente heb je vijf tot zeven bronnen nodig. Hillegom en Lisse hebben elk maar ongeveer een halve bron nodig, maar je kunt geen halve bron boren. In één regionaal net vullen de bronnen elkaar aan. Daardoor zijn er één tot twee bronnen minder nodig, en wordt het ongeveer 150 tot 550 euro per woning goedkoper, ook al worden de leidingen langer.",
   html: `<div class="vs"><div><b>Net per gemeente</b>5–7 bronnen<br>€ 2.570–3.380 per woning</div><div class="good"><b>Eén regionaal net</b>4–5 bronnen<br>€ 2.420–2.830 per woning</div></div>`
-},
-{
-  scene: "nieuwbouw",
-  kicker: "De hele Bollenstreek",
-  title: "En dan komt er nog nieuwbouw bij",
-  who: "Aimée",
-  note: "Daar komt nieuwbouw nog bij. Tot en met 2035 zijn in de vier gemeenten ongeveer 6.600 nieuwe woningen gepland, veel daarvan vlak bij de Leeweg en in Voorhout. Nieuwe woningen krijgen geen gasaansluiting meer. Zonder warmtenet krijgen ze dus allemaal een warmtepomp, en dat drukt nog harder op het volle stroomnet. Een nieuw huis is wel beter geïsoleerd: het vraagt ongeveer 22 gigajoule per jaar, tegen 26 tot 34 voor een bestaand huis. Alle nieuwbouw samen vraagt ongeveer een vijfde van een bron extra.",
-  html: `<div class="bignums row"><div><b>± 6.600</b>nieuwe woningen tot en met 2035</div><div><b>± 1/5</b>bron extra nodig</div></div>
-<p>Zonder gasaansluiting: zonder warmtenet allemaal een warmtepomp.</p>`
 },
 
 /* ---------- ingezoomd ---------- */
