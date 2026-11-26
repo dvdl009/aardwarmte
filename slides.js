@@ -86,7 +86,7 @@ window.DIAS = [
   kicker: "De hele Bollenstreek",
   title: "Er komt veel nieuwbouw bij",
   who: "Aimée",
-  note: "In de hele Bollenstreek wordt ook veel gebouwd. Tot en met 2035 zijn in de vier gemeenten ongeveer 6.600 nieuwe woningen gepland, veel daarvan vlak bij de Leeweg en in Voorhout. Nieuwe woningen krijgen geen gasaansluiting meer. Zonder warmtenet krijgen ze dus allemaal een warmtepomp, en dat drukt nog harder op het volle stroomnet. Een nieuw huis is wel beter geïsoleerd: het vraagt ongeveer 22 gigajoule per jaar, tegen 26 tot 34 voor een bestaand huis. Alle nieuwbouw samen vraagt ongeveer een vijfde van een bron extra.",
+  note: "In de hele Bollenstreek wordt veel gebouwd. Tot en met 2035 zijn in de vier gemeenten ongeveer 6.600 nieuwe woningen gepland, veel daarvan vlak bij de Leeweg en in Voorhout. Nieuwe woningen krijgen geen gasaansluiting meer. Zonder warmtenet krijgen ze dus allemaal een warmtepomp, en dat drukt nog harder op het volle stroomnet. Een nieuw huis is wel beter geïsoleerd: het vraagt ongeveer 22 gigajoule per jaar, tegen 26 tot 34 voor een bestaand huis. Alle nieuwbouw samen vraagt ongeveer een vijfde van een bron extra.",
   html: `<div class="bignums row"><div><b>± 6.600</b>nieuwe woningen tot en met 2035</div><div><b>± 1/5</b>bron extra nodig</div></div>
 <p>Zonder gasaansluiting: zonder warmtenet allemaal een warmtepomp.</p>`
 },
@@ -115,7 +115,7 @@ window.DIAS = [
   kicker: "Ingezoomd",
   title: "De eerste bron: de Leeweg",
   who: "Aimée",
-  note: "Daarna zoomden we in op de eerste bron van het regionale net: de oude NAM-locatie aan de Leeweg in Noordwijk, met Noordwijk en Noordwijkerhout als afnemers. Onder de Leeweg ligt op ongeveer 2,9 kilometer diepte een zandsteenlaag met water van 90 tot 100 graden, afgedekt door kleisteen. De plannen in de regio gaan uit van putten op ongeveer 2 kilometer.",
+  note: "Daarna zoomden we in op de eerste bron van het regionale net. Die is gepland bij de oude NAM-locatie aan de Leeweg in Noordwijk, waar al eens is geboord. Op ongeveer 2,9 kilometer diepte ligt een laag zandsteen met water van 90 tot 100 graden, afgedekt door kleisteen. De warmte gaat naar Noordwijk en Noordwijkerhout. Dat zijn ongeveer 18.200 woningen, 40 bollenbedrijven en een aantal grote bedrijven.",
   html: `<ul><li>Oude NAM-locatie in Noordwijk: er is al geboord.</li><li>Op ± 2,9 km: zandsteen met water van 90 tot 100 °C, onder kleisteen.</li><li>Afnemers: Noordwijk en Noordwijkerhout.</li></ul>`
 },
 {
@@ -124,9 +124,9 @@ window.DIAS = [
   kicker: "Ingezoomd",
   title: "Eén bron levert 60 tot 69 procent",
   who: "Aimée",
-  note: "Noordwijk en Noordwijkerhout vragen met de bollenbedrijven, de grote bedrijven zoals hotels en de nieuwbouw samen 648.000 tot 782.000 gigajoule per jaar. Per maand bekeken levert één bron van 20 megawatt daarvan 60 tot 69 procent. In juli en augustus vragen de bollenbedrijven ruim drie keer zoveel warmte als alle woningen samen, zodat de bron ook in de zomer draait. De tweede bron uit de vergunning wordt nuttig zodra de grote bedrijven en de nieuwbouw aansluiten: dan draait hij 2.800 tot 3.700 uur per jaar.",
+  note: "Noordwijk en Noordwijkerhout vragen met de bollenbedrijven, de grote bedrijven zoals hotels en de nieuwbouw samen 648.000 tot 782.000 gigajoule per jaar. Per maand bekeken levert één bron van 20 megawatt daarvan 60 tot 69 procent. In juli en augustus vragen de bollenbedrijven ruim drie keer zoveel warmte als alle woningen samen, zodat de bron ook in de zomer draait. De tweede bron uit de vergunning wordt nuttig zodra de grote bedrijven en de nieuwbouw aansluiten: dan draait hij 2.800 tot 3.700 uur per jaar. Zonder hen zou hij maar 1.200 tot 2.600 uur draaien. Daarna kan Voorhout aansluiten, dat het dichtst bij de Leeweg ligt.",
   html: `<div class="bignums row"><div><b>60–69%</b>van de warmte uit één bron</div><div><b>jul–aug</b>bollenbedrijven vullen de zomer</div></div>
-<p class="small">Tweede bron als de grote bedrijven en de nieuwbouw aansluiten.</p>`
+<p class="small">Tweede bron: 2.800–3.700 uur per jaar, zodra de grote bedrijven en de nieuwbouw aansluiten.</p>`
 },
 
 /* ---------- technisch, economisch, maatschappelijk ---------- */
@@ -135,7 +135,7 @@ window.DIAS = [
   kicker: "Technisch",
   title: "Het kan, met twee risico's",
   who: "David",
-  note: "Technisch is aardwarmte haalbaar. Er zijn wel twee risico's. In de ondergrond lopen twee breuklijnen, daarom moet er eerst seismisch onderzoek komen. En de leidingen komen in een natte, slappe bodem te liggen, en deels langs de duinen.",
+  note: "Technisch is aardwarmte hier haalbaar, maar er zijn wel twee risico's. Het eerste zit diep in de grond. Daar lopen twee breuklijnen, en daarom moet er eerst seismisch onderzoek komen. Dan weten we hoe de ondergrond erbij ligt voordat er geboord wordt. Het tweede risico zit vlak onder de straat. De leidingen komen in een natte, slappe bodem te liggen, en deels langs de duinen. Dat maakt het aanleggen lastiger.",
   html: `<ul class="verdicts"><li><b>Technisch</b><span>✓ haalbaar</span></li></ul>
 <ul><li>Twee breuklijnen in de ondergrond: eerst seismisch onderzoek.</li><li>Natte, slappe bodem voor de leidingen.</li></ul>`
 },
@@ -166,7 +166,7 @@ window.DIAS = [
   kicker: "Maatschappelijk",
   title: "Veel minder CO2 en veel minder druk op het net",
   who: "Lauren",
-  note: "Maatschappelijk levert aardwarmte veel op. Ongeveer 80 procent minder CO2-uitstoot dan verwarmen met aardgas. En volgens Liander tot 111 megavoltampère minder belasting van het stroomnet dan wanneer alle woningen een warmtepomp nemen. Voor ons ingezoomde gebied rekenden we het zelf uit: met warmtepompen op een koude dag 34 megawatt extra stroom, met aardwarmte 4,3 tot 4,9.",
+  note: "Maatschappelijk levert aardwarmte veel op. Ongeveer 80 procent minder CO2-uitstoot dan verwarmen met aardgas. En volgens Liander tot 111 megavoltampère minder belasting van het stroomnet dan wanneer alle woningen een warmtepomp nemen. Voor ons ingezoomde gebied rekenden we het zelf uit: met warmtepompen op een koude dag wordt 34 megawatt extra stroom verbruikt, met aardwarmte maar 4,3 tot 4,9.",
   html: `<div class="bignums row"><div><b>± 80%</b>minder CO2 dan aardgas</div><div><b>111 MVA</b>minder netbelasting (Liander)</div></div>
 <p class="small">Ingezoomd: 34 MW met warmtepompen, 4,3–4,9 MW met aardwarmte</p>`
 },
@@ -175,12 +175,12 @@ window.DIAS = [
   scene: "poll",
   poll: "zon",
   kicker: "Maatschappelijk · doe mee",
-  title: "Zonnepanelen + thuisbatterij: genoeg voor een warmtepomp in de winter?",
+  title: "Zonnepanelen en warmtepomp in de winter",
   who: "Lauren",
-  note: "Maar veel mensen hebben al zonnepanelen. Kun je je warmtepomp dan niet op je eigen zonnestroom laten draaien, met een thuisbatterij? Hoeveel van de stroom leveren de panelen in de winter? Stem op je telefoon.",
+  note: "Veel mensen hebben al zonnepanelen. Dus dachten wij: kan je warmtepomp niet gewoon op je eigen zonnestroom draaien, met een thuisbatterij erbij? We zijn benieuwd wat jullie denken. Hoeveel van de stroom die een warmtepomp in de winter vraagt, leveren zonnepanelen volgens jullie? Stem op je telefoon. Daarna laten we het antwoord zien.",
   options: ["Bijna alles", "Ongeveer de helft", "Maar een vijfde"],
   answer: 2,
-  html: ``
+  html: `<p>Veel mensen hebben al zonnepanelen. Kan een warmtepomp in de winter op eigen zonnestroom draaien, met een thuisbatterij?</p>`
 },
 {
   scene: "zon",
@@ -188,7 +188,7 @@ window.DIAS = [
   kicker: "Maatschappelijk",
   title: "In de winter maar een vijfde",
   who: "Lauren",
-  note: "Zonnepanelen met een thuisbatterij lossen het niet op. In de winter, als het net het drukst is, leveren ze maar een vijfde van de stroom die een warmtepomp nodig heeft. Een thuisbatterij bewaart stroom voor een dag, niet van zomer tot winter.",
+  note: "Zonnepanelen met een thuisbatterij lossen dit niet op. In de winter, als het net het drukst is, leveren tien zonnepanelen maar een vijfde van de stroom die een warmtepomp vraagt. Een thuisbatterij bewaart stroom voor een dag, niet van de zomer tot de winter. Daarom blijft er in de winter veel stroom uit het net nodig, en dat is precies het moment waarop het net het zwaarst belast wordt.",
   html: `<div class="pollsum" data-pollsum="zon"></div>
 <div class="bignums row"><div><b>1.510 kWh</b>warmtepomp in de winter</div><div><b>296 kWh</b>van 10 zonnepanelen</div></div>`
 },
@@ -199,7 +199,7 @@ window.DIAS = [
   kicker: "Ons advies",
   title: "Eén regionaal warmtenet, stap voor stap",
   who: "David",
-  note: "Ons advies aan de gemeenten: ga door met aardwarmte, als één regionaal warmtenet in plaats van een net per gemeente, maar wel stap voor stap. Begin met de bron aan de Leeweg en maak de bollenbedrijven vaste klanten, omdat zij ook in de zomer warmte afnemen. Sluit nieuwe wijken meteen aan, en boor de tweede bron als de grote bedrijven en de nieuwbouw aansluiten. Breid daarna uit naar Voorhout en de andere kernen, maar alleen als het Rijk extra steun en garanties geeft.",
+  note: "Ons advies aan de gemeenten: ga door met aardwarmte, als één regionaal warmtenet in plaats van een net per gemeente, maar wel stap voor stap. Begin met de bron aan de Leeweg en maak de bollenbedrijven vaste klanten, omdat zij ook in de zomer warmte afnemen. Sluit nieuwe wijken meteen aan, en boor de tweede bron als de grote bedrijven en de nieuwbouw aansluiten. Breid daarna uit naar de andere kernen, maar alleen als het Rijk extra steun en garanties geeft.",
   html: `<ol class="steps"><li>Begin met de bron aan de Leeweg.</li><li>Maak bollenbedrijven vaste klanten.</li><li>Sluit nieuwbouw aan, dan de tweede bron.</li><li>Breid uit met steun en garanties van het Rijk.</li></ol>`
 },
 {
