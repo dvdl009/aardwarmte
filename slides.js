@@ -208,7 +208,7 @@ window.DIAS = [
   kicker: "Bedankt!",
   title: "Lees verder op je telefoon",
   who: "allen",
-  note: "Dank jullie wel! Je telefoon gaat zo naar onze site. Daar staan het hele verslag, de posters en alle bronnen. Zijn er nog vragen? (Kies daarna 'Einde' op de presentatortelefoon.)",
+  note: "Dank jullie wel! Je telefoon gaat zo naar onze site. Daar staan het hele verslag, de poster en alle bronnen. Zijn er nog vragen? (Kies daarna 'Einde' op de presentatortelefoon.)",
   html: `<ul><li>Het hele verslag, bladzijde voor bladzijde</li><li>De posters</li><li>Alle bronnen</li></ul>
 <p class="small">dvdl009.github.io/aardwarmte</p>`
 }
