@@ -16,7 +16,7 @@
    volg      – de doorsnede, de camera volgt een druppel warm water omhoog naar de huizen
    lagen     – blok ondergrond: wat een goede laag nodig heeft (deksel, zandsteen, warmte, breuken)
    leeweg    – hetzelfde blok met de gegevens van de oude put aan de Leeweg
-   bronnen   – boortorens: studie (5–6) tegenover ons onderzoek (3–4)
+   bronnen   – boortorens: studie (5–6) tegenover ons onderzoek (4–5)
    weegschaal – huizen met warmtepomp tegenover wat het stroomnet aankan
    nieuwbouw – kaart met per gemeente een bol: nieuwe woningen tot en met 2035
    regionet  – kaart met één hoofdleiding langs alle kernen
@@ -204,12 +204,12 @@ buildMap(){
   this.flow(z,p1,5,C.hot,0xff8a50,0.25,0.2,w.flows);this.flow(z,p2,7,C.hot,0xff8a50,0.18,0.2,w.flows);
   this.label(w,"± 2 km",P([-1.1,0.6],1.6).toArray(),"dist",()=>this.state==="inzoom");
   this.label(w,"± 4 km",P([1.1,1.9],1.6).toArray(),"dist",()=>this.state==="inzoom");
-  this.label(w,"<b>Eerste bron: 20 MW</b><br><span class=m>16.200 woningen + 40 bollenbedrijven</span>",P([0.9,-0.7],3.2).toArray(),"",()=>this.state==="inzoom");
+  this.label(w,"<b>Eerste bron: 20 MW</b><br><span class=m>18.200 woningen, 40 bollenbedrijven<br>en grote bedrijven</span>",P([0.9,-0.7],3.2).toArray(),"",()=>this.state==="inzoom");
   // regionet: één hoofdleiding langs alle kernen (kortste net, hemelsbreed)
   const rn=new THREE.Group();g.add(rn);const K=MAP.kern,L0=[0,0];
   [[L0,K.Voorhout],[L0,K.Noordwijk],[K.Voorhout,K.Sassenheim],[K.Voorhout,K.Warmond],[L0,K.Noordwijkerhout],[K.Sassenheim,K.Lisse],[K.Lisse,K.Hillegom],[K.Hillegom,K["De Zilk"]]].forEach(([a,b],i)=>{
     const A=P(a,0.85),B=P(b,0.85),M=A.clone().lerp(B,0.5);M.y=1.05;const cv=this.tube(rn,[A.toArray(),M.toArray(),B.toArray()],0xc92a2a,0.32);this.flow(rn,cv,4,0xffd8a8,0xffd8a8,0.22,0.3,w.flows)});
-  this.label(w,"<b>Eén net, 3–4 bronnen</b><br><span class=m>± 24 km hoofdleiding</span>",P([4.4,9.6],2).toArray(),"",()=>this.state==="regionet");
+  this.label(w,"<b>Eén net, 4–5 bronnen</b><br><span class=m>± 24 km hoofdleiding</span>",P([4.4,9.6],2).toArray(),"",()=>this.state==="regionet");
   // nieuwbouw: bol per gemeente, groot naar het aantal nieuwe woningen tot en met 2035
   const nbG=new THREE.Group();nbG.visible=false;g.add(nbG);w.nb=[];
   const NB={Noordwijk:2480,Teylingen:1937,Hillegom:1263,Lisse:922};
@@ -271,22 +271,23 @@ buildSun(){
 buildMonth(){
   const w=this.world("month",2700),g=w.g;
   this.box(g,30,0.4,8,0xddd5c3,0,-0.2,0);
-  const won=[73.3,59.6,59.6,36.7,13.7,4.6,4.6,4.6,9.2,22.9,55.0,73.3],bol=[5.1,5.1,5.1,2.6,0,0,17,17,10.2,10.2,2.6,5.1],cap=[53.6,48.4,53.6,51.8,53.6,51.8,53.6,53.6,51.8,53.6,51.8,53.6];
+  const won=[73.3,59.6,59.6,36.7,13.7,4.6,4.6,4.6,9.2,22.9,55.0,73.3],ex=[26.5,21.6,21.6,13.3,5.0,1.7,1.7,1.7,3.3,8.3,19.9,26.5],bol=[5.1,5.1,5.1,2.6,0,0,17,17,10.2,10.2,2.6,5.1],cap=[53.6,48.4,53.6,51.8,53.6,51.8,53.6,53.6,51.8,53.6,51.8,53.6];
   const k=0.16,M=["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
   w.bars=[];
   won.forEach((v,i)=>{const x=-12.65+i*2.3;
     w.bars.push({m:this.box(g,1.7,1,1.7,0x7b5cc4,x,0.5,0),h:v*k,base:0});
-    if(bol[i])w.bars.push({m:this.box(g,1.7,1,1.7,0xc0562f,x,0.5,0),h:bol[i]*k,base:v*k});
+    w.bars.push({m:this.box(g,1.7,1,1.7,0xb7a6e3,x,0.5,0),h:ex[i]*k,base:v*k});
+    if(bol[i])w.bars.push({m:this.box(g,1.7,1,1.7,0xc0562f,x,0.5,0),h:bol[i]*k,base:(v+ex[i])*k});
     this.label(w,`<span class=m>${M[i]}</span>`,[x,-0.6,1.6],"depth")});
   const pts=[];cap.forEach((c,i)=>{const x=-12.65+i*2.3;pts.push(new THREE.Vector3(x-1.15,c*k,1.2),new THREE.Vector3(x+1.15,c*k,1.2))});
   const ln=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color:0x222222,dashSize:0.5,gapSize:0.3}));ln.computeLineDistances();g.add(ln);
   this.label(w,"<b>Eén bron: 20 MW</b>",[11,53.6*k+1.4,1.2],"num");
-  this.label(w,"<b>Woningen</b>",[-12.6,73.3*k+2.4,0],"");
-  this.label(w,"<b>Bollen</b><br><span class=m>vullen de zomer</span>",[2.3,22*k+2.2,0],"hot");
+  this.label(w,"<b>Woningen</b><br><span class=m>+ bedrijven en nieuwbouw</span>",[-9.6,105*k+2.6,0],"");
+  this.label(w,"<b>Bollen</b><br><span class=m>vullen de zomer</span>",[2.3,24*k+2.2,0],"hot");
   w.grow=0;
   w.upd=dt=>{w.grow=Math.min(1,w.grow+dt*0.6);const e=easeInOut(w.grow);w.bars.forEach(b=>{const h=Math.max(0.01,b.h*e);b.m.scale.y=h;b.m.position.y=b.base*e+h/2})};
   w.enter=()=>{w.grow=0};
-  w.views={main:{p:[2,9,30],t:[0,6,0]}};
+  w.views={main:{p:[2,10,32],t:[0,7.5,0]}};
 }
 
 buildScale(){
@@ -330,18 +331,18 @@ buildRigs(){
     this.box(tg,1.8,0.3,1.8,0x6c7178,0,0.15,0,o);this.box(tg,0.5,0.5,0.5,c,0,5.1,0,o);return tg};
   const G=C.green,A=0xe8a317;
   w.rigs=[];
-  // links: studie, alles samen (5-6)
+  // links: studie, alle woningen aangesloten (5-6)
   [[G,1],[G,1],[G,1],[G,1],[A,1],[A,0.35]].forEach(([c,op],i)=>w.rigs.push(rig(-8.2+(i%3)*2.4,-1.6+Math.floor(i/3)*3.2,c,op)));
-  // rechts: ons onderzoek (3-4)
-  [[G,1],[G,1],[G,1],[G,0.35]].forEach(([c,op],i)=>w.rigs.push(rig(3.4+(i%2)*2.6,-1.6+Math.floor(i/2)*3.2,c,op)));
-  this.label(w,"<b>Studie: alles samen</b><br><span class=m>5–6 bronnen</span>",[-5.8,8.2,0]);
-  this.label(w,"<b>Ons onderzoek</b><br><span class=m>3–4 bronnen</span>",[4.7,8.2,0]);
-  this.label(w,"<b>grote bedrijven</b>",[-4.4,-0.6,4.6],"hot");
-  this.label(w,"<b>woningen + bollen</b>",[4.7,-0.6,4.6],"");
+  // rechts: ons onderzoek, 80% aangesloten, met bedrijven en nieuwbouw (4-5)
+  [[G,1],[G,1],[G,1],[A,1],[A,0.35]].forEach(([c,op],i)=>w.rigs.push(rig(3.4+(i%3)*2.4,-1.6+Math.floor(i/3)*3.2,c,op)));
+  this.label(w,"<b>Studie: álle woningen</b><br><span class=m>5–6 bronnen</span>",[-5.8,8.2,0]);
+  this.label(w,"<b>Ons onderzoek</b><br><span class=m>80% · 4–5 bronnen</span>",[5.6,8.2,0]);
+  this.label(w,"<b>woningen + bollen</b>",[-5.8,-0.6,4.6],"");
+  this.label(w,"<b>bedrijven + nieuwbouw</b>",[5.0,-0.6,4.6],"hot");
   w.grow=0;
   w.upd=dt=>{w.grow=Math.min(1,w.grow+dt*0.7);w.rigs.forEach((r,i)=>{const e=easeInOut(Math.max(0,Math.min(1,w.grow*1.6-i*0.06)));r.scale.set(1,Math.max(0.01,e),1)})};
   w.enter=()=>{w.grow=0};
-  w.views={main:{p:[-0.8,8,19],t:[-0.8,3.2,0]}};
+  w.views={main:{p:[0,8,20.5],t:[0,3.2,0]}};
 }
 
 buildLayers(){

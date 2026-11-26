@@ -84,10 +84,10 @@ window.DIAS = [
 {
   scene: "bronnen",
   kicker: "De hele Bollenstreek",
-  title: "3 tot 4 bronnen in plaats van 5 tot 6",
+  title: "4 tot 5 bronnen in plaats van 5 tot 6",
   who: "Aimée",
-  note: "De hele regio gebruikt ongeveer 2,4 miljoen gigajoule warmte per jaar. De haalbaarheidsstudie rekent daarvoor met vijf tot zes aardwarmtebronnen. Dat getal is voor alles samen: woningen, bollenbedrijven, maar ook grote verbruikers zoals fabrieken, zwembaden en hotels. Ons onderzoek gaat over woningen en bollenbedrijven. Daarvoor hebben we zelf gerekend met het echte gasverbruik per woonplaats. Dan kom je op drie tot vier bronnen. De rest is nodig voor de grote bedrijven.",
-  html: `<div class="bignums row"><div><b>3–4</b>bronnen voor woningen en bollenbedrijven</div><div><b>5–6</b>in de studie: alles samen, ook grote bedrijven</div></div>`
+  note: "De haalbaarheidsstudie rekent voor de hele regio met 2,4 miljoen gigajoule per jaar en vijf tot zes aardwarmtebronnen. Die studie gaat er wel van uit dat álle woningen aansluiten. Wij rekenden met 80 procent, zoals in het aanbod van de gemeenten, en met het echte gasverbruik per woonplaats. En we telden alles mee: woningen, bollenbedrijven, grote bedrijven zoals hotels en zwembaden, en de nieuwbouw. Dan kom je op 1,8 tot 2,3 miljoen gigajoule, en dus op vier tot vijf bronnen.",
+  html: `<div class="bignums row"><div><b>4–5</b>bronnen in ons onderzoek, met bedrijven en nieuwbouw</div><div><b>5–6</b>in de studie, als álle woningen aansluiten</div></div>`
 },
 {
   scene: "regionet",
@@ -95,16 +95,16 @@ window.DIAS = [
   kicker: "De hele Bollenstreek",
   title: "Eén warmtenet voor de hele regio",
   who: "Aimée",
-  note: "Dan bedachten we zelf een vergelijking: krijgt elke gemeente een eigen net, of komt er één net door de hele regio? Krijgt elke gemeente een eigen net, dan heb je óók 5 tot 6 bronnen nodig, maar om een andere reden: Hillegom en Lisse hebben elk maar een halve bron nodig, maar je kunt geen halve bron boren. In één regionaal net vullen de bronnen elkaar aan. Daardoor zijn er één tot twee bronnen minder nodig, en is het ongeveer 200 tot 600 euro per woning goedkoper, ook al worden de leidingen langer.",
-  html: `<div class="vs"><div><b>Net per gemeente</b>5–6 bronnen<br>€ 2.860–3.310 per woning</div><div class="good"><b>Eén regionaal net</b>3–4 bronnen<br>€ 2.240–2.690 per woning</div></div>`
+  note: "Dan bedachten we zelf een vergelijking: krijgt elke gemeente een eigen net, of komt er één net door de hele regio? Bij een net per gemeente heb je vijf tot zeven bronnen nodig. Hillegom en Lisse hebben elk maar ongeveer een halve bron nodig, maar je kunt geen halve bron boren. In één regionaal net vullen de bronnen elkaar aan. Daardoor zijn er één tot twee bronnen minder nodig, en wordt het ongeveer 150 tot 550 euro per woning goedkoper, ook al worden de leidingen langer.",
+  html: `<div class="vs"><div><b>Net per gemeente</b>5–7 bronnen<br>€ 2.570–3.380 per woning</div><div class="good"><b>Eén regionaal net</b>4–5 bronnen<br>€ 2.420–2.830 per woning</div></div>`
 },
 {
   scene: "nieuwbouw",
   kicker: "De hele Bollenstreek",
   title: "En dan komt er nog nieuwbouw bij",
   who: "Aimée",
-  note: "Daar komt nieuwbouw nog bij. Tot en met 2035 zijn in de vier gemeenten ongeveer 6.600 nieuwe woningen gepland, veel daarvan vlak bij de Leeweg en in Voorhout. Nieuwe woningen krijgen geen gasaansluiting meer. Zonder warmtenet krijgen ze dus allemaal een warmtepomp, en dat drukt nog harder op het volle stroomnet. Dat maakt een warmtenet nog belangrijker.",
-  html: `<div class="bignums"><div><b>± 6.600</b>nieuwe woningen gepland tot en met 2035</div></div>
+  note: "Daar komt nieuwbouw nog bij. Tot en met 2035 zijn in de vier gemeenten ongeveer 6.600 nieuwe woningen gepland, veel daarvan vlak bij de Leeweg en in Voorhout. Nieuwe woningen krijgen geen gasaansluiting meer. Zonder warmtenet krijgen ze dus allemaal een warmtepomp, en dat drukt nog harder op het volle stroomnet. Een nieuw huis is wel beter geïsoleerd: het vraagt ongeveer 22 gigajoule per jaar, tegen 26 tot 34 voor een bestaand huis. Alle nieuwbouw samen vraagt ongeveer een vijfde van een bron extra.",
+  html: `<div class="bignums row"><div><b>± 6.600</b>nieuwe woningen tot en met 2035</div><div><b>± 1/5</b>bron extra nodig</div></div>
 <p>Zonder gasaansluiting: zonder warmtenet allemaal een warmtepomp.</p>`
 },
 
@@ -122,11 +122,11 @@ window.DIAS = [
   scene: "maand",
   img: "img/figuur7-vraag-per-maand.png",
   kicker: "Ingezoomd",
-  title: "Eén bron levert 71 tot 83 procent",
+  title: "Eén bron levert 60 tot 69 procent",
   who: "Aimée",
-  note: "Ongeveer 16.200 woningen en 40 bollenbedrijven vragen samen 497.000 tot 631.000 gigajoule per jaar. Per maand bekeken levert één bron van 20 megawatt daarvan 71 tot 83 procent. De rest komt op koude dagen uit hulpwarmtecentrales. In juli en augustus vragen de bollenbedrijven bijna vier keer zoveel warmte als alle woningen samen, zodat de bron ook in de zomer draait. Een tweede bron is pas echt nuttig als er meer afnemers bijkomen, zoals Voorhout, dat het dichtst bij de Leeweg ligt.",
-  html: `<div class="bignums row"><div><b>71–83%</b>van de warmte uit één bron</div><div><b>jul–aug</b>bollenbedrijven vullen de zomer</div></div>
-<p class="small">Tweede bron pas als Voorhout aansluit.</p>`
+  note: "Noordwijk en Noordwijkerhout vragen met de bollenbedrijven, de grote bedrijven zoals hotels en de nieuwbouw samen 648.000 tot 782.000 gigajoule per jaar. Per maand bekeken levert één bron van 20 megawatt daarvan 60 tot 69 procent. In juli en augustus vragen de bollenbedrijven ruim drie keer zoveel warmte als alle woningen samen, zodat de bron ook in de zomer draait. De tweede bron uit de vergunning wordt nuttig zodra de grote bedrijven en de nieuwbouw aansluiten: dan draait hij 2.800 tot 3.700 uur per jaar.",
+  html: `<div class="bignums row"><div><b>60–69%</b>van de warmte uit één bron</div><div><b>jul–aug</b>bollenbedrijven vullen de zomer</div></div>
+<p class="small">Tweede bron als de grote bedrijven en de nieuwbouw aansluiten.</p>`
 },
 
 /* ---------- technisch, economisch, maatschappelijk ---------- */
@@ -199,8 +199,8 @@ window.DIAS = [
   kicker: "Ons advies",
   title: "Eén regionaal warmtenet, stap voor stap",
   who: "David",
-  note: "Ons advies aan de gemeenten: ga door met aardwarmte, als één regionaal warmtenet in plaats van een net per gemeente, maar wel stap voor stap. Begin met de bron aan de Leeweg. Maak de bollenbedrijven vaste klanten, omdat zij ook in de zomer warmte afnemen. Sluit daarna Voorhout aan. En breid pas uit naar de andere kernen als het Rijk extra steun en garanties geeft.",
-  html: `<ol class="steps"><li>Begin met de bron aan de Leeweg.</li><li>Maak bollenbedrijven vaste klanten.</li><li>Sluit daarna Voorhout aan.</li><li>Breid uit als het Rijk steun en garanties geeft.</li></ol>`
+  note: "Ons advies aan de gemeenten: ga door met aardwarmte, als één regionaal warmtenet in plaats van een net per gemeente, maar wel stap voor stap. Begin met de bron aan de Leeweg en maak de bollenbedrijven vaste klanten, omdat zij ook in de zomer warmte afnemen. Sluit nieuwe wijken meteen aan, en boor de tweede bron als de grote bedrijven en de nieuwbouw aansluiten. Breid daarna uit naar Voorhout en de andere kernen, maar alleen als het Rijk extra steun en garanties geeft.",
+  html: `<ol class="steps"><li>Begin met de bron aan de Leeweg.</li><li>Maak bollenbedrijven vaste klanten.</li><li>Sluit nieuwbouw aan, dan de tweede bron.</li><li>Breid uit met steun en garanties van het Rijk.</li></ol>`
 },
 {
   type: "end",
